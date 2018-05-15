@@ -14,7 +14,7 @@ interface StateNode {
 interface StateEdge {
     previous: StateNode;
     next: StateNode;
-    action: Action;
+    action: IrreversibleAction;
 }
 
 type Metadata = {
@@ -25,13 +25,21 @@ type Metadata = {
     [key: string]: any;
 };
 
-interface Action {
-    do: FunctionName;
-    doArguments: any[];
-    undo: FunctionName;
-    undoArguments: any[];
+interface IrreversibleAction {
     metadata: Metadata;
+    do: FunctionName;
+    doArguments: any[];  // should be immutable
 }
+
+interface ReversableAction {
+    metadata: Metadata;
+    do: FunctionName;
+    doArguments: any[];  // should be immutable
+    undo: FunctionName;
+    undoArguments: any[]; // should be immutable
+}
+
+type Action = IrreversibleAction | ReversableAction;
 
 interface ProvenanceGraph {
     version: string;
