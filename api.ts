@@ -14,7 +14,7 @@ interface StateNode {
 interface StateEdge {
     previous: StateNode;
     next: StateNode;
-    action: IrreversibleAction;
+    action: Action;
 }
 
 type Metadata = {
