@@ -49,7 +49,21 @@ interface ProvenanceGraph {
 
 interface ProvenanceGraphTracker {
     current: StateNode;
-    applyActionToCurrentStateNode(action: Action): Promise<StateNode>;
+
     registerFunction(name: FunctionName, func: Function): void;
+
+    /**
+     * Calls the action.do function with action.doArguments
+     *
+     * @param action
+     *
+     */
+    applyActionToCurrentStateNode(action: Action): Promise<StateNode>;
+    /**
+     * Finds shortest path between current node and node with request identifer.
+     * Calls the do/undo functions of actions on the path.
+     *
+     * @param id
+     */
     traverseToStateNode(id: NodeIdentifier): StateNode;
 }
