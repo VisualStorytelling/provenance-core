@@ -7,8 +7,34 @@ import { ReversibleAction, StateNode } from '../src/api';
 const reversibleAdd13Action: ReversibleAction = {
   do: 'add',
   doArguments: [13],
-  undo: 'substract',
+  undo: 'subtract',
   undoArguments: [13],
+  metadata: {
+    createdBy: 'me',
+    createdOn: 'now',
+    tags: [],
+    userIntent: 'Because I want to'
+  }
+};
+
+const reversibleSub2Action: ReversibleAction = {
+  do: 'subtract',
+  doArguments: [2],
+  undo: 'add',
+  undoArguments: [2],
+  metadata: {
+    createdBy: 'me',
+    createdOn: 'now',
+    tags: [],
+    userIntent: 'Because I want to'
+  }
+};
+
+const reversibleSub5Action: ReversibleAction = {
+  do: 'subtract',
+  doArguments: [5],
+  undo: 'add',
+  undoArguments: [5],
   metadata: {
     createdBy: 'me',
     createdOn: 'now',
@@ -32,7 +58,7 @@ describe('ProvenanceGraphTraverser', () => {
     return Promise.resolve();
   }
 
-  function substract(y: number) {
+  function subtract(y: number) {
     state.offset = state.offset - y;
     return Promise.resolve();
   }
@@ -42,7 +68,7 @@ describe('ProvenanceGraphTraverser', () => {
     graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' });
     registry = new ActionFunctionRegistry();
     registry.register('add', add);
-    registry.register('substract', substract);
+    registry.register('subtract', subtract);
     tracker = new ProvenanceTracker(registry, graph);
     traverser = new ProvenanceGraphTraverser(registry, graph);
     root = graph.current;
@@ -92,6 +118,38 @@ describe('ProvenanceGraphTraverser', () => {
       return result.then(() => {
         expect(state).toEqual({ offset: 42 });
       });
+    });
+  });
+
+  describe('Two children traverse', () => {
+    let intermediateNode: StateNode;
+    beforeEach(async () => {
+      await tracker.applyAction(reversibleAdd13Action);
+      intermediateNode = graph.current;
+      await traverser.toStateNode(root.id);
+      await tracker.applyAction(reversibleSub2Action);
+      await traverser.toStateNode(intermediateNode.id);
+    });
+
+    test('Traverse to sibling', () => {
+      expect(state).toEqual({ offset: 55 });
+    });
+  });
+
+  describe('Three children traverse', () => {
+    let intermediateNode: StateNode;
+    beforeEach(async () => {
+      await tracker.applyAction(reversibleAdd13Action);
+      intermediateNode = graph.current;
+      await traverser.toStateNode(root.id);
+      await tracker.applyAction(reversibleSub2Action);
+      await traverser.toStateNode(root.id);
+      await tracker.applyAction(reversibleSub5Action);
+      await traverser.toStateNode(intermediateNode.id);
+    });
+
+    test('Traverse to sibling', () => {
+      expect(state).toEqual({ offset: 55 });
     });
   });
 });

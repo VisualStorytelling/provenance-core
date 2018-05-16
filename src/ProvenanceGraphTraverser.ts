@@ -41,6 +41,7 @@ function findPathToTargetNode(
     for (let node of nodesToCheck) {
       // If the node to check is in the track already, skip it.
       if (node === comingFromNode) continue;
+      debugger;
       if (findPathToTargetNode(node, targetNode, track, currentNode)) {
         track.unshift(currentNode);
         return true;
@@ -100,7 +101,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
         const thisNode = trackToTarget[i];
         const nextNode = trackToTarget[i + 1];
         const up = isNextNodeInTrackUp(thisNode, nextNode);
-        debugger;
+
         if (up) {
           if (!thisNode.parent) {
             throw new Error('Going up from root? unreachable error ... i hope');
@@ -120,7 +121,9 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
           argumentsToDo.push(nextNode.parent.action.doArguments);
         }
       }
-      return executeFunctions(functionsToDo, argumentsToDo);
+      const result = executeFunctions(functionsToDo, argumentsToDo);
+      result.then(() => (this.graph.current = targetNode));
+      return result;
     } catch (e) {
       return Promise.reject(e);
     }
