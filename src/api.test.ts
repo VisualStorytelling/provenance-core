@@ -1,53 +1,78 @@
+import { IProvenanceGraphTracker, StateNode } from './api'
+
 describe('ProvenanceGraphTracker', () => {
-  it('add some', () => {
-    const tracker = new ProvenanceGraphTracker()
+  let tracker: IProvenanceGraphTracker
+  const state = {
+    offset: 0
+  }
 
-    const state = {
-      offset: 42
-    }
+  function add(y: number) {
+    state.offset = state.offset + y
+    return Promise.resolve()
+  }
 
-    function add(y) {
-      state.offset = state.offset + y
-      return Promise.resolve()
-    }
+  function substract(y: number) {
+    state.offset = state.offset - y
+    return Promise.resolve()
+  }
 
-    function substract(y) {
-      state.offset = state.offset - y
-      return Promise.resolve()
-    }
-
+  beforeEach(() => {
+    state.offset = 42
+    tracker = new ProvenanceGraphTracker()
     tracker.registerFunction('add', add)
     tracker.registerFunction('substract', substract)
+  })
 
-    const action1 = {
-      do: 'add',
-      doArguments: [13],
-      undo: 'substract',
-      undoArguments: [13],
-      metadata: {
-        createdBy: 'me',
-        createdOn: 'now',
-        tags: [],
-        userIntent: 'Because I want to'
+  describe('add 13', () => {
+    let prom1: Promise<StateNode>
+
+    beforeEach(() => {
+      const action1 = {
+        do: 'add',
+        doArguments: [13],
+        undo: 'substract',
+        undoArguments: [13],
+        metadata: {
+          createdBy: 'me',
+          createdOn: 'now',
+          tags: [],
+          userIntent: 'Because I want to'
+        }
       }
-    }
-    const prom1 = tracker.applyAction(state, action1)
-    prom1.then(newState => {
-      expect(newState).toEqual({ offset: 55 })
+      prom1 = tracker.applyActionToCurrentStateNode(action1)
+      return prom1
     })
 
-    const action2 = {
-      redo: 'substract',
-      redoArguments: 5,
-      undo: 'add',
-      undoArguments: 5,
-      metadata: {
-        createdBy: 'me',
-        createdOn: 'later',
-        tags: [],
-        userIntent: 'Because I want to'
-      }
-    }
-    tracker.applyAction(state, action2)
+    it('should have offset equal to 55', () => {
+      prom1.then(() => {
+        expect(state).toEqual({ offset: 55 })
+      })
+    })
+
+    describe('Substract 5', () => {
+      let prom2: Promise<StateNode>
+      beforeEach(() => {
+        const action2 = {
+          do: 'substract',
+          doArguments: [5],
+          undo: 'add',
+          undoArguments: [5],
+          metadata: {
+            createdBy: 'me',
+            createdOn: 'later',
+            tags: [],
+            userIntent: 'Because I want to'
+          }
+        }
+        prom2 = tracker.applyActionToCurrentStateNode(action2)
+        return prom2
+      })
+    })
+
+    it('should have offset equal to 50', () => {
+      prom1.then(() => {
+        expect(state).toEqual({ offset: 50 })
+      })
+    })
   })
 })
