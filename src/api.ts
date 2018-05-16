@@ -1,84 +1,70 @@
-type FunctionName = string
+declare module "API" {
+    export type FunctionName = string;
+    export type Artifacts = { [key: string]: any };
+    export type NodeIdentifier = Number;
+    export type Action = IrreversibleAction | ReversableAction;
 
-interface Artifacts {
-  [key: string]: any
-}
+    export interface StateNode {
+        id: NodeIdentifier;
+        parent: StateEdge;
+        children: StateEdge[];
+        artifacts: Artifacts;
+    }
 
-type NodeIdentifier = Number
+    export interface StateEdge {
+        previous: StateNode;
+        next: StateNode;
+        action: Action;
+    }
 
-interface RootNode {
-  id: NodeIdentifier
-  children: StateEdge[]
-  artifacts: Artifacts
-}
+    type Metadata = {
+        createdBy: string;
+        createdOn: string;
+        tags: string[];
+        userIntent: string;
+        [key: string]: any;
+    };
 
-interface StateNode extends RootNode {
-  parent: StateEdge
-}
+    export interface IrreversibleAction {
+        metadata: Metadata;
+        do: FunctionName;
+        doArguments: any[];  // should be immutable
+    }
 
-interface StateEdge {
-  previous: StateNode
-  next: StateNode
-  action: Action
-}
+    export interface ReversableAction {
+        metadata: Metadata;
+        do: FunctionName;
+        doArguments: any[];  // should be immutable
+        undo: FunctionName;
+        undoArguments: any[]; // should be immutable
+    }
 
-interface Metadata {
-  createdBy?: string
-  createdOn: string
-  tags: string[]
-  userIntent?: string
-  [key: string]: any
-}
 
-interface IrreversibleAction {
-  metadata: Metadata
-  do: FunctionName
-  doArguments: any[] // should be immutable
-}
+    export interface ProvenanceGraph {
+        version: string;
+        addEdge(edge: StateEdge): void;
+        getStateNode(id: NodeIdentifier): StateNode;
+    }
 
-interface ReversableAction {
-  metadata: Metadata
-  do: FunctionName
-  doArguments: any[] // should be immutable
-  undo: FunctionName
-  undoArguments: any[] // should be immutable
-}
+    export interface ProvenanceGraphTracker {
+        current: StateNode;
 
-type Action = IrreversibleAction | ReversableAction
+        registerFunction(name: FunctionName, func: Function): void;
 
-interface ProvenanceGraph {
-  version: string
-  addEdge(edge: StateEdge): void
-  getStateNode(id: NodeIdentifier): StateNode
-}
+        /**
+         * Calls the action.do function with action.doArguments
+         *
+         * @param action
+         *
+         */
+        applyActionToCurrentStateNode(action: Action): Promise<StateNode>;
+        /**
+         * Finds shortest path between current node and node with request identifer.
+         * Calls the do/undo functions of actions on the path.
+         *
+         * @param id
+         */
+        traverseToStateNode(id: NodeIdentifier): StateNode;
 
-interface ProvenanceGraphTracker {
-  current: StateNode
-
-  /**
-   *
-   * @param name
-   * @param func Function that get called with the doArguments or undoArguments
-   *
-   */
-  registerFunction(
-    name: FunctionName,
-    func: (...args: any[]) => Promise<any>
-  ): void
-
-  /**
-   * Calls the action.do function with action.doArguments
-   *
-   * @param action
-   *
-   */
-  applyActionToCurrentStateNode(action: Action): Promise<StateNode>
-
-  /**
-   * Finds shortest path between current node and node with request identifer.
-   * Calls the do/undo functions of actions on the path.
-   *
-   * @param id
-   */
-  traverseToStateNode(id: NodeIdentifier): Promise<StateNode>
+    }
 }
