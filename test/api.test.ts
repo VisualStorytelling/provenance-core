@@ -1,4 +1,5 @@
-import { IProvenanceGraphTracker, StateNode } from './api'
+import { IProvenanceGraphTracker, StateNode } from '../src/api'
+import { ProvenanceGraphTracker, ProvenanceGraph } from '../src/provenanceGraph'
 
 describe('ProvenanceGraphTracker', () => {
   let tracker: IProvenanceGraphTracker
@@ -18,7 +19,8 @@ describe('ProvenanceGraphTracker', () => {
 
   beforeEach(() => {
     state.offset = 42
-    tracker = new ProvenanceGraphTracker()
+    const graph = new ProvenanceGraph('1.0.0')
+    tracker = new ProvenanceGraphTracker(graph)
     tracker.registerFunction('add', add)
     tracker.registerFunction('substract', substract)
   })
@@ -43,7 +45,7 @@ describe('ProvenanceGraphTracker', () => {
       return prom1
     })
 
-    it('should have offset equal to 55', () => {
+    test('should have offset equal to 55', () => {
       prom1.then(() => {
         expect(state).toEqual({ offset: 55 })
       })
@@ -67,11 +69,11 @@ describe('ProvenanceGraphTracker', () => {
         prom2 = tracker.applyActionToCurrentStateNode(action2)
         return prom2
       })
-    })
 
-    it('should have offset equal to 50', () => {
-      prom1.then(() => {
-        expect(state).toEqual({ offset: 50 })
+      test('should have offset equal to 50', () => {
+        prom1.then(() => {
+          expect(state).toEqual({ offset: 50 })
+        })
       })
     })
   })
