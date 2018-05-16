@@ -67,7 +67,7 @@ export interface IActionFunctionRegistry {
   getFunctionByName(name: string): ProvenanceEnabledFunction;
 }
 
-export interface IProvenanceGraphTracker {
+export interface IProvenanceTracker {
 
   registry: IActionFunctionRegistry;
 

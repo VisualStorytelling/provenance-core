@@ -1,5 +1,5 @@
 import {
-  IProvenanceGraphTracker,
+  IProvenanceTracker,
   StateNode,
   IProvenanceGraph,
   IActionFunctionRegistry
@@ -21,7 +21,7 @@ describe('ProvenanceGraphTracker', () => {
     return Promise.resolve();
   }
 
-  function substract(y: number) {
+  function subtract(y: number) {
     state.offset = state.offset - y;
     return Promise.resolve();
   }
@@ -31,7 +31,7 @@ describe('ProvenanceGraphTracker', () => {
     graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' });
     registry = new ActionFunctionRegistry();
     registry.register('add', add);
-    registry.register('substract', substract);
+    registry.register('subtract', subtract);
     tracker = new ProvenanceTracker(registry, graph);
   });
 
@@ -42,7 +42,7 @@ describe('ProvenanceGraphTracker', () => {
       const action1 = {
         do: 'add',
         doArguments: [13],
-        undo: 'substract',
+        undo: 'subtract',
         undoArguments: [13],
         metadata: {
           createdBy: 'me',
@@ -61,11 +61,11 @@ describe('ProvenanceGraphTracker', () => {
       });
     });
 
-    describe('Substract 5', () => {
+    describe('Subtract 5', () => {
       let prom2: Promise<StateNode>;
       beforeEach(() => {
         const action2 = {
-          do: 'substract',
+          do: 'subtract',
           doArguments: [5],
           undo: 'add',
           undoArguments: [5],
