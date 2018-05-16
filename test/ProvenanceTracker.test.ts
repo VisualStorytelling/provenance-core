@@ -6,12 +6,12 @@ import {
 } from '../src/api';
 import { ProvenanceGraph } from '../src/ProvenanceGraph';
 import { ActionFunctionRegistry } from '../src/ActionFunctionRegistry';
-import { ProvenanceGraphTracker } from '../src/ProvenanceGraphTracker';
+import { ProvenanceGraphTracker } from '../src/ProvenanceTracker';
 
 describe('ProvenanceGraphTracker', () => {
-  let graph: IProvenanceGraph;
-  let tracker: IProvenanceGraphTracker;
-  let registry: IActionFunctionRegistry;
+  let graph: ProvenanceGraph;
+  let tracker: ProvenanceGraphTracker;
+  let registry: ActionFunctionRegistry;
   const state = {
     offset: 0
   };
