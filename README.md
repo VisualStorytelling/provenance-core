@@ -1,6 +1,7 @@
 # Provenance core
 
 Javascript library to create and manipulate a provenance graph.
+The provenance graph can be usesd as a non-linear undo graph.
 
 [![Build Status](https://travis-ci.org/VisualStorytelling/provenance-core.svg?branch=master)](https://travis-ci.org/VisualStorytelling/provenance-core)
 [![Coverage Status](https://coveralls.io/repos/github/VisualStorytelling/provenance-core/badge.svg?branch=master)](https://coveralls.io/github/VisualStorytelling/provenance-core?branch=master)
