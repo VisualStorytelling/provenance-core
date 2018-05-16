@@ -1,5 +1,5 @@
 export type NodeIdentifier = string;
-export type Action = IrreversibleAction | ReversableAction;
+export type Action = IrreversibleAction | ReversibleAction;
 
 export type Metadata = {
   createdBy: string;
