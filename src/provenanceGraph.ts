@@ -1,5 +1,5 @@
-import * as API from './api'
-import { generateUUID } from './utils'
+import * as API from './api';
+import { generateUUID } from './utils';
 
 /**
  * Provenance Graph implementation
@@ -8,16 +8,16 @@ import { generateUUID } from './utils'
  *
  */
 class ProvenanceGraph implements API.IProvenanceGraph {
-  public version: string
-  private current: API.StateNode
-  private nodes: { [key: string]: API.StateNode }
+  public version: string;
+  private current: API.StateNode;
+  private nodes: { [key: string]: API.StateNode };
 
   constructor(version: string, current?: API.StateNode) {
-    this.version = version
+    this.version = version;
 
     // If we didn't provide a current node, we are starting a new graph, so make a new root node
     if (current) {
-      this.current = current
+      this.current = current;
     } else {
       this.current = {
         id: generateUUID(),
@@ -25,30 +25,30 @@ class ProvenanceGraph implements API.IProvenanceGraph {
         parent: null,
         children: [],
         artifacts: {}
-      }
-      this.addStateNode(this.current)
+      };
+      this.addStateNode(this.current);
     }
 
-    this.nodes = {}
+    this.nodes = {};
   }
 
   addStateNode(node: API.StateNode): void {
     if (this.nodes[node.id]) {
-      throw new Error('Node already added')
+      throw new Error('Node already added');
     }
-    this.nodes[node.id] = node
+    this.nodes[node.id] = node;
   }
 
   getStateNode(id: API.NodeIdentifier): API.StateNode {
-    const result = this.nodes[id]
+    const result = this.nodes[id];
     if (!result) {
-      throw new Error('Node id not found')
+      throw new Error('Node id not found');
     }
-    return this.nodes[id]
+    return this.nodes[id];
   }
 
   getCurrentStateNode(): API.StateNode {
-    return this.current
+    return this.current;
   }
 }
 
@@ -60,13 +60,13 @@ class ProvenanceGraph implements API.IProvenanceGraph {
  *
  */
 class ProvenanceGraphTracker implements API.IProvenanceGraphTracker {
-  private graph: ProvenanceGraph
-  private functionRegistry: { [key: string]: API.ProvenanceEnabledFunction }
+  private graph: ProvenanceGraph;
+  private functionRegistry: { [key: string]: API.ProvenanceEnabledFunction };
 
   constructor(graph: ProvenanceGraph) {
-    this.graph = graph
+    this.graph = graph;
 
-    this.functionRegistry = {}
+    this.functionRegistry = {};
   }
 
   static findPathToTargetNode(
@@ -75,16 +75,16 @@ class ProvenanceGraphTracker implements API.IProvenanceGraphTracker {
     track: API.StateNode[]
   ): boolean {
     if (currentNode === null) {
-      return false
+      return false;
     } else if (currentNode === targetNode) {
-      track.push(currentNode)
-      return true
+      track.push(currentNode);
+      return true;
     } else {
       // Map the StateNodes in the children StateEdges
-      const nodesToCheck = currentNode.children.map(child => child.next)
+      const nodesToCheck = currentNode.children.map(child => child.next);
       // Add the parent node to that same list
       if (currentNode.parent !== null) {
-        nodesToCheck.push(currentNode.parent.previous)
+        nodesToCheck.push(currentNode.parent.previous);
       }
 
       for (let node of nodesToCheck) {
@@ -94,22 +94,22 @@ class ProvenanceGraphTracker implements API.IProvenanceGraphTracker {
           track[track.length - 1] !== node &&
           ProvenanceGraphTracker.findPathToTargetNode(node, targetNode, track)
         ) {
-          track.push(currentNode)
-          return true
+          track.push(currentNode);
+          return true;
         }
       }
-      return false
+      return false;
     }
   }
 
   static isNextNodeInTrackUp(currentNode: API.StateNode, nextNode: API.StateNode): boolean {
     if (currentNode.parent && currentNode.parent.previous === nextNode) {
-      return true
+      return true;
     } else if (nextNode.parent && nextNode.parent.previous !== currentNode) {
       // This is a guard against the illegitimate use of this function for unconnected nodes
-      throw new Error('Unconnected nodes, you probably should not be using this function')
+      throw new Error('Unconnected nodes, you probably should not be using this function');
     } else {
-      return false
+      return false;
     }
   }
 
@@ -122,9 +122,9 @@ class ProvenanceGraphTracker implements API.IProvenanceGraphTracker {
    */
   registerFunction(name: string, func: API.ProvenanceEnabledFunction) {
     if (this.functionRegistry[name]) {
-      throw new Error('Function already registred')
+      throw new Error('Function already registred');
     }
-    this.functionRegistry[name] = func
+    this.functionRegistry[name] = func;
   }
 
   /**
@@ -135,17 +135,17 @@ class ProvenanceGraphTracker implements API.IProvenanceGraphTracker {
    */
   applyActionToCurrentStateNode(action: API.Action): Promise<API.StateNode> {
     // Save the current node because this is is asynchronous
-    const currentNode = this.graph.getCurrentStateNode()
+    const currentNode = this.graph.getCurrentStateNode();
 
     // Get the registered function from the action out of the registry
-    const functionNameToExecute = action.do
+    const functionNameToExecute = action.do;
     if (!this.functionRegistry[functionNameToExecute]) {
-      throw new Error('Function not found in registry')
+      throw new Error('Function not found in registry');
     }
     const promisedResult = this.functionRegistry[functionNameToExecute].apply(
       null,
       action.doArguments
-    )
+    );
 
     // When the function promise resolves, we need to update the graph.
     promisedResult.then((actionResult: any) => {
@@ -156,22 +156,22 @@ class ProvenanceGraphTracker implements API.IProvenanceGraphTracker {
         parent: null,
         children: [],
         artifacts: {}
-      }
+      };
 
       const stateEdge: API.StateEdge = {
         previous: currentNode,
         action: action,
         next: newNode
-      }
-      newNode.parent = stateEdge
-      currentNode.children.push(stateEdge)
+      };
+      newNode.parent = stateEdge;
+      currentNode.children.push(stateEdge);
 
-      this.graph.addStateNode(newNode)
+      this.graph.addStateNode(newNode);
 
-      return newNode
-    })
+      return newNode;
+    });
 
-    return promisedResult
+    return promisedResult;
   }
 
   /**
@@ -181,47 +181,47 @@ class ProvenanceGraphTracker implements API.IProvenanceGraphTracker {
    * @param id
    */
   traverseToStateNode(id: API.NodeIdentifier): Promise<API.StateNode> {
-    const currentNode = this.graph.getCurrentStateNode()
-    const targetNode = this.graph.getStateNode(id)
+    const currentNode = this.graph.getCurrentStateNode();
+    const targetNode = this.graph.getStateNode(id);
 
-    const trackToTarget: API.StateNode[] = []
+    const trackToTarget: API.StateNode[] = [];
 
     const success = ProvenanceGraphTracker.findPathToTargetNode(
       currentNode,
       targetNode,
       trackToTarget
-    )
+    );
 
     if (!success) {
-      throw new Error('No path to target node found in graph')
+      throw new Error('No path to target node found in graph');
     }
 
-    const functionsToDo: API.ProvenanceEnabledFunction[] = []
-    const argumentsToDo: any[] = []
+    const functionsToDo: API.ProvenanceEnabledFunction[] = [];
+    const argumentsToDo: any[] = [];
 
     for (let i = 0; i < trackToTarget.length - 1; i++) {
-      const thisNode = trackToTarget[i]
-      const nextNode = trackToTarget[i + 1]
-      const up = ProvenanceGraphTracker.isNextNodeInTrackUp(thisNode, nextNode)
+      const thisNode = trackToTarget[i];
+      const nextNode = trackToTarget[i + 1];
+      const up = ProvenanceGraphTracker.isNextNodeInTrackUp(thisNode, nextNode);
 
       if (up) {
         if (!thisNode.parent) {
-          throw new Error('Going up from root? unreachable error ... i hope')
+          throw new Error('Going up from root? unreachable error ... i hope');
         }
         if (!API.isReversibleAction(thisNode.parent.action)) {
-          throw new Error('trying to undo an Irreversible action')
+          throw new Error('trying to undo an Irreversible action');
         }
-        functionsToDo.push(this.functionRegistry[thisNode.parent.action.undo])
-        argumentsToDo.push(thisNode.parent.action.undoArguments)
+        functionsToDo.push(this.functionRegistry[thisNode.parent.action.undo]);
+        argumentsToDo.push(thisNode.parent.action.undoArguments);
       } else {
         if (!nextNode.parent) {
-          throw new Error('Going down to the root? unreachable error ... i hope')
+          throw new Error('Going down to the root? unreachable error ... i hope');
         }
-        functionsToDo.push(this.functionRegistry[nextNode.parent.action.do])
-        argumentsToDo.push(nextNode.parent.action.doArguments)
+        functionsToDo.push(this.functionRegistry[nextNode.parent.action.do]);
+        argumentsToDo.push(nextNode.parent.action.doArguments);
       }
     }
 
-    return Promise.resolve(this.graph.getCurrentStateNode())
+    return Promise.resolve(this.graph.getCurrentStateNode());
   }
 }
