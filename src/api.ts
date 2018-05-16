@@ -1,6 +1,6 @@
 
 export type FunctionName = string;
-export type NodeIdentifier = Number;
+export type NodeIdentifier = string;
 export type Action = IrreversibleAction | ReversableAction;
 
 export type Metadata = {
@@ -9,21 +9,15 @@ export type Metadata = {
     tags: string[];
     userIntent: string;
     [key: string]: any;
-};
+}
 
 export type Artifacts = {
     [key: string]: any
 }
 
-export type RootNode = {
-    id: NodeIdentifier
-    children: StateEdge[]
-    artifacts: Artifacts
-}
-
 export type StateNode = {
     id: NodeIdentifier;
-    parent: StateEdge;
+    parent: StateEdge | null;
     children: StateEdge[];
     artifacts: Artifacts;
 }
