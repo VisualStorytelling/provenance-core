@@ -42,6 +42,7 @@ export type ReversableAction = {
     undoArguments: any[]; // should be immutable
 }
 
+export type ProvenanceEnabledFunction = (...args: any[]) => Promise<any>;
 
 export interface IProvenanceGraph {
     version: string;
@@ -60,7 +61,7 @@ export interface IProvenanceGraphTracker {
    */
     registerFunction(
         name: FunctionName,
-        func: (...args: any[]) => Promise<any>
+        func: ProvenanceEnabledFunction
     ): void
 
     /**
