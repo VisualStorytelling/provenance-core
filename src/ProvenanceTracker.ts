@@ -6,7 +6,7 @@ import {
   IProvenanceGraph,
   StateEdge
 } from './api';
-import { generateUUID } from './utils';
+import {generateUUID} from './utils';
 
 /**
  * Provenance Graph Tracker implementation
@@ -16,11 +16,12 @@ import { generateUUID } from './utils';
  *
  */
 export class ProvenanceTracker implements IProvenanceGraphTracker {
-  private functionRegistry: IActionFunctionRegistry;
+  registry: IActionFunctionRegistry;
+
   private graph: IProvenanceGraph;
 
-  constructor(functionRegistry: IActionFunctionRegistry, graph: IProvenanceGraph) {
-    this.functionRegistry = functionRegistry;
+  constructor(registry: IActionFunctionRegistry, graph: IProvenanceGraph) {
+    this.registry = registry;
     this.graph = graph;
   }
 
@@ -36,7 +37,7 @@ export class ProvenanceTracker implements IProvenanceGraphTracker {
 
     // Get the registered function from the action out of the registry
     const functionNameToExecute = action.do;
-    const funct = this.functionRegistry.getFunctionByName(functionNameToExecute);
+    const funct = this.registry.getFunctionByName(functionNameToExecute);
 
     const promisedResult = funct.apply(null, action.doArguments);
 

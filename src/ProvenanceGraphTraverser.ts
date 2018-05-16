@@ -6,7 +6,7 @@ import {
   NodeIdentifier,
   ProvenanceEnabledFunction
 } from './api';
-import { isReversibleAction } from './utils';
+import {isReversibleAction} from './utils';
 
 function isNextNodeInTrackUp(currentNode: StateNode, nextNode: StateNode): boolean {
   if (currentNode.parent && currentNode.parent.previous === nextNode) {
@@ -64,11 +64,11 @@ async function executeFunctions(
 }
 
 export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
-  private functionRegistry: IActionFunctionRegistry;
+  private registry: IActionFunctionRegistry;
   private graph: IProvenanceGraph;
 
-  constructor(functionRegistry: IActionFunctionRegistry, graph: IProvenanceGraph) {
-    this.functionRegistry = functionRegistry;
+  constructor(registry: IActionFunctionRegistry, graph: IProvenanceGraph) {
+    this.registry = registry;
     this.graph = graph;
   }
 
@@ -109,14 +109,14 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
           if (!isReversibleAction(thisNode.parent.action)) {
             throw new Error('trying to undo an Irreversible action');
           }
-          const undoFunc = this.functionRegistry.getFunctionByName(thisNode.parent.action.undo);
+          const undoFunc = this.registry.getFunctionByName(thisNode.parent.action.undo);
           functionsToDo.push(undoFunc);
           argumentsToDo.push(thisNode.parent.action.undoArguments);
         } else {
           if (!nextNode.parent) {
             throw new Error('Going down to the root? unreachable error ... i hope');
           }
-          const doFunc = this.functionRegistry.getFunctionByName(nextNode.parent.action.do);
+          const doFunc = this.registry.getFunctionByName(nextNode.parent.action.do);
           functionsToDo.push(doFunc);
           argumentsToDo.push(nextNode.parent.action.doArguments);
         }
