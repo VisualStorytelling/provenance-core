@@ -1,24 +1,29 @@
+import { ProvenanceGraphTracker } from './api'
+
 describe('ProvenanceGraphTracker', () => {
-  it('add some', () => {
-    const tracker = new ProvenanceGraphTracker()
+  let tracker: ProvenanceGraphTracker
+  const state = {
+    offset: 0
+  }
 
-    const state = {
-      offset: 42
-    }
+  function add(y: number) {
+    state.offset = state.offset + y
+    return Promise.resolve()
+  }
 
-    function add(y) {
-      state.offset = state.offset + y
-      return Promise.resolve()
-    }
+  function substract(y: number) {
+    state.offset = state.offset - y
+    return Promise.resolve()
+  }
 
-    function substract(y) {
-      state.offset = state.offset - y
-      return Promise.resolve()
-    }
-
+  beforeEach(() => {
+    state.offset = 42
+    tracker = new ProvenanceGraphTracker()
     tracker.registerFunction('add', add)
     tracker.registerFunction('substract', substract)
+  })
 
+  it('add some', () => {
     const action1 = {
       do: 'add',
       doArguments: [13],
@@ -31,16 +36,16 @@ describe('ProvenanceGraphTracker', () => {
         userIntent: 'Because I want to'
       }
     }
-    const prom1 = tracker.applyAction(state, action1)
-    prom1.then(newState => {
-      expect(newState).toEqual({ offset: 55 })
+    const prom1 = tracker.applyActionToCurrentStateNode(action1)
+    prom1.then(() => {
+      expect(state).toEqual({ offset: 55 })
     })
 
     const action2 = {
-      redo: 'substract',
-      redoArguments: 5,
+      do: 'substract',
+      doArguments: [5],
       undo: 'add',
-      undoArguments: 5,
+      undoArguments: [5],
       metadata: {
         createdBy: 'me',
         createdOn: 'later',
@@ -48,6 +53,6 @@ describe('ProvenanceGraphTracker', () => {
         userIntent: 'Because I want to'
       }
     }
-    tracker.applyAction(state, action2)
+    tracker.applyActionToCurrentStateNode(action2)
   })
 })
