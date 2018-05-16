@@ -1,16 +1,17 @@
 import {
   IProvenanceGraphTracker,
   StateNode,
-  IProvenanceGraph
+  IProvenanceGraph,
+  IActionFunctionRegistry
 } from '../src/api';
-import {
-  ProvenanceGraphTracker,
-  ProvenanceGraph
-} from '../src/provenanceGraph';
+import { ProvenanceGraph } from '../src/ProvenanceGraph';
+import { ActionFunctionRegistry } from '../src/ActionFunctionRegistry';
+import { ProvenanceGraphTracker } from '../src/ProvenanceGraphTracker';
 
 describe('ProvenanceGraphTracker', () => {
   let graph: IProvenanceGraph;
   let tracker: IProvenanceGraphTracker;
+  let registry: IActionFunctionRegistry;
   const state = {
     offset: 0
   };
@@ -28,9 +29,10 @@ describe('ProvenanceGraphTracker', () => {
   beforeEach(() => {
     state.offset = 42;
     graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' });
-    tracker = new ProvenanceGraphTracker(graph);
-    tracker.registerFunction('add', add);
-    tracker.registerFunction('substract', substract);
+    registry = new ActionFunctionRegistry();
+    registry.register('add', add);
+    registry.register('substract', substract);
+    tracker = new ProvenanceGraphTracker(registry, graph);
   });
 
   describe('add 13', () => {
@@ -49,7 +51,7 @@ describe('ProvenanceGraphTracker', () => {
           userIntent: 'Because I want to'
         }
       };
-      prom1 = tracker.applyActionToCurrentStateNode(action1);
+      prom1 = tracker.applyAction(action1);
       return prom1;
     });
 
@@ -74,7 +76,7 @@ describe('ProvenanceGraphTracker', () => {
             userIntent: 'Because I want to'
           }
         };
-        prom2 = tracker.applyActionToCurrentStateNode(action2);
+        prom2 = tracker.applyAction(action2);
         return prom2;
       });
 
@@ -83,23 +85,6 @@ describe('ProvenanceGraphTracker', () => {
           expect(state).toEqual({ offset: 50 });
         });
       });
-    });
-  });
-
-  describe('traverse to non existing node', () => {
-    test.skip('should reject promise with not found', () => {
-      const dummyNodeId = '11111111-1111-4111-1111-111111111111';
-      const result = tracker.traverseToStateNode(dummyNodeId);
-      return expect(result).rejects.toEqual({
-        error: 'Node not found'
-      });
-    });
-  });
-
-  describe('traverse to current', () => {
-    test.skip('should return current', () => {
-      // TODO implement
-      expect(1).toEqual(2);
     });
   });
 });

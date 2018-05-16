@@ -42,10 +42,6 @@ export type ReversibleAction = {
   undoArguments: any[]; // should be immutable
 };
 
-export function isReversibleAction(action: Action): action is ReversibleAction {
-  return 'undo' in action;
-}
-
 export type ProvenanceEnabledFunction = (...args: any[]) => Promise<any>;
 
 export type Application = {
@@ -55,32 +51,40 @@ export type Application = {
 
 export interface IProvenanceGraph {
   application: Application;
+  current: StateNode;
   addStateNode(node: StateNode): void;
   getStateNode(id: NodeIdentifier): StateNode;
 }
 
-export interface IProvenanceGraphTracker {
+export interface IActionFunctionRegistry {
   /**
    *
    * @param name
    * @param func Function that get called with the doArguments or undoArguments
    *
    */
-  registerFunction(name: string, func: ProvenanceEnabledFunction): void;
+  register(name: string, func: ProvenanceEnabledFunction): void;
+  getFunctionByName(name: string): ProvenanceEnabledFunction;
+}
 
+export interface IProvenanceGraphTracker {
   /**
-   * Calls the action.do function with action.doArguments
-   *
+   * 1. Calls the action.do function with action.doArguments 
+   * 2. Append action to graph via a StateEdge and StateNode
+   * 3. Makes the created StateNode the current state node
+   * 
    * @param action
    *
    */
-  applyActionToCurrentStateNode(action: Action): Promise<StateNode>;
+  applyAction(action: Action): Promise<StateNode>;
+}
 
+export interface IProvenanceGraphTraverser {
   /**
    * Finds shortest path between current node and node with request identifer.
    * Calls the do/undo functions of actions on the path.
    *
    * @param id
    */
-  traverseToStateNode(id: NodeIdentifier): Promise<StateNode>;
+  toStateNode(id: NodeIdentifier): Promise<StateNode>;
 }

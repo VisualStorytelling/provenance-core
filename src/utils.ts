@@ -1,3 +1,5 @@
+import { Action, ReversibleAction } from './api';
+
 export function generateUUID() {
   // Public Domain/MIT
   let d = new Date().getTime();
@@ -12,4 +14,8 @@ export function generateUUID() {
     d = Math.floor(d / 16);
     return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
   });
+}
+
+export function isReversibleAction(action: Action): action is ReversibleAction {
+  return 'undo' in action;
 }
