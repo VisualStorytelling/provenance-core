@@ -1,8 +1,7 @@
 
 export type FunctionName = string;
-export type Artifacts = { [key: string]: any };
 export type NodeIdentifier = Number;
-export type Action = IIrreversibleAction | IReversableAction;
+export type Action = IrreversibleAction | ReversableAction;
 
 export type Metadata = {
     createdBy: string;
@@ -12,26 +11,36 @@ export type Metadata = {
     [key: string]: any;
 };
 
-export interface IStateNode {
+export type Artifacts = {
+    [key: string]: any
+}
+
+export type RootNode = {
+    id: NodeIdentifier
+    children: StateEdge[]
+    artifacts: Artifacts
+}
+
+export type StateNode = {
     id: NodeIdentifier;
-    parent: IStateEdge;
-    children: IStateEdge[];
+    parent: StateEdge;
+    children: StateEdge[];
     artifacts: Artifacts;
 }
 
-export interface IStateEdge {
-    previous: IStateNode;
-    next: IStateNode;
+export type StateEdge = {
+    previous: StateNode;
+    next: StateNode;
     action: Action;
 }
 
-export interface IIrreversibleAction {
+export type IrreversibleAction = {
     metadata: Metadata;
     do: FunctionName;
     doArguments: any[];  // should be immutable
 }
 
-export interface IReversableAction {
+export type ReversableAction = {
     metadata: Metadata;
     do: FunctionName;
     doArguments: any[];  // should be immutable
@@ -42,14 +51,23 @@ export interface IReversableAction {
 
 export interface IProvenanceGraph {
     version: string;
-    addEdge(edge: IStateEdge): void;
-    getStateNode(id: NodeIdentifier): IStateNode;
+    addEdge(edge: StateEdge): void;
+    getStateNode(id: NodeIdentifier): StateNode;
 }
 
 export interface IProvenanceGraphTracker {
-    current: IStateNode;
+    current: StateNode
 
-    registerFunction(name: FunctionName, func: Function): void;
+   /**
+   *
+   * @param name
+   * @param func Function that get called with the doArguments or undoArguments
+   *
+   */
+    registerFunction(
+        name: FunctionName,
+        func: (...args: any[]) => Promise<any>
+    ): void
 
     /**
      * Calls the action.do function with action.doArguments
@@ -57,13 +75,14 @@ export interface IProvenanceGraphTracker {
      * @param action
      *
      */
-    applyActionToCurrentStateNode(action: Action): Promise<IStateNode>;
+    applyActionToCurrentStateNode(action: Action): Promise<StateNode>
+
     /**
      * Finds shortest path between current node and node with request identifer.
      * Calls the do/undo functions of actions on the path.
      *
      * @param id
      */
-    traverseToStateNode(id: NodeIdentifier): IStateNode;
+    traverseToStateNode(id: NodeIdentifier): Promise<StateNode>
 
 }
