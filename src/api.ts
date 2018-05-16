@@ -1,58 +1,62 @@
-export type NodeIdentifier = string
-export type Action = IrreversibleAction | ReversableAction
+export type NodeIdentifier = string;
+export type Action = IrreversibleAction | ReversableAction;
 
 export type Metadata = {
-  createdBy: string
-  createdOn: string
-  tags: string[]
-  userIntent: string
-  [key: string]: any
-}
+  createdBy: string;
+  createdOn: string;
+  tags: string[];
+  userIntent: string;
+  [key: string]: any;
+};
 
 export type Artifacts = {
-  [key: string]: any
-}
+  [key: string]: any;
+};
 
 export type StateNode = {
-  id: NodeIdentifier
-  label: string
-  actionResult?: any
-  parent: StateEdge | null
-  children: StateEdge[]
-  artifacts: Artifacts
-}
+  id: NodeIdentifier;
+  label: string;
+  actionResult?: any;
+  parent: StateEdge | null;
+  children: StateEdge[];
+  artifacts: Artifacts;
+};
 
 export type StateEdge = {
-  previous: StateNode
-  next: StateNode
-  action: Action
-}
+  previous: StateNode;
+  next: StateNode;
+  action: Action;
+};
 
 export type IrreversibleAction = {
-  metadata: Metadata
-  do: string
-  doArguments: any[] // should be immutable
+  metadata: Metadata;
+  do: string;
+  doArguments: any[]; // should be immutable
+};
+
+export type ReversibleAction = {
+  metadata: Metadata;
+  do: string;
+  doArguments: any[]; // should be immutable
+  undo: string;
+  undoArguments: any[]; // should be immutable
+};
+
+export function isReversibleAction(action: Action): action is ReversibleAction {
+  return 'undo' in action;
 }
 
-export type ReversableAction = {
-  metadata: Metadata
-  do: string
-  doArguments: any[] // should be immutable
-  undo: string
-  undoArguments: any[] // should be immutable
-}
-
-export type ProvenanceEnabledFunction = (...args: any[]) => Promise<any>
+export type ProvenanceEnabledFunction = (...args: any[]) => Promise<any>;
 
 export type Application = {
-  name: string
-  version: string
-}
+  name: string;
+  version: string;
+};
 
 export interface IProvenanceGraph {
-  application: Application
-  addNode(node: StateNode): void
-  getStateNode(id: NodeIdentifier): StateNode
+  application: Application;
+  addStateNode(node: StateNode): void;
+  getStateNode(id: NodeIdentifier): StateNode;
 }
 
 export interface IProvenanceGraphTracker {
@@ -62,7 +66,7 @@ export interface IProvenanceGraphTracker {
    * @param func Function that get called with the doArguments or undoArguments
    *
    */
-  registerFunction(name: string, func: ProvenanceEnabledFunction): void
+  registerFunction(name: string, func: ProvenanceEnabledFunction): void;
 
   /**
    * Calls the action.do function with action.doArguments
@@ -70,7 +74,7 @@ export interface IProvenanceGraphTracker {
    * @param action
    *
    */
-  applyActionToCurrentStateNode(action: Action): Promise<StateNode>
+  applyActionToCurrentStateNode(action: Action): Promise<StateNode>;
 
   /**
    * Finds shortest path between current node and node with request identifer.
@@ -78,5 +82,5 @@ export interface IProvenanceGraphTracker {
    *
    * @param id
    */
-  traverseToStateNode(id: NodeIdentifier): Promise<StateNode>
+  traverseToStateNode(id: NodeIdentifier): Promise<StateNode>;
 }
