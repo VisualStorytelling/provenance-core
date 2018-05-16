@@ -34,7 +34,7 @@ export type IrreversibleAction = {
   doArguments: any[] // should be immutable
 }
 
-export type ReversableAction = {
+export type ReversibleAction = {
   metadata: Metadata
   do: string
   doArguments: any[] // should be immutable
@@ -42,11 +42,15 @@ export type ReversableAction = {
   undoArguments: any[] // should be immutable
 }
 
+export function isReversibleAction(action: Action): action is ReversibleAction {
+  return 'undo' in action
+}
+
 export type ProvenanceEnabledFunction = (...args: any[]) => Promise<any>
 
 export interface IProvenanceGraph {
   version: string
-  addNode(node: StateNode): void
+  addStateNode(node: StateNode): void
   getStateNode(id: NodeIdentifier): StateNode
 }
 
