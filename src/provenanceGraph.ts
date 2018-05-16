@@ -2,11 +2,11 @@ import * as API from './api'
 import { generateUUID } from './utils'
 
 export class ProvenanceGraph implements API.IProvenanceGraph {
-  public version: string
+  public application: API.Application
   private nodes: { [key: string]: API.StateNode }
 
-  constructor(version: string) {
-    this.version = version
+  constructor(application: API.Application) {
+    this.application = application
     this.nodes = {}
   }
 
@@ -27,11 +27,11 @@ export class ProvenanceGraph implements API.IProvenanceGraph {
 }
 
 export class ProvenanceGraphTracker implements API.IProvenanceGraphTracker {
-  private graph: ProvenanceGraph
+  private graph: API.IProvenanceGraph
   private current: API.StateNode
   private functionRegistry: { [key: string]: API.ProvenanceEnabledFunction }
 
-  constructor(graph: ProvenanceGraph, current?: API.StateNode) {
+  constructor(graph: API.IProvenanceGraph, current?: API.StateNode) {
     this.graph = graph
 
     if (current) {

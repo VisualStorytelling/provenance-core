@@ -1,7 +1,12 @@
-import { IProvenanceGraphTracker, StateNode } from '../src/api'
+import {
+  IProvenanceGraphTracker,
+  StateNode,
+  IProvenanceGraph
+} from '../src/api'
 import { ProvenanceGraphTracker, ProvenanceGraph } from '../src/provenanceGraph'
 
 describe('ProvenanceGraphTracker', () => {
+  let graph: IProvenanceGraph
   let tracker: IProvenanceGraphTracker
   const state = {
     offset: 0
@@ -19,7 +24,7 @@ describe('ProvenanceGraphTracker', () => {
 
   beforeEach(() => {
     state.offset = 42
-    const graph = new ProvenanceGraph('1.0.0')
+    graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' })
     tracker = new ProvenanceGraphTracker(graph)
     tracker.registerFunction('add', add)
     tracker.registerFunction('substract', substract)
@@ -75,6 +80,23 @@ describe('ProvenanceGraphTracker', () => {
           expect(state).toEqual({ offset: 50 })
         })
       })
+    })
+  })
+
+  describe('traverse to non existing node', () => {
+    test('should reject promise with not found', () => {
+      const dummyNodeId = '11111111-1111-4111-1111-111111111111'
+      const result = tracker.traverseToStateNode(dummyNodeId)
+      return expect(result).rejects.toEqual({
+        error: 'Node not found'
+      })
+    })
+  })
+
+  describe('traverse to current', () => {
+    test('should return current', () => {
+      // TODO implement
+      expect(1).toEqual(2)
     })
   })
 })

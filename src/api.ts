@@ -44,8 +44,13 @@ export type ReversableAction = {
 
 export type ProvenanceEnabledFunction = (...args: any[]) => Promise<any>
 
-export interface IProvenanceGraph {
+export type Application = {
+  name: string
   version: string
+}
+
+export interface IProvenanceGraph {
+  application: Application
   addNode(node: StateNode): void
   getStateNode(id: NodeIdentifier): StateNode
 }
