@@ -67,12 +67,12 @@ export interface IActionFunctionRegistry {
   getFunctionByName(name: string): ProvenanceEnabledFunction;
 }
 
-export interface IProvenanceGraphTracker {
+export interface IProvenanceTracker {
   /**
-   * 1. Calls the action.do function with action.doArguments 
+   * 1. Calls the action.do function with action.doArguments
    * 2. Append action to graph via a StateEdge and StateNode
    * 3. Makes the created StateNode the current state node
-   * 
+   *
    * @param action
    *
    */

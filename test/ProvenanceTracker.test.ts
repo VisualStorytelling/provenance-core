@@ -1,5 +1,5 @@
 import {
-  IProvenanceGraphTracker,
+  IProvenanceTracker,
   StateNode,
   IProvenanceGraph,
   IActionFunctionRegistry

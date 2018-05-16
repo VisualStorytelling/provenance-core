@@ -2,13 +2,27 @@ import { ActionFunctionRegistry } from '../src/ActionFunctionRegistry';
 import { ProvenanceTracker } from '../src/ProvenanceTracker';
 import { ProvenanceGraph } from '../src/ProvenanceGraph';
 import { ProvenanceGraphTraverser } from '../src/ProvenanceGraphTraverser';
-import { ReversibleAction } from '../src/api';
+import { ReversibleAction, StateNode } from '../src/api';
+
+const reversibleAdd13Action: ReversibleAction = {
+  do: 'add',
+  doArguments: [13],
+  undo: 'substract',
+  undoArguments: [13],
+  metadata: {
+    createdBy: 'me',
+    createdOn: 'now',
+    tags: [],
+    userIntent: 'Because I want to'
+  }
+};
 
 describe('ProvenanceGraphTraverser', () => {
   let graph: ProvenanceGraph;
   let tracker: ProvenanceTracker;
   let registry: ActionFunctionRegistry;
   let traverser: ProvenanceGraphTraverser;
+  let root: StateNode;
   const state = {
     offset: 0
   };
@@ -31,20 +45,7 @@ describe('ProvenanceGraphTraverser', () => {
     registry.register('substract', substract);
     tracker = new ProvenanceTracker(registry, graph);
     traverser = new ProvenanceGraphTraverser(registry, graph);
-
-    const action: ReversibleAction = {
-      do: 'add',
-      doArguments: [13],
-      undo: 'substract',
-      undoArguments: [13],
-      metadata: {
-        createdBy: 'me',
-        createdOn: 'now',
-        tags: [],
-        userIntent: 'Because I want to'
-      }
-    };
-    tracker.applyAction(action);
+    root = graph.current;
   });
 
   test('should reject promise with not found', () => {
@@ -58,10 +59,40 @@ describe('ProvenanceGraphTraverser', () => {
     return expect(result).resolves.toEqual(graph.current);
   });
 
-  test('Traverse to parent node (undo one step)', () => {
-    expect(state).toEqual({ offset: 55 });
-    traverser.toStateNode(graph.current.parent.previous.id);
-    expect(state).toEqual({ offset: 42 });
+  describe('One action undo', () => {
+    beforeEach(() => {
+      tracker.applyAction(reversibleAdd13Action);
+    });
+
+    test('Traverse to parent node (undo one step)', () => {
+      const result = traverser.toStateNode(graph.current.parent.previous.id);
+      return result.then(() => {
+        expect(state).toEqual({ offset: 42 });
+      });
+    });
+  });
+
+  describe('Two action undo', () => {
+    let intermediateNode: StateNode;
+    beforeEach(async () => {
+      await tracker.applyAction(reversibleAdd13Action);
+      intermediateNode = graph.current;
+      await tracker.applyAction(reversibleAdd13Action);
+    });
+
+    test('Traverse to root node (undo two steps)', () => {
+      const result = traverser.toStateNode(intermediateNode.id);
+      return result.then(() => {
+        expect(state).toEqual({ offset: 55 });
+      });
+    });
+
+    test('Traverse to root node (undo two steps at once)', () => {
+      const result = traverser.toStateNode(root.id);
+      return result.then(() => {
+        expect(state).toEqual({ offset: 42 });
+      });
+    });
   });
 });
 

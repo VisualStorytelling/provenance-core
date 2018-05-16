@@ -22,12 +22,13 @@ function isNextNodeInTrackUp(currentNode: StateNode, nextNode: StateNode): boole
 function findPathToTargetNode(
   currentNode: StateNode,
   targetNode: StateNode,
-  track: StateNode[]
+  track: StateNode[],
+  comingFromNode: StateNode = currentNode
 ): boolean {
   if (currentNode === null) {
     return false;
   } else if (currentNode === targetNode) {
-    track.push(currentNode);
+    track.unshift(currentNode);
     return true;
   } else {
     // Map the StateNodes in the children StateEdges
@@ -39,12 +40,9 @@ function findPathToTargetNode(
 
     for (let node of nodesToCheck) {
       // If the node to check is in the track already, skip it.
-      if (
-        track.length > 0 &&
-        track[track.length - 1] !== node &&
-        findPathToTargetNode(node, targetNode, track)
-      ) {
-        track.push(currentNode);
+      if (node === comingFromNode) continue;
+      if (findPathToTargetNode(node, targetNode, track, currentNode)) {
+        track.unshift(currentNode);
         return true;
       }
     }
@@ -90,6 +88,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
       const trackToTarget: StateNode[] = [];
 
       const success = findPathToTargetNode(currentNode, targetNode, trackToTarget);
+      console.log(trackToTarget);
       if (!success) {
         throw new Error('No path to target node found in graph');
       }
@@ -101,7 +100,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
         const thisNode = trackToTarget[i];
         const nextNode = trackToTarget[i + 1];
         const up = isNextNodeInTrackUp(thisNode, nextNode);
-
+        debugger;
         if (up) {
           if (!thisNode.parent) {
             throw new Error('Going up from root? unreachable error ... i hope');
