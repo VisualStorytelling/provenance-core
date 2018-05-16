@@ -1,5 +1,3 @@
-
-export type FunctionName = string;
 export type NodeIdentifier = string;
 export type Action = IrreversibleAction | ReversableAction;
 
@@ -30,15 +28,15 @@ export type StateEdge = {
 
 export type IrreversibleAction = {
     metadata: Metadata;
-    do: FunctionName;
+    do: string;
     doArguments: any[];  // should be immutable
 }
 
 export type ReversableAction = {
     metadata: Metadata;
-    do: FunctionName;
+    do: string;
     doArguments: any[];  // should be immutable
-    undo: FunctionName;
+    undo: string;
     undoArguments: any[]; // should be immutable
 }
 
@@ -60,7 +58,7 @@ export interface IProvenanceGraphTracker {
    *
    */
     registerFunction(
-        name: FunctionName,
+        name: string,
         func: ProvenanceEnabledFunction
     ): void
 
