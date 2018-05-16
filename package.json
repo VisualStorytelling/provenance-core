@@ -12,7 +12,7 @@
   "author": "Stefan Verhoeven <s.verhoeven@esciencecenter.nl>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/VisualStorytelling/provenance-core.git"
   },
   "license": "Apache-2.0",
   "engines": {
