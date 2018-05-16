@@ -48,7 +48,7 @@ type Action = IrreversibleAction | ReversableAction
 
 interface ProvenanceGraph {
   version: string
-  addEdge(edge: StateEdge)
+  addEdge(edge: StateEdge): void
   getStateNode(id: NodeIdentifier): StateNode
 }
 
@@ -56,26 +56,29 @@ interface ProvenanceGraphTracker {
   current: StateNode
 
   /**
-     * 
-     * @param name 
-     * @param func Function that get called with the doArguments or undoArguments
-     *
-     */
-  registerFunction(name: FunctionName, func: (...any) => Promise<any>): void
+   *
+   * @param name
+   * @param func Function that get called with the doArguments or undoArguments
+   *
+   */
+  registerFunction(
+    name: FunctionName,
+    func: (...args: any[]) => Promise<any>
+  ): void
 
   /**
-     * Calls the action.do function with action.doArguments
-     *
-     * @param action
-     *
-     */
+   * Calls the action.do function with action.doArguments
+   *
+   * @param action
+   *
+   */
   applyActionToCurrentStateNode(action: Action): Promise<StateNode>
 
   /**
-     * Finds shortest path between current node and node with request identifer.
-     * Calls the do/undo functions of actions on the path.
-     *
-     * @param id
-     */
+   * Finds shortest path between current node and node with request identifer.
+   * Calls the do/undo functions of actions on the path.
+   *
+   * @param id
+   */
   traverseToStateNode(id: NodeIdentifier): Promise<StateNode>
 }
