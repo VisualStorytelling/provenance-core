@@ -7,7 +7,7 @@ import json from 'rollup-plugin-json'
 
 const pkg = require('./package.json')
 
-const libraryName = 'provgraph'
+const libraryName = 'provenance-core'
 
 export default {
   input: `src/${libraryName}.ts`,

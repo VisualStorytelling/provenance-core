@@ -1,11 +1,11 @@
 {
-  "name": "provgraph",
+  "name": "provenance-core",
   "version": "0.0.0",
   "description": "",
   "keywords": [],
-  "main": "dist/provgraph.umd.js",
-  "module": "dist/provgraph.es5.js",
-  "typings": "dist/types/provgraph.d.ts",
+  "main": "dist/provenance-core.umd.js",
+  "module": "dist/provenance-core.es5.js",
+  "typings": "dist/types/provenance-core.d.ts",
   "files": [
     "dist"
   ],
