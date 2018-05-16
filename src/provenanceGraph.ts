@@ -7,10 +7,10 @@ import { generateUUID } from './utils';
  * @param version The version of the software to track the provenance of
  *
  */
-class ProvenanceGraph implements API.IProvenanceGraph {
+export class ProvenanceGraph implements API.IProvenanceGraph {
   public application: API.Application;
   private current: API.StateNode;
-  private nodes: { [key: string]: API.StateNode };
+  private nodes: { [key: string]: API.StateNode } = {};
 
   constructor(application: API.Application, current?: API.StateNode) {
     this.application = application;
@@ -28,8 +28,6 @@ class ProvenanceGraph implements API.IProvenanceGraph {
       };
       this.addStateNode(this.current);
     }
-
-    this.nodes = {};
   }
 
   addStateNode(node: API.StateNode): void {
@@ -59,11 +57,11 @@ class ProvenanceGraph implements API.IProvenanceGraph {
  * @param current Optional parameter to set current node for importing a provenance graph that is non-empty
  *
  */
-class ProvenanceGraphTracker implements API.IProvenanceGraphTracker {
-  private graph: ProvenanceGraph;
+export class ProvenanceGraphTracker implements API.IProvenanceGraphTracker {
+  private graph: API.IProvenanceGraph;
   private functionRegistry: { [key: string]: API.ProvenanceEnabledFunction };
 
-  constructor(graph: ProvenanceGraph) {
+  constructor(graph: API.IProvenanceGraph) {
     this.graph = graph;
 
     this.functionRegistry = {};
