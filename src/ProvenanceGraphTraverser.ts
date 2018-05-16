@@ -83,10 +83,13 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
       const currentNode = this.graph.current;
       const targetNode = this.graph.getStateNode(id);
 
+      if (currentNode === targetNode) {
+        return Promise.resolve(currentNode);
+      }
+
       const trackToTarget: StateNode[] = [];
 
       const success = findPathToTargetNode(currentNode, targetNode, trackToTarget);
-
       if (!success) {
         throw new Error('No path to target node found in graph');
       }
@@ -118,7 +121,6 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
           argumentsToDo.push(nextNode.parent.action.doArguments);
         }
       }
-
       return executeFunctions(functionsToDo, argumentsToDo);
     } catch (e) {
       return Promise.reject(e);

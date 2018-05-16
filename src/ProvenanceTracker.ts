@@ -15,7 +15,7 @@ import { generateUUID } from './utils';
  * @param current Optional parameter to set current node for importing a provenance graph that is non-empty
  *
  */
-export class ProvenanceGraphTracker implements IProvenanceGraphTracker {
+export class ProvenanceTracker implements IProvenanceGraphTracker {
   private functionRegistry: IActionFunctionRegistry;
   private graph: IProvenanceGraph;
 

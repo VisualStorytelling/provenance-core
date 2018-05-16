@@ -6,11 +6,11 @@ import {
 } from '../src/api';
 import { ProvenanceGraph } from '../src/ProvenanceGraph';
 import { ActionFunctionRegistry } from '../src/ActionFunctionRegistry';
-import { ProvenanceGraphTracker } from '../src/ProvenanceTracker';
+import { ProvenanceTracker } from '../src/ProvenanceTracker';
 
 describe('ProvenanceGraphTracker', () => {
   let graph: ProvenanceGraph;
-  let tracker: ProvenanceGraphTracker;
+  let tracker: ProvenanceTracker;
   let registry: ActionFunctionRegistry;
   const state = {
     offset: 0
@@ -32,7 +32,7 @@ describe('ProvenanceGraphTracker', () => {
     registry = new ActionFunctionRegistry();
     registry.register('add', add);
     registry.register('substract', substract);
-    tracker = new ProvenanceGraphTracker(registry, graph);
+    tracker = new ProvenanceTracker(registry, graph);
   });
 
   describe('add 13', () => {
