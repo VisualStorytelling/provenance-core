@@ -2,7 +2,7 @@ import { ActionFunctionRegistry } from '../src/ActionFunctionRegistry';
 import { ProvenanceTracker } from '../src/ProvenanceTracker';
 import { ProvenanceGraph } from '../src/ProvenanceGraph';
 import { ProvenanceGraphTraverser } from '../src/ProvenanceGraphTraverser';
-import { ReversibleAction, StateNode } from '../src/api';
+import { IrreversibleAction, ReversibleAction, StateNode } from '../src/api';
 
 const reversibleAdd13Action: ReversibleAction = {
   do: 'add',
@@ -35,6 +35,17 @@ const reversibleSub5Action: ReversibleAction = {
   doArguments: [5],
   undo: 'add',
   undoArguments: [5],
+  metadata: {
+    createdBy: 'me',
+    createdOn: 'now',
+    tags: [],
+    userIntent: 'Because I want to'
+  }
+};
+
+const irreversibleSub20Action: IrreversibleAction = {
+  do: 'subtract',
+  doArguments: [5],
   metadata: {
     createdBy: 'me',
     createdOn: 'now',
@@ -150,6 +161,17 @@ describe('ProvenanceGraphTraverser', () => {
 
     test('Traverse to sibling', () => {
       expect(state).toEqual({ offset: 55 });
+    });
+  });
+
+  describe('Single irreversible undo', () => {
+    beforeEach(async () => {
+      await tracker.applyAction(irreversibleSub20Action);
+    });
+
+    test('Traverse to sibling', () => {
+      const result = traverser.toStateNode(root.id);
+      return expect(result).rejects.toThrow('trying to undo an Irreversible action');
     });
   });
 });
