@@ -102,6 +102,17 @@ class ProvenanceGraphTracker implements API.IProvenanceGraphTracker {
     }
   }
 
+  static async executeFunctions(
+    functionsToDo: API.ProvenanceEnabledFunction[],
+    argumentsToDo: any[]
+  ): Promise<API.StateNode> {
+    let result;
+    for (let i = 0; i < functionsToDo.length; i++) {
+      result = await functionsToDo[i].apply(null, argumentsToDo[i]);
+    }
+    return result;
+  }
+
   static isNextNodeInTrackUp(currentNode: API.StateNode, nextNode: API.StateNode): boolean {
     if (currentNode.parent && currentNode.parent.previous === nextNode) {
       return true;
@@ -222,6 +233,6 @@ class ProvenanceGraphTracker implements API.IProvenanceGraphTracker {
       }
     }
 
-    return Promise.resolve(this.graph.getCurrentStateNode());
+    return ProvenanceGraphTracker.executeFunctions(functionsToDo, argumentsToDo);
   }
 }
