@@ -1,7 +1,7 @@
 import * as API from './api'
 import { generateUUID } from './utils'
 
-class ProvenanceGraph implements API.IProvenanceGraph {
+export class ProvenanceGraph implements API.IProvenanceGraph {
   public version: string
   private nodes: { [key: string]: API.StateNode }
 
@@ -26,7 +26,7 @@ class ProvenanceGraph implements API.IProvenanceGraph {
   }
 }
 
-class ProvenanceGraphTracker implements API.IProvenanceGraphTracker {
+export class ProvenanceGraphTracker implements API.IProvenanceGraphTracker {
   private graph: ProvenanceGraph
   private current: API.StateNode
   private functionRegistry: { [key: string]: API.ProvenanceEnabledFunction }
