@@ -46,13 +46,11 @@ export type ProvenanceEnabledFunction = (...args: any[]) => Promise<any>
 
 export interface IProvenanceGraph {
   version: string
-  addEdge(edge: StateEdge): void
+  addNode(node: StateNode): void
   getStateNode(id: NodeIdentifier): StateNode
 }
 
 export interface IProvenanceGraphTracker {
-  current: StateNode
-
   /**
    *
    * @param name
