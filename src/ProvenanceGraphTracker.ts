@@ -40,11 +40,11 @@ export class ProvenanceGraphTracker implements IProvenanceGraphTracker {
   }
 
   /**
-     * Calls the action.do function with action.doArguments
-     *
-     * @param action
-     *
-     */
+   * Calls the action.do function with action.doArguments
+   *
+   * @param action
+   *
+   */
   applyAction(action: Action): Promise<StateNode> {
     // Save the current node because this is is asynchronous
     const currentNode = this.graph.current;
