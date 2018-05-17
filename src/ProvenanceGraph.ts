@@ -1,5 +1,5 @@
 import { IProvenanceGraph, Application, StateNode, NodeIdentifier, Node, RootNode } from './api';
-import { generateUUID } from './utils';
+import { generateUUID, generateTimestamp } from './utils';
 
 /**
  * Provenance Graph implementation

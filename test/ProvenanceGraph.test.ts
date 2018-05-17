@@ -112,6 +112,10 @@ describe('ProvenanceGraph', () => {
       const otherNode = {
         id: otherNodeId,
         label: 'Some node',
+        metadata: {
+          createdBy: unknownUsername,
+          createdOn: expect.any(Number)
+        },
         parent: graph.current,
         children: [],
         artifacts: {}
