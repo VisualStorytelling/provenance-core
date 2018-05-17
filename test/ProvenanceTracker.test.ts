@@ -13,7 +13,7 @@ describe('ProvenanceTracker', () => {
   let tracker: ProvenanceTracker;
   let registry: ActionFunctionRegistry;
 
-  describe('class based', () => {
+  describe('class-based', () => {
     class Calculator {
       offset = 42;
 
@@ -93,7 +93,7 @@ describe('ProvenanceTracker', () => {
     });
   });
 
-  describe('function based', () => {
+  describe('function-based', () => {
     const state = {
       offset: 0
     };
