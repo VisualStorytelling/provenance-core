@@ -42,7 +42,11 @@ export type ReversibleAction = {
   undoArguments: any[]; // should be immutable
 };
 
-export type ProvenanceEnabledFunction = (...args: any[]) => Promise<any>;
+export type ActionFunction = (...args: any[]) => Promise<any>;
+export type ActionFunctionWithThis = {
+  func: ActionFunction;
+  thisArg: any;
+};
 
 export type Application = {
   name: string;
@@ -63,12 +67,11 @@ export interface IActionFunctionRegistry {
    * @param func Function that get called with the doArguments or undoArguments
    *
    */
-  register(name: string, func: ProvenanceEnabledFunction): void;
-  getFunctionByName(name: string): ProvenanceEnabledFunction;
+  register(name: string, func: ActionFunction, thisArg?: any): void;
+  getFunctionByName(name: string): ActionFunctionWithThis;
 }
 
 export interface IProvenanceTracker {
-
   registry: IActionFunctionRegistry;
 
   /**
