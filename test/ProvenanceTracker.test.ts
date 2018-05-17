@@ -60,8 +60,22 @@ describe('ProvenanceTracker', () => {
       });
 
       test('should have offset equal to 55', () => {
-        prom1.then(() => {
+        return prom1.then(() => {
           expect(calculator.offset).toEqual(55);
+        });
+      });
+
+      test('should resolve promise with a state node', () => {
+        return prom1.then(node => {
+          const expected = {
+            id: expect.any(String),
+            actionResult: undefined,
+            label: 'add : [13]',
+            artifacts: {},
+            children: [],
+            parent: expect.any(Object)
+          };
+          expect(node).toEqual(expected);
         });
       });
 
@@ -85,7 +99,7 @@ describe('ProvenanceTracker', () => {
         });
 
         test('should have offset equal to 50', () => {
-          prom1.then(() => {
+          return prom1.then(() => {
             expect(calculator.offset).toEqual(50);
           });
         });
@@ -138,7 +152,7 @@ describe('ProvenanceTracker', () => {
       });
 
       test('should have offset equal to 55', () => {
-        prom1.then(() => {
+        return prom1.then(() => {
           expect(state).toEqual({ offset: 55 });
         });
       });
@@ -163,7 +177,7 @@ describe('ProvenanceTracker', () => {
         });
 
         test('should have offset equal to 50', () => {
-          prom1.then(() => {
+          return prom1.then(() => {
             expect(state).toEqual({ offset: 50 });
           });
         });
