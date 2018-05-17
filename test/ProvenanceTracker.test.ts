@@ -2,7 +2,8 @@ import {
   IProvenanceTracker,
   StateNode,
   IProvenanceGraph,
-  IActionFunctionRegistry
+  IActionFunctionRegistry,
+  Action
 } from '../src/api';
 import { ProvenanceGraph } from '../src/ProvenanceGraph';
 import { ActionFunctionRegistry } from '../src/ActionFunctionRegistry';
@@ -41,9 +42,10 @@ describe('ProvenanceTracker', () => {
 
     describe('add 13', () => {
       let prom1: Promise<StateNode>;
+      let action1: Action;
 
       beforeEach(() => {
-        const action1 = {
+        action1 = {
           do: 'add',
           doArguments: [13],
           undo: 'subtract',
@@ -69,6 +71,7 @@ describe('ProvenanceTracker', () => {
         return prom1.then(node => {
           const expected = {
             id: expect.any(String),
+            action: action1,
             actionResult: undefined,
             label: 'add : [13]',
             artifacts: {},
@@ -79,7 +82,7 @@ describe('ProvenanceTracker', () => {
         });
       });
 
-      describe('Subtract 5', () => {
+      describe('substract 5', () => {
         let prom2: Promise<StateNode>;
         beforeEach(() => {
           const action2 = {
@@ -133,9 +136,10 @@ describe('ProvenanceTracker', () => {
 
     describe('add 13', () => {
       let prom1: Promise<StateNode>;
+      let action1: Action;
 
       beforeEach(() => {
-        const action1 = {
+        action1 = {
           do: 'add',
           doArguments: [13],
           undo: 'subtract',
@@ -157,7 +161,22 @@ describe('ProvenanceTracker', () => {
         });
       });
 
-      describe('Subtract 5', () => {
+      test('should resolve promise with a state node', () => {
+        return prom1.then(node => {
+          const expected = {
+            id: expect.any(String),
+            action: action1,
+            actionResult: undefined,
+            label: 'add : [13]',
+            artifacts: {},
+            children: [],
+            parent: expect.any(Object)
+          };
+          expect(node).toEqual(expected);
+        });
+      });
+
+      describe('subtract 5', () => {
         let prom2: Promise<StateNode>;
         beforeEach(() => {
           const action2 = {
