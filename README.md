@@ -32,7 +32,7 @@ const graph = new ProvenanceGraph({name: 'myapplication', version:'1.2.3'});
 const tracker = new ProvenanceTracker(registry, graph);
 const traverser = new ProvenanceGraphTraverser(registry, graph);
 
-
+// Call the add function on the calculator via the provenance tracker
 result = await tracker.applyAction({
     do: 'add',
     doArguments: [13],
