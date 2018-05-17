@@ -6,6 +6,54 @@ The provenance graph can be usesd as a non-linear undo graph.
 [![Build Status](https://travis-ci.org/VisualStorytelling/provenance-core.svg?branch=master)](https://travis-ci.org/VisualStorytelling/provenance-core)
 [![Coverage Status](https://coveralls.io/repos/github/VisualStorytelling/provenance-core/badge.svg?branch=master)](https://coveralls.io/github/VisualStorytelling/provenance-core?branch=master)
 
+## Example
+
+Record the actions performed on a simple calculator.
+Traverse undo graph to any point will undo/redo all actions to get to that point.
+
+```ts
+import { ActionFunctionRegistry, ProvenanceGraph, ProvenanceGraphTraverser, ProvenanceTracker } from 'provenance-core';
+
+class Calculator {
+    result = 0;
+    async add(offset) {
+        this.result += offset;
+    }
+    async substract(offset) {
+        this.result -+ offset;
+    }
+}
+
+const calculator = new Calculator();
+const registry = new ActionFunctionRegistry();
+registry.register('add', calculator.add, calculator);
+registry.register('substract', calculator.substract, calculator);
+const graph = new ProvenanceGraph({name: 'myapplication', version:'1.2.3'});
+const tracker = new ProvenanceTracker(registry, graph);
+const traverser = new ProvenanceGraphTraverser(registry, graph);
+
+
+result = await tracker.applyAction({
+    do: 'add',
+    doArguments: [13],
+    undo: 'subtract',
+    undoArguments: [13],
+    metadata: {
+        createdBy: 'me',
+        createdOn: 'now',
+        tags: [],
+        userIntent: 'Because I want to'
+    }
+});
+
+// calculator.result == 13
+
+// Undo action by going back to parent
+traverser.toStateNode(result.parent.id);
+
+// calculator.result == 0
+```
+
 ## Install
 
 ```

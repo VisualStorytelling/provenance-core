@@ -56,7 +56,7 @@ export type Application = {
 export interface IProvenanceGraph {
   application: Application;
   current: Node;
-  addStateNode(node: StateNode): void;
+  addStateNode(node: Node): void;
   getStateNode(id: NodeIdentifier): Node;
 }
 
