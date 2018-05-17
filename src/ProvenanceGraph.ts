@@ -17,22 +17,17 @@ export class ProvenanceGraph implements IProvenanceGraph {
   private _current: StateNode;
   private nodes: { [key: string]: StateNode } = {};
 
-  constructor(application: Application, current?: StateNode) {
+  constructor(application: Application) {
     this.application = application;
 
-    // If we didn't provide a current node, we are starting a new graph, so make a new root node
-    if (current) {
-      this._current = current;
-    } else {
-      this._current = {
-        id: generateUUID(),
-        label: 'Root',
-        parent: null,
-        children: [],
-        artifacts: {}
-      };
-      this.addStateNode(this._current);
-    }
+    this._current = {
+      id: generateUUID(),
+      label: 'Root',
+      parent: null,
+      children: [],
+      artifacts: {}
+    };
+    this.addStateNode(this._current);
   }
 
   addStateNode(node: StateNode): void {
