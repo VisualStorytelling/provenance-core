@@ -19,14 +19,15 @@ export function generateUUID(): string {
  * @returns {number} in milliseconds
  */
 export function generateTimestamp(): number {
-  if (
-    window.performance &&
-    window.performance.now &&
-    window.performance.timing &&
-    window.performance.timing.navigationStart
-  ) {
-    return window.performance.now();
-  }
+  // Removed, because performance.now() returns a floating point number, which is not compatible with the Date.now() integer
+  // if (
+  //   window.performance &&
+  //   window.performance.now &&
+  //   window.performance.timing &&
+  //   window.performance.timing.navigationStart
+  // ) {
+  //   return window.performance.now();
+  // }
   return Date.now();
 }
 
