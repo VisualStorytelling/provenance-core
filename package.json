@@ -1,6 +1,6 @@
 {
   "name": "@visualstorytelling/provenance-core",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
   "keywords": [],
   "main": "dist/provenance-core.umd.js",
@@ -9,7 +9,7 @@
   "files": [
     "dist"
   ],
-  "author": "Stefan Verhoeven <s.verhoeven@esciencecenter.nl>",
+  "author": "Visual Storytelling team",
   "repository": {
     "type": "git",
     "url": "https://github.com/VisualStorytelling/provenance-core.git"
