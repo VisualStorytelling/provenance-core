@@ -64,14 +64,12 @@ describe('ProvenanceGraphTraverser', () => {
     offset: 0
   };
 
-  function add(y: number) {
+  async function add(y: number) {
     state.offset = state.offset + y;
-    return Promise.resolve();
   }
 
-  function subtract(y: number) {
+  async function subtract(y: number) {
     state.offset = state.offset - y;
-    return Promise.resolve();
   }
 
   beforeEach(() => {
@@ -91,21 +89,19 @@ describe('ProvenanceGraphTraverser', () => {
     return expect(result).rejects.toThrow('Node id not found');
   });
 
-  test('Traverse to the same node', () => {
-    const result = traverser.toStateNode(graph.current.id);
-    return expect(result).resolves.toEqual(graph.current);
+  test('Traverse to the same node', async () => {
+    const result = await traverser.toStateNode(graph.current.id);
+    expect(result).toEqual(graph.current);
   });
 
   describe('One action undo', () => {
-    beforeEach(() => {
-      tracker.applyAction(reversibleAdd13Action);
+    beforeEach(async () => {
+      await tracker.applyAction(reversibleAdd13Action);
+      await traverser.toStateNode(graph.current.parent!.previous.id);
     });
 
     test('Traverse to parent node (undo one step)', () => {
-      const result = traverser.toStateNode(graph.current.parent!.previous.id);
-      return result.then(() => {
-        expect(state).toEqual({ offset: 42 });
-      });
+      expect(state).toEqual({ offset: 42 });
     });
   });
 
@@ -117,18 +113,14 @@ describe('ProvenanceGraphTraverser', () => {
       await tracker.applyAction(reversibleAdd13Action);
     });
 
-    test('Traverse to root node (undo two steps)', () => {
-      const result = traverser.toStateNode(intermediateNode.id);
-      return result.then(() => {
-        expect(state).toEqual({ offset: 55 });
-      });
+    test('Traverse to root node (undo two steps)', async () => {
+      await traverser.toStateNode(intermediateNode.id);
+      expect(state).toEqual({ offset: 55 });
     });
 
-    test('Traverse to root node (undo two steps at once)', () => {
-      const result = traverser.toStateNode(root.id);
-      return result.then(() => {
-        expect(state).toEqual({ offset: 42 });
-      });
+    test('Traverse to root node (undo two steps at once)', async () => {
+      await traverser.toStateNode(root.id);
+      expect(state).toEqual({ offset: 42 });
     });
   });
 
