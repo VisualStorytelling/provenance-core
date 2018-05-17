@@ -102,7 +102,7 @@ describe('ProvenanceGraphTraverser', () => {
     });
 
     test('Traverse to parent node (undo one step)', () => {
-      const result = traverser.toStateNode(graph.current.parent.previous.id);
+      const result = traverser.toStateNode(graph.current.parent!.previous.id);
       return result.then(() => {
         expect(state).toEqual({ offset: 42 });
       });
@@ -175,10 +175,3 @@ describe('ProvenanceGraphTraverser', () => {
     });
   });
 });
-
-//   describe('traverse to current', () => {
-//     test.skip('should return current', () => {
-//       // TODO implement
-//       expect(1).toEqual(2);
-//     });
-//   });
