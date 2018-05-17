@@ -13,20 +13,20 @@ export type Artifacts = {
   [key: string]: any;
 };
 
-export type RootNode = {
+export type Node = {
   id: NodeIdentifier;
   label: string;
   children: StateNode[];
   artifacts: Artifacts;
 };
 
-export type StateNode = RootNode & {
+export type RootNode = Node;
+
+export type StateNode = Node & {
   action: Action;
   actionResult: any;
   parent: Node;
 };
-
-export type Node = RootNode | StateNode;
 
 export type IrreversibleAction = {
   metadata: Metadata;
