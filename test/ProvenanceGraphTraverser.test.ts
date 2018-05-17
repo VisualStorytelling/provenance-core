@@ -2,7 +2,8 @@ import { ActionFunctionRegistry } from '../src/ActionFunctionRegistry';
 import { ProvenanceTracker } from '../src/ProvenanceTracker';
 import { ProvenanceGraph } from '../src/ProvenanceGraph';
 import { ProvenanceGraphTraverser } from '../src/ProvenanceGraphTraverser';
-import { IrreversibleAction, ReversibleAction, StateNode } from '../src/api';
+import { IrreversibleAction, ReversibleAction, StateNode, Node } from '../src/api';
+import { isStateNode } from '../src/utils';
 
 const reversibleAdd13Action: ReversibleAction = {
   do: 'add',
@@ -59,7 +60,7 @@ describe('ProvenanceGraphTraverser', () => {
   let tracker: ProvenanceTracker;
   let registry: ActionFunctionRegistry;
   let traverser: ProvenanceGraphTraverser;
-  let root: StateNode;
+  let root: Node;
 
   describe('class-based', () => {
     class Calculator {
@@ -95,7 +96,9 @@ describe('ProvenanceGraphTraverser', () => {
     describe('One action undo', () => {
       beforeEach(async () => {
         await tracker.applyAction(reversibleAdd13Action);
-        await traverser.toStateNode(graph.current.parent!.previous.id);
+        if (isStateNode(graph.current)) {
+          await traverser.toStateNode(graph.current.parent.id);
+        }
       });
 
       test('Traverse to parent node (undo one step)', () => {
@@ -147,7 +150,9 @@ describe('ProvenanceGraphTraverser', () => {
     describe('One action undo', () => {
       beforeEach(async () => {
         await tracker.applyAction(reversibleAdd13Action);
-        await traverser.toStateNode(graph.current.parent!.previous.id);
+        if (isStateNode(graph.current)) {
+          await traverser.toStateNode(graph.current.parent.id);
+        }
       });
 
       test('Traverse to parent node (undo one step)', () => {
@@ -156,7 +161,7 @@ describe('ProvenanceGraphTraverser', () => {
     });
 
     describe('One child re-do', () => {
-      let intermediateNode: StateNode;
+      let intermediateNode: Node;
       beforeEach(async () => {
         await tracker.applyAction(reversibleAdd13Action);
         intermediateNode = graph.current;
@@ -170,7 +175,7 @@ describe('ProvenanceGraphTraverser', () => {
     });
 
     describe('Sequential traverse to child 2 deep', () => {
-      let intermediateNode: StateNode;
+      let intermediateNode: Node;
       beforeEach(async () => {
         await tracker.applyAction(reversibleAdd13Action);
         await tracker.applyAction(reversibleSub2Action);
@@ -185,7 +190,7 @@ describe('ProvenanceGraphTraverser', () => {
     });
 
     describe('Two children traverse', () => {
-      let intermediateNode: StateNode;
+      let intermediateNode: Node;
       beforeEach(async () => {
         await tracker.applyAction(reversibleAdd13Action);
         intermediateNode = graph.current;
@@ -200,7 +205,7 @@ describe('ProvenanceGraphTraverser', () => {
     });
 
     describe('Sequential traverse to parent 2 high', () => {
-      let intermediateNode: StateNode;
+      let intermediateNode: Node;
       beforeEach(async () => {
         await tracker.applyAction(reversibleAdd13Action);
         intermediateNode = graph.current;

@@ -1,17 +1,18 @@
 import {
   IProvenanceGraphTraverser,
+  Node,
   StateNode,
   IActionFunctionRegistry,
   IProvenanceGraph,
   NodeIdentifier,
   ActionFunctionWithThis
 } from './api';
-import { isReversibleAction } from './utils';
+import { isReversibleAction, isStateNode } from './utils';
 
-function isNextNodeInTrackUp(currentNode: StateNode, nextNode: StateNode): boolean {
-  if (currentNode.parent && currentNode.parent.previous === nextNode) {
+function isNextNodeInTrackUp(currentNode: Node, nextNode: Node): boolean {
+  if (isStateNode(currentNode) && currentNode.parent === nextNode) {
     return true;
-  } else if (nextNode.parent && nextNode.parent.previous !== currentNode) {
+  } else if (isStateNode(nextNode) && nextNode.parent !== currentNode) {
     // This is a guard against the illegitimate use of this function for unconnected nodes
     /* istanbul ignore next */
     throw new Error('Unconnected nodes, you probably should not be using this function');
@@ -21,20 +22,21 @@ function isNextNodeInTrackUp(currentNode: StateNode, nextNode: StateNode): boole
 }
 
 function findPathToTargetNode(
-  currentNode: StateNode,
-  targetNode: StateNode,
-  track: StateNode[],
-  comingFromNode: StateNode = currentNode
+  currentNode: Node,
+  targetNode: Node,
+  track: Node[],
+  comingFromNode: Node = currentNode
 ): boolean {
   if (currentNode && currentNode === targetNode) {
     track.unshift(currentNode);
     return true;
   } else if (currentNode) {
     // Map the StateNodes in the children StateEdges
-    const nodesToCheck = currentNode.children.map(child => child.next);
+    const nodesToCheck: Node[] = currentNode.children;
+
     // Add the parent node to that same list
-    if (currentNode.parent !== null) {
-      nodesToCheck.push(currentNode.parent.previous);
+    if (isStateNode(currentNode)) {
+      nodesToCheck.push(currentNode.parent);
     }
 
     for (let node of nodesToCheck) {
@@ -77,7 +79,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
    *
    * @param id
    */
-  toStateNode(id: NodeIdentifier): Promise<StateNode> {
+  toStateNode(id: NodeIdentifier): Promise<Node> {
     try {
       const currentNode = this.graph.current;
       const targetNode = this.graph.getStateNode(id);
@@ -86,7 +88,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
         return Promise.resolve(currentNode);
       }
 
-      const trackToTarget: StateNode[] = [];
+      const trackToTarget: Node[] = [];
 
       const success = findPathToTargetNode(currentNode, targetNode, trackToTarget);
       if (!success) {
@@ -103,24 +105,26 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
         const up = isNextNodeInTrackUp(thisNode, nextNode);
 
         if (up) {
-          if (!thisNode.parent) {
+          if (isStateNode(thisNode)) {
+            if (!isReversibleAction(thisNode.action)) {
+              throw new Error('trying to undo an Irreversible action');
+            }
+            const undoFunc = this.registry.getFunctionByName(thisNode.action.undo);
+            functionsToDo.push(undoFunc);
+            argumentsToDo.push(thisNode.action.undoArguments);
+          } else {
             /* istanbul ignore next */
             throw new Error('Going up from root? unreachable error ... i hope');
           }
-          if (!isReversibleAction(thisNode.parent.action)) {
-            throw new Error('trying to undo an Irreversible action');
-          }
-          const undoFunc = this.registry.getFunctionByName(thisNode.parent.action.undo);
-          functionsToDo.push(undoFunc);
-          argumentsToDo.push(thisNode.parent.action.undoArguments);
         } else {
-          if (!nextNode.parent) {
+          if (isStateNode(nextNode)) {
+            const doFunc = this.registry.getFunctionByName(nextNode.action.do);
+            functionsToDo.push(doFunc);
+            argumentsToDo.push(nextNode.action.doArguments);
+          } else {
             /* istanbul ignore next */
             throw new Error('Going down to the root? unreachable error ... i hope');
           }
-          const doFunc = this.registry.getFunctionByName(nextNode.parent.action.do);
-          functionsToDo.push(doFunc);
-          argumentsToDo.push(nextNode.parent.action.doArguments);
         }
       }
       const result = executeFunctions(functionsToDo, argumentsToDo);
