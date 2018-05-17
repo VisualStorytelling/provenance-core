@@ -19,7 +19,7 @@ export function generateUUID(): string {
  * @returns {number} in milliseconds
  */
 export function generateTimestamp(): number {
-  // Removed, because performance.now() returns a floating point number, which is not compatible with the Date.now() integer
+  // Removed, because performance.now() returns a floating point number, which is not compatible with the Date.getTime() integer
   // if (
   //   window.performance &&
   //   window.performance.now &&
@@ -28,7 +28,7 @@ export function generateTimestamp(): number {
   // ) {
   //   return window.performance.now();
   // }
-  return Date.now();
+  return new Date().getTime();
 }
 
 export function isStateNode(node: Node): node is StateNode {
