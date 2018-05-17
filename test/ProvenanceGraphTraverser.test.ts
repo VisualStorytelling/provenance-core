@@ -43,9 +43,9 @@ const reversibleSub5Action: ReversibleAction = {
   }
 };
 
-const irreversibleSub20Action: IrreversibleAction = {
-  do: 'subtract',
-  doArguments: [5],
+const irreversibleDivideAction: IrreversibleAction = {
+  do: 'divide',
+  doArguments: [0],
   metadata: {
     createdBy: 'me',
     createdOn: 'now',
@@ -74,12 +74,18 @@ describe('ProvenanceGraphTraverser', () => {
     return Promise.resolve();
   }
 
+  function divide(y: number) {
+    state.offset = state.offset / y;
+    return Promise.resolve();
+  }
+
   beforeEach(() => {
     state.offset = 42;
     graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' });
     registry = new ActionFunctionRegistry();
     registry.register('add', add);
     registry.register('subtract', subtract);
+    registry.register('divide', divide);
     tracker = new ProvenanceTracker(registry, graph);
     traverser = new ProvenanceGraphTraverser(registry, graph);
     root = graph.current;
@@ -132,6 +138,35 @@ describe('ProvenanceGraphTraverser', () => {
     });
   });
 
+  describe('One child traverse', () => {
+    let intermediateNode: StateNode;
+    beforeEach(async () => {
+      await tracker.applyAction(reversibleAdd13Action);
+      intermediateNode = graph.current;
+      await traverser.toStateNode(root.id);
+      await traverser.toStateNode(intermediateNode.id);
+    });
+
+    test('Traverse to child', () => {
+      expect(state).toEqual({ offset: 55 });
+    });
+  });
+
+  describe('Sequential traverse to child 2 deep', () => {
+    let intermediateNode: StateNode;
+    beforeEach(async () => {
+      await tracker.applyAction(reversibleAdd13Action);
+      await tracker.applyAction(reversibleSub2Action);
+      intermediateNode = graph.current;
+      await traverser.toStateNode(root.id);
+      await traverser.toStateNode(intermediateNode.id);
+    });
+
+    test('Traverse to child 2 deep', () => {
+      expect(state).toEqual({ offset: 53 });
+    });
+  });
+
   describe('Two children traverse', () => {
     let intermediateNode: StateNode;
     beforeEach(async () => {
@@ -164,9 +199,19 @@ describe('ProvenanceGraphTraverser', () => {
     });
   });
 
+  describe('Single irreversible do', () => {
+    beforeEach(async () => {
+      await tracker.applyAction(irreversibleDivideAction);
+    });
+
+    test('Traverse to sibling', () => {
+      return expect(state.offset).toEqual(Infinity);
+    });
+  });
+
   describe('Single irreversible undo', () => {
     beforeEach(async () => {
-      await tracker.applyAction(irreversibleSub20Action);
+      await tracker.applyAction(irreversibleDivideAction);
     });
 
     test('Traverse to sibling', () => {
@@ -175,10 +220,3 @@ describe('ProvenanceGraphTraverser', () => {
     });
   });
 });
-
-//   describe('traverse to current', () => {
-//     test.skip('should return current', () => {
-//       // TODO implement
-//       expect(1).toEqual(2);
-//     });
-//   });
