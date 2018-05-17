@@ -4,7 +4,6 @@ import {
   IProvenanceTracker,
   IActionFunctionRegistry,
   IProvenanceGraph,
-  StateEdge,
   ActionFunctionWithThis
 } from './api';
 import { generateUUID } from './utils';
@@ -42,26 +41,24 @@ export class ProvenanceTracker implements IProvenanceTracker {
       functionNameToExecute
     );
 
-    const promisedResult = funcWithThis.func.apply(funcWithThis.thisArg, action.doArguments);
+    const promisedResult = funcWithThis.func.apply(
+      funcWithThis.thisArg,
+      action.doArguments
+    );
 
     // When the function promise resolves, we need to update the graph.
     return promisedResult.then((actionResult: any) => {
       const newNode: StateNode = {
         id: generateUUID(),
+        action,
         label: action.do + ' : ' + JSON.stringify(action.doArguments),
         actionResult,
-        parent: null,
+        parent: currentNode,
         children: [],
         artifacts: {}
       };
 
-      const stateEdge: StateEdge = {
-        previous: currentNode,
-        action: action,
-        next: newNode
-      };
-      newNode.parent = stateEdge;
-      currentNode.children.push(stateEdge);
+      currentNode.children.push(newNode);
 
       this.graph.addStateNode(newNode);
       this.graph.current = newNode;
