@@ -1,9 +1,12 @@
-import { Node, StateNode, Action, ReversibleAction } from './api';
+import { ProvenanceNode, StateNode, Action, ReversibleAction } from './api';
 
 export function generateUUID(): string {
   // Public Domain/MIT
   let d = new Date().getTime();
-  if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
+  if (
+    typeof performance !== 'undefined' &&
+    typeof performance.now === 'function'
+  ) {
     d += performance.now(); // use high-precision timer if available
   }
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -31,7 +34,7 @@ export function generateTimestamp(): number {
   return new Date().getTime();
 }
 
-export function isStateNode(node: Node): node is StateNode {
+export function isStateNode(node: ProvenanceNode): node is StateNode {
   return 'parent' in node;
 }
 

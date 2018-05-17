@@ -1,4 +1,11 @@
-import { IProvenanceGraph, Application, StateNode, NodeIdentifier, Node, RootNode } from './api';
+import {
+  IProvenanceGraph,
+  Application,
+  StateNode,
+  NodeIdentifier,
+  ProvenanceNode,
+  RootNode
+} from './api';
 import { generateUUID, generateTimestamp } from './utils';
 
 /**
@@ -9,8 +16,8 @@ import { generateUUID, generateTimestamp } from './utils';
  */
 export class ProvenanceGraph implements IProvenanceGraph {
   public application: Application;
-  private _current: Node;
-  private nodes: { [key: string]: Node } = {};
+  private _current: ProvenanceNode;
+  private nodes: { [key: string]: ProvenanceNode } = {};
 
   constructor(application: Application, username: string = 'Unknown') {
     this.application = application;
@@ -28,14 +35,14 @@ export class ProvenanceGraph implements IProvenanceGraph {
     this.addNode(this._current);
   }
 
-  addNode(node: Node): void {
+  addNode(node: ProvenanceNode): void {
     if (this.nodes[node.id]) {
       throw new Error('Node already added');
     }
     this.nodes[node.id] = node;
   }
 
-  getNode(id: NodeIdentifier): Node {
+  getNode(id: NodeIdentifier): ProvenanceNode {
     const result = this.nodes[id];
     if (!result) {
       throw new Error('Node id not found');
@@ -43,11 +50,11 @@ export class ProvenanceGraph implements IProvenanceGraph {
     return this.nodes[id];
   }
 
-  get current(): Node {
+  get current(): ProvenanceNode {
     return this._current;
   }
 
-  set current(node: Node) {
+  set current(node: ProvenanceNode) {
     if (!this.nodes[node.id]) {
       throw new Error('Node id not found');
     }

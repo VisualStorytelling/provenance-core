@@ -17,7 +17,7 @@ export type Artifacts = {
   [key: string]: any;
 };
 
-export type Node = {
+export type ProvenanceNode = {
   id: NodeIdentifier;
   label: string;
   metadata: NodeMetadata;
@@ -25,12 +25,12 @@ export type Node = {
   artifacts: Artifacts;
 };
 
-export type RootNode = Node;
+export type RootNode = ProvenanceNode;
 
-export type StateNode = Node & {
+export type StateNode = ProvenanceNode & {
   action: Action;
   actionResult: any;
-  parent: Node;
+  parent: ProvenanceNode;
 };
 
 export type IrreversibleAction = {
@@ -60,9 +60,9 @@ export type Application = {
 
 export interface IProvenanceGraph {
   application: Application;
-  current: Node;
-  addNode(node: Node): void;
-  getNode(id: NodeIdentifier): Node;
+  current: ProvenanceNode;
+  addNode(node: ProvenanceNode): void;
+  getNode(id: NodeIdentifier): ProvenanceNode;
 }
 
 export interface IActionFunctionRegistry {
@@ -97,5 +97,5 @@ export interface IProvenanceGraphTraverser {
    *
    * @param id
    */
-  toStateNode(id: NodeIdentifier): Promise<Node>;
+  toStateNode(id: NodeIdentifier): Promise<ProvenanceNode>;
 }

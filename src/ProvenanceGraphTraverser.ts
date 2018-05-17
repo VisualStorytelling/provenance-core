@@ -1,6 +1,6 @@
 import {
   IProvenanceGraphTraverser,
-  Node,
+  ProvenanceNode,
   StateNode,
   IActionFunctionRegistry,
   IProvenanceGraph,
@@ -9,30 +9,35 @@ import {
 } from './api';
 import { isReversibleAction, isStateNode } from './utils';
 
-function isNextNodeInTrackUp(currentNode: Node, nextNode: Node): boolean {
+function isNextNodeInTrackUp(
+  currentNode: ProvenanceNode,
+  nextNode: ProvenanceNode
+): boolean {
   if (isStateNode(currentNode) && currentNode.parent === nextNode) {
     return true;
   } else if (isStateNode(nextNode) && nextNode.parent !== currentNode) {
     // This is a guard against the illegitimate use of this function for unconnected nodes
     /* istanbul ignore next */
-    throw new Error('Unconnected nodes, you probably should not be using this function');
+    throw new Error(
+      'Unconnected nodes, you probably should not be using this function'
+    );
   } else {
     return false;
   }
 }
 
 function findPathToTargetNode(
-  currentNode: Node,
-  targetNode: Node,
-  track: Node[],
-  comingFromNode: Node = currentNode
+  currentNode: ProvenanceNode,
+  targetNode: ProvenanceNode,
+  track: ProvenanceNode[],
+  comingFromNode: ProvenanceNode = currentNode
 ): boolean {
   if (currentNode && currentNode === targetNode) {
     track.unshift(currentNode);
     return true;
   } else if (currentNode) {
     // Map the StateNodes in the children StateEdges
-    const nodesToCheck: Node[] = currentNode.children;
+    const nodesToCheck: ProvenanceNode[] = currentNode.children;
 
     // Add the parent node to that same list
     /* istanbul ignore else */
@@ -61,7 +66,10 @@ async function executeFunctions(
   let result;
   for (let i = 0; i < functionsToDo.length; i++) {
     let funcWithThis = functionsToDo[i];
-    result = await funcWithThis.func.apply(funcWithThis.thisArg, argumentsToDo[i]);
+    result = await funcWithThis.func.apply(
+      funcWithThis.thisArg,
+      argumentsToDo[i]
+    );
   }
   return result;
 }
@@ -81,7 +89,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
    *
    * @param id
    */
-  toStateNode(id: NodeIdentifier): Promise<Node> {
+  toStateNode(id: NodeIdentifier): Promise<ProvenanceNode> {
     try {
       const currentNode = this.graph.current;
       const targetNode = this.graph.getNode(id);
@@ -90,9 +98,13 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
         return Promise.resolve(currentNode);
       }
 
-      const trackToTarget: Node[] = [];
+      const trackToTarget: ProvenanceNode[] = [];
 
-      const success = findPathToTargetNode(currentNode, targetNode, trackToTarget);
+      const success = findPathToTargetNode(
+        currentNode,
+        targetNode,
+        trackToTarget
+      );
 
       /* istanbul ignore if */
       if (!success) {
@@ -113,7 +125,9 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
             if (!isReversibleAction(thisNode.action)) {
               throw new Error('trying to undo an Irreversible action');
             }
-            const undoFunc = this.registry.getFunctionByName(thisNode.action.undo);
+            const undoFunc = this.registry.getFunctionByName(
+              thisNode.action.undo
+            );
             functionsToDo.push(undoFunc);
             argumentsToDo.push(thisNode.action.undoArguments);
           } else {
@@ -128,7 +142,9 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
             argumentsToDo.push(nextNode.action.doArguments);
           } else {
             /* istanbul ignore next */
-            throw new Error('Going down to the root? unreachable error ... i hope');
+            throw new Error(
+              'Going down to the root? unreachable error ... i hope'
+            );
           }
         }
       }
