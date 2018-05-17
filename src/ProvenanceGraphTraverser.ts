@@ -6,7 +6,7 @@ import {
   NodeIdentifier,
   ProvenanceEnabledFunction
 } from './api';
-import {isReversibleAction} from './utils';
+import { isReversibleAction } from './utils';
 
 function isNextNodeInTrackUp(currentNode: StateNode, nextNode: StateNode): boolean {
   if (currentNode.parent && currentNode.parent.previous === nextNode) {
@@ -41,7 +41,6 @@ function findPathToTargetNode(
     for (let node of nodesToCheck) {
       // If the node to check is in the track already, skip it.
       if (node === comingFromNode) continue;
-      debugger;
       if (findPathToTargetNode(node, targetNode, track, currentNode)) {
         track.unshift(currentNode);
         return true;
@@ -89,7 +88,6 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
       const trackToTarget: StateNode[] = [];
 
       const success = findPathToTargetNode(currentNode, targetNode, trackToTarget);
-      console.log(trackToTarget);
       if (!success) {
         throw new Error('No path to target node found in graph');
       }
