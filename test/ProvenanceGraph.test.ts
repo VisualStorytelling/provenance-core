@@ -32,14 +32,14 @@ describe('ProvenanceGraph', () => {
   describe('get root node', () => {
     it('should return root node', () => {
       const nodeId = graph.current.id;
-      const result = graph.getStateNode(nodeId);
+      const result = graph.getNode(nodeId);
       expect(result).toEqual(expectedRootNode);
     });
   });
 
   describe('get non existing node', () => {
     it('should throw error', () => {
-      expect(() => graph.getStateNode('non-existing-node')).toThrow('Node id not found');
+      expect(() => graph.getNode('non-existing-node')).toThrow('Node id not found');
     });
   });
 
@@ -54,7 +54,7 @@ describe('ProvenanceGraph', () => {
           children: [],
           artifacts: {}
         };
-        expect(() => graph.addStateNode(node)).toThrow('Node already added');
+        expect(() => graph.addNode(node)).toThrow('Node already added');
       });
     });
   });
