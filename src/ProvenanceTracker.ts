@@ -6,7 +6,7 @@ import {
   IProvenanceGraph,
   ActionFunctionWithThis
 } from './api';
-import { generateUUID } from './utils';
+import { generateUUID, generateTimestamp } from './utils';
 
 /**
  * Provenance Graph Tracker implementation
@@ -19,10 +19,16 @@ export class ProvenanceTracker implements IProvenanceTracker {
   registry: IActionFunctionRegistry;
 
   private graph: IProvenanceGraph;
+  private username: string;
 
-  constructor(registry: IActionFunctionRegistry, graph: IProvenanceGraph) {
+  constructor(
+    registry: IActionFunctionRegistry,
+    graph: IProvenanceGraph,
+    username: string = 'Unknown'
+  ) {
     this.registry = registry;
     this.graph = graph;
+    this.username = username;
   }
 
   /**
@@ -47,8 +53,12 @@ export class ProvenanceTracker implements IProvenanceTracker {
     return promisedResult.then((actionResult: any) => {
       const newNode: StateNode = {
         id: generateUUID(),
-        action,
         label: action.do + ' : ' + JSON.stringify(action.doArguments),
+        metadata: {
+          createdBy: this.username,
+          createdOn: generateTimestamp()
+        },
+        action,
         actionResult,
         parent: currentNode,
         children: [],

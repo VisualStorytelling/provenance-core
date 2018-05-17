@@ -13,6 +13,7 @@ describe('ProvenanceTracker', () => {
   let graph: ProvenanceGraph;
   let tracker: ProvenanceTracker;
   let registry: ActionFunctionRegistry;
+  const username: string = 'me';
 
   describe('class-based', () => {
     class Calculator {
@@ -33,11 +34,11 @@ describe('ProvenanceTracker', () => {
 
     beforeEach(() => {
       calculator = new Calculator();
-      graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' });
+      graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' }, username);
       registry = new ActionFunctionRegistry();
       registry.register('add', calculator.add, calculator);
       registry.register('subtract', calculator.subtract, calculator);
-      tracker = new ProvenanceTracker(registry, graph);
+      tracker = new ProvenanceTracker(registry, graph, username);
     });
 
     describe('add 13', () => {
@@ -51,9 +52,6 @@ describe('ProvenanceTracker', () => {
           undo: 'subtract',
           undoArguments: [13],
           metadata: {
-            createdBy: 'me',
-            createdOn: 'now',
-            tags: [],
             userIntent: 'Because I want to'
           }
         };
@@ -69,11 +67,15 @@ describe('ProvenanceTracker', () => {
 
       test('should resolve promise with a state node', () => {
         return prom1.then(node => {
-          const expected = {
+          const expected: StateNode = {
             id: expect.any(String),
+            label: 'add : [13]',
+            metadata: {
+              createdBy: username,
+              createdOn: expect.any(Number)
+            },
             action: action1,
             actionResult: undefined,
-            label: 'add : [13]',
             artifacts: {},
             children: [],
             parent: expect.any(Object)
@@ -91,9 +93,6 @@ describe('ProvenanceTracker', () => {
             undo: 'add',
             undoArguments: [5],
             metadata: {
-              createdBy: 'me',
-              createdOn: 'later',
-              tags: [],
               userIntent: 'Because I want to'
             }
           };
@@ -127,11 +126,11 @@ describe('ProvenanceTracker', () => {
 
     beforeEach(() => {
       state.offset = 42;
-      graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' });
+      graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' }, username);
       registry = new ActionFunctionRegistry();
       registry.register('add', add);
       registry.register('subtract', subtract);
-      tracker = new ProvenanceTracker(registry, graph);
+      tracker = new ProvenanceTracker(registry, graph, username);
     });
 
     describe('add 13', () => {
@@ -145,9 +144,6 @@ describe('ProvenanceTracker', () => {
           undo: 'subtract',
           undoArguments: [13],
           metadata: {
-            createdBy: 'me',
-            createdOn: 'now',
-            tags: [],
             userIntent: 'Because I want to'
           }
         };
@@ -163,11 +159,15 @@ describe('ProvenanceTracker', () => {
 
       test('should resolve promise with a state node', () => {
         return prom1.then(node => {
-          const expected = {
+          const expected: StateNode = {
             id: expect.any(String),
+            label: 'add : [13]',
+            metadata: {
+              createdBy: username,
+              createdOn: expect.any(Number)
+            },
             action: action1,
             actionResult: undefined,
-            label: 'add : [13]',
             artifacts: {},
             children: [],
             parent: expect.any(Object)
@@ -185,9 +185,6 @@ describe('ProvenanceTracker', () => {
             undo: 'add',
             undoArguments: [5],
             metadata: {
-              createdBy: 'me',
-              createdOn: 'later',
-              tags: [],
               userIntent: 'Because I want to'
             }
           };

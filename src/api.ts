@@ -1,11 +1,15 @@
 export type NodeIdentifier = string;
 export type Action = IrreversibleAction | ReversibleAction;
 
-export type Metadata = {
+export type ActionMetadata = {
+  tags?: string[];
+  userIntent?: string;
+  [key: string]: any;
+};
+
+export type NodeMetadata = {
   createdBy: string;
-  createdOn: string;
-  tags: string[];
-  userIntent: string;
+  createdOn: number;
   [key: string]: any;
 };
 
@@ -16,6 +20,7 @@ export type Artifacts = {
 export type Node = {
   id: NodeIdentifier;
   label: string;
+  metadata: NodeMetadata;
   children: StateNode[];
   artifacts: Artifacts;
 };
@@ -29,13 +34,13 @@ export type StateNode = Node & {
 };
 
 export type IrreversibleAction = {
-  metadata: Metadata;
+  metadata?: ActionMetadata;
   do: string;
   doArguments: any[]; // should be immutable
 };
 
 export type ReversibleAction = {
-  metadata: Metadata;
+  metadata?: ActionMetadata;
   do: string;
   doArguments: any[]; // should be immutable
   undo: string;

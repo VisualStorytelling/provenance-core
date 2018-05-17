@@ -1,6 +1,6 @@
 import { Node, StateNode, Action, ReversibleAction } from './api';
 
-export function generateUUID() {
+export function generateUUID(): string {
   // Public Domain/MIT
   let d = new Date().getTime();
   if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
@@ -11,6 +11,23 @@ export function generateUUID() {
     d = Math.floor(d / 16);
     return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
   });
+}
+
+/**
+ * Generate a Unix timestamp in milliseconds
+ *
+ * @returns {number} in milliseconds
+ */
+export function generateTimestamp(): number {
+  if (
+    window.performance &&
+    window.performance.now &&
+    window.performance.timing &&
+    window.performance.timing.navigationStart
+  ) {
+    return window.performance.now();
+  }
+  return Date.now();
 }
 
 export function isStateNode(node: Node): node is StateNode {

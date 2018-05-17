@@ -1,23 +1,27 @@
-import { IProvenanceGraph } from '../src/api';
+import { IProvenanceGraph, RootNode, Application } from '../src/api';
 import { ProvenanceGraph } from '../src/ProvenanceGraph';
 
-const expectedRootNode = {
+const unknownUsername: string = 'Unknown';
+const expectedRootNode: RootNode = {
   id: expect.any(String),
   label: 'Root',
-  parent: null,
+  metadata: {
+    createdBy: unknownUsername,
+    createdOn: expect.any(Number)
+  },
   children: [],
   artifacts: {}
 };
 
 describe('ProvenanceGraph', () => {
   let graph: IProvenanceGraph;
-  const application = {
+  const application: Application = {
     name: 'testapp',
     version: '1.2.3'
   };
 
   beforeEach(() => {
-    graph = new ProvenanceGraph(application);
+    graph = new ProvenanceGraph(application); // without username
   });
 
   test('should have application', () => {
@@ -27,6 +31,15 @@ describe('ProvenanceGraph', () => {
   test('should have root as current node', () => {
     const result = graph.current;
     expect(result).toEqual(expectedRootNode);
+  });
+
+  test('should have unknown username', () => {
+    expect(graph.current.metadata.createdBy).toBe(unknownUsername);
+  });
+
+  test('should have username', () => {
+    const graphWithUsername = new ProvenanceGraph(application, 'me');
+    expect(graphWithUsername.current.metadata.createdBy).toBe('me');
   });
 
   describe('get root node', () => {
@@ -50,6 +63,10 @@ describe('ProvenanceGraph', () => {
         const node = {
           id,
           label: 'Some node',
+          metadata: {
+            createdBy: 'me',
+            createdOn: 123456
+          },
           parent: null,
           children: [],
           artifacts: {}

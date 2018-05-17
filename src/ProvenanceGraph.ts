@@ -1,5 +1,5 @@
 import { IProvenanceGraph, Application, StateNode, NodeIdentifier, Node, RootNode } from './api';
-import { generateUUID } from './utils';
+import { generateUUID, generateTimestamp } from './utils';
 
 /**
  * Provenance Graph implementation
@@ -12,13 +12,16 @@ export class ProvenanceGraph implements IProvenanceGraph {
   private _current: Node;
   private nodes: { [key: string]: Node } = {};
 
-  constructor(application: Application) {
+  constructor(application: Application, username: string = 'Unknown') {
     this.application = application;
 
     this._current = {
       id: generateUUID(),
       label: 'Root',
-      parent: null,
+      metadata: {
+        createdBy: username,
+        createdOn: generateTimestamp()
+      },
       children: [],
       artifacts: {}
     } as RootNode;
