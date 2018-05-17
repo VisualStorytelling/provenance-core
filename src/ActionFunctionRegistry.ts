@@ -1,4 +1,8 @@
-import { IActionFunctionRegistry, ActionFunction, ActionFunctionWithThis } from './api';
+import {
+  IActionFunctionRegistry,
+  ActionFunction,
+  ActionFunctionWithThis
+} from './api';
 
 export class ActionFunctionRegistry implements IActionFunctionRegistry {
   private functionRegistry: { [key: string]: ActionFunctionWithThis } = {};
@@ -8,7 +12,7 @@ export class ActionFunctionRegistry implements IActionFunctionRegistry {
    *
    * @param name The name of the new function to register
    * @param func The ActionFunction to register
-   * @param thisArg Value to use as this (i.e the reference Object) when executing callback.
+   * @param thisArg Value to use as this (i.e the reference Object) when executing callback
    *
    */
   register(name: string, func: ActionFunction, thisArg: any = null): void {
