@@ -20,7 +20,7 @@ class Calculator {
         this.result += offset;
     }
     async substract(offset) {
-        this.result -+ offset;
+        this.result -= offset;
     }
 }
 
@@ -119,3 +119,13 @@ By default, there are two disabled git hooks. They're set up when you run the `n
  - Your build is not going to fail in [Travis](https://travis-ci.org) (or your CI server), since it's runned locally before `git push`
 
 This makes more sense in combination with [automatic releases](#automatic-releases)
+
+# Release
+
+1. Bump the version in package.json
+2. Run `npm run build`
+3. Publish on npmjs
+3.1 Login to npmjs with `npm login`
+3.2 `npm publish --access public` to publish package
+4. Create a GitHub release
+5. Verify Zenodo entry
