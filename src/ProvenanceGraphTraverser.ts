@@ -4,9 +4,9 @@ import {
   IActionFunctionRegistry,
   IProvenanceGraph,
   NodeIdentifier,
-  ProvenanceEnabledFunction
+  ActionFunctionWithThis
 } from './api';
-import {isReversibleAction} from './utils';
+import { isReversibleAction } from './utils';
 
 function isNextNodeInTrackUp(currentNode: StateNode, nextNode: StateNode): boolean {
   if (currentNode.parent && currentNode.parent.previous === nextNode) {
@@ -41,7 +41,6 @@ function findPathToTargetNode(
     for (let node of nodesToCheck) {
       // If the node to check is in the track already, skip it.
       if (node === comingFromNode) continue;
-      debugger;
       if (findPathToTargetNode(node, targetNode, track, currentNode)) {
         track.unshift(currentNode);
         return true;
@@ -52,12 +51,13 @@ function findPathToTargetNode(
 }
 
 async function executeFunctions(
-  functionsToDo: ProvenanceEnabledFunction[],
+  functionsToDo: ActionFunctionWithThis[],
   argumentsToDo: any[]
 ): Promise<StateNode> {
   let result;
   for (let i = 0; i < functionsToDo.length; i++) {
-    result = await functionsToDo[i].apply(null, argumentsToDo[i]);
+    let funcWithThis = functionsToDo[i];
+    result = await funcWithThis.func.apply(funcWithThis.thisArg, argumentsToDo[i]);
   }
   return result;
 }
@@ -89,12 +89,11 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
       const trackToTarget: StateNode[] = [];
 
       const success = findPathToTargetNode(currentNode, targetNode, trackToTarget);
-      console.log(trackToTarget);
       if (!success) {
         throw new Error('No path to target node found in graph');
       }
 
-      const functionsToDo: ProvenanceEnabledFunction[] = [];
+      const functionsToDo: ActionFunctionWithThis[] = [];
       const argumentsToDo: any[] = [];
 
       for (let i = 0; i < trackToTarget.length - 1; i++) {

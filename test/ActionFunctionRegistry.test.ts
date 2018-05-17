@@ -1,5 +1,5 @@
-import { IActionFunctionRegistry, ProvenanceEnabledFunction } from '../src/api';
-import { ActionFunctionRegistry } from '../src/ActionFunctionRegistry';
+import {IActionFunctionRegistry, ActionFunction, ActionFunctionWithThis} from '../src/api';
+import {ActionFunctionRegistry} from '../src/ActionFunctionRegistry';
 
 describe('ActionFunctionRegistry', () => {
   let registry: IActionFunctionRegistry;
@@ -17,21 +17,22 @@ describe('ActionFunctionRegistry', () => {
   });
 
   describe('register a function', () => {
-    let someFunction: ProvenanceEnabledFunction;
+    let someFunction: ActionFunction;
     beforeEach(() => {
-      someFunction = jest.fn() as ProvenanceEnabledFunction;
+      someFunction = jest.fn() as ActionFunction;
       registry.register('some', someFunction);
     });
 
     test('should be able to get registered function back', () => {
-      const result = registry.getFunctionByName('some');
-      expect(result).toBe(someFunction);
+      const result: ActionFunctionWithThis = registry.getFunctionByName('some');
+      expect(result.func).toBe(someFunction);
+      expect(result.thisArg).toBe(null);
     });
 
     describe('register same function again', () => {
       test('should throw error', () => {
         expect(() => registry.register('some', someFunction)).toThrow(
-          'Function already registred'
+          'Function already registered'
         );
       });
     });
