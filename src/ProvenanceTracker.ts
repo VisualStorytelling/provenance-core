@@ -7,7 +7,7 @@ import {
   StateEdge,
   ActionFunctionWithThis
 } from './api';
-import {generateUUID} from './utils';
+import { generateUUID } from './utils';
 
 /**
  * Provenance Graph Tracker implementation
@@ -38,12 +38,17 @@ export class ProvenanceTracker implements IProvenanceTracker {
 
     // Get the registered function from the action out of the registry
     const functionNameToExecute: string = action.do;
-    const funcWithThis: ActionFunctionWithThis = this.registry.getFunctionByName(functionNameToExecute);
+    const funcWithThis: ActionFunctionWithThis = this.registry.getFunctionByName(
+      functionNameToExecute
+    );
 
-    const promisedResult = funcWithThis.func.apply(funcWithThis.thisArg, action.doArguments);
+    const promisedResult = funcWithThis.func.apply(
+      funcWithThis.thisArg,
+      action.doArguments
+    );
 
     // When the function promise resolves, we need to update the graph.
-    promisedResult.then((actionResult: any) => {
+    return promisedResult.then((actionResult: any) => {
       const newNode: StateNode = {
         id: generateUUID(),
         label: action.do + ' : ' + JSON.stringify(action.doArguments),
@@ -66,7 +71,5 @@ export class ProvenanceTracker implements IProvenanceTracker {
 
       return newNode;
     });
-
-    return promisedResult;
   }
 }
