@@ -31,7 +31,7 @@ describe('ActionFunctionRegistry', () => {
     describe('register same function again', () => {
       test('should throw error', () => {
         expect(() => registry.register('some', someFunction)).toThrow(
-          'Function already registred'
+          'Function already registered'
         );
       });
     });

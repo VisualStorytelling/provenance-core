@@ -12,7 +12,7 @@ export class ActionFunctionRegistry implements IActionFunctionRegistry {
    */
   register(name: string, func: ProvenanceEnabledFunction) {
     if (this.functionRegistry[name]) {
-      throw new Error('Function already registred');
+      throw new Error('Function already registered');
     }
     this.functionRegistry[name] = func;
   }
