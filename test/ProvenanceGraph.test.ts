@@ -17,7 +17,7 @@ describe('ProvenanceGraph', () => {
   let graph: IProvenanceGraph;
   const application: Application = {
     name: 'testapp',
-    version: '1.2.3'
+    version: '2.2.3'
   };
 
   beforeEach(() => {
@@ -73,6 +73,52 @@ describe('ProvenanceGraph', () => {
         };
         expect(() => graph.addNode(node)).toThrow('Node already added');
       });
+    });
+
+    describe('node with non-existing id', () => {
+      const someNodeId = '11111111-1111-4111-1111-111111111111';
+      let someNode;
+
+      beforeEach(() => {
+        someNode = {
+          id: someNodeId,
+          label: 'Some node',
+          parent: graph.current,
+          children: [],
+          artifacts: {}
+        };
+        graph.addNode(someNode);
+      });
+
+      it('should be gettable', () => {
+        expect(graph.getNode(someNodeId)).toEqual(someNode);
+      });
+
+      describe('make node current', () => {
+        beforeEach(() => {
+          graph.current = someNode;
+        });
+
+        it('should have someNode as current', () => {
+          expect(graph.current).toEqual(someNode);
+        });
+      });
+    });
+  });
+
+  describe('Make non-existing node current', () => {
+    it('should throw error', () => {
+      const otherNodeId = '21111111-1111-4111-1111-111111111111';
+      const otherNode = {
+        id: otherNodeId,
+        label: 'Some node',
+        parent: graph.current,
+        children: [],
+        artifacts: {}
+      };
+      expect(() => {
+        graph.current = otherNode;
+      }).toThrow('Node id not found');
     });
   });
 });

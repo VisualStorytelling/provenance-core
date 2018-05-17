@@ -35,6 +35,7 @@ function findPathToTargetNode(
     const nodesToCheck: Node[] = currentNode.children;
 
     // Add the parent node to that same list
+    /* istanbul ignore else */
     if (isStateNode(currentNode)) {
       nodesToCheck.push(currentNode.parent);
     }
@@ -42,6 +43,7 @@ function findPathToTargetNode(
     for (let node of nodesToCheck) {
       // If the node to check is in the track already, skip it.
       if (node === comingFromNode) continue;
+      /* istanbul ignore else */
       if (findPathToTargetNode(node, targetNode, track, currentNode)) {
         track.unshift(currentNode);
         return true;
@@ -91,8 +93,9 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
       const trackToTarget: Node[] = [];
 
       const success = findPathToTargetNode(currentNode, targetNode, trackToTarget);
+
+      /* istanbul ignore if */
       if (!success) {
-        /* istanbul ignore next */
         throw new Error('No path to target node found in graph');
       }
 
@@ -105,6 +108,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
         const up = isNextNodeInTrackUp(thisNode, nextNode);
 
         if (up) {
+          /* istanbul ignore else */
           if (isStateNode(thisNode)) {
             if (!isReversibleAction(thisNode.action)) {
               throw new Error('trying to undo an Irreversible action');
@@ -117,6 +121,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
             throw new Error('Going up from root? unreachable error ... i hope');
           }
         } else {
+          /* istanbul ignore else */
           if (isStateNode(nextNode)) {
             const doFunc = this.registry.getFunctionByName(nextNode.action.do);
             functionsToDo.push(doFunc);

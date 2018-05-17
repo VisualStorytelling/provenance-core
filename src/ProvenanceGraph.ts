@@ -1,5 +1,5 @@
 import { IProvenanceGraph, Application, StateNode, NodeIdentifier, Node, RootNode } from './api';
-import { generateUUID, generateTimestamp } from './utils';
+import { generateUUID } from './utils';
 
 /**
  * Provenance Graph implementation
@@ -48,6 +48,9 @@ export class ProvenanceGraph implements IProvenanceGraph {
   }
 
   set current(node: Node) {
+    if (!this.nodes[node.id]) {
+      throw new Error('Node id not found');
+    }
     this._current = node;
   }
 }
