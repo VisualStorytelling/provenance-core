@@ -79,7 +79,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
    * Finds shortest path between current node and node with request identifer.
    * Calls the do/undo functions of actions on the path.
    *
-   * @param id
+   * @param id Node identifier
    */
   toStateNode(id: NodeIdentifier): Promise<Node> {
     try {
