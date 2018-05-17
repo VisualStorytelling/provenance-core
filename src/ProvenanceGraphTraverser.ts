@@ -4,7 +4,7 @@ import {
   IActionFunctionRegistry,
   IProvenanceGraph,
   NodeIdentifier,
-  ProvenanceEnabledFunction
+  ActionFunctionWithThis
 } from './api';
 import { isReversibleAction } from './utils';
 
@@ -51,12 +51,13 @@ function findPathToTargetNode(
 }
 
 async function executeFunctions(
-  functionsToDo: ProvenanceEnabledFunction[],
+  functionsToDo: ActionFunctionWithThis[],
   argumentsToDo: any[]
 ): Promise<StateNode> {
   let result;
   for (let i = 0; i < functionsToDo.length; i++) {
-    result = await functionsToDo[i].apply(null, argumentsToDo[i]);
+    let funcWithThis = functionsToDo[i];
+    result = await funcWithThis.func.apply(funcWithThis.thisArg, argumentsToDo[i]);
   }
   return result;
 }
@@ -92,7 +93,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
         throw new Error('No path to target node found in graph');
       }
 
-      const functionsToDo: ProvenanceEnabledFunction[] = [];
+      const functionsToDo: ActionFunctionWithThis[] = [];
       const argumentsToDo: any[] = [];
 
       for (let i = 0; i < trackToTarget.length - 1; i++) {
