@@ -13,6 +13,7 @@ function isNextNodeInTrackUp(currentNode: StateNode, nextNode: StateNode): boole
     return true;
   } else if (nextNode.parent && nextNode.parent.previous !== currentNode) {
     // This is a guard against the illegitimate use of this function for unconnected nodes
+    /* istanbul ignore next */
     throw new Error('Unconnected nodes, you probably should not be using this function');
   } else {
     return false;
@@ -25,12 +26,10 @@ function findPathToTargetNode(
   track: StateNode[],
   comingFromNode: StateNode = currentNode
 ): boolean {
-  if (currentNode === null) {
-    return false;
-  } else if (currentNode === targetNode) {
+  if (currentNode && currentNode === targetNode) {
     track.unshift(currentNode);
     return true;
-  } else {
+  } else if (currentNode) {
     // Map the StateNodes in the children StateEdges
     const nodesToCheck = currentNode.children.map(child => child.next);
     // Add the parent node to that same list
@@ -46,8 +45,9 @@ function findPathToTargetNode(
         return true;
       }
     }
-    return false;
   }
+  /* istanbul ignore next */
+  return false;
 }
 
 async function executeFunctions(
@@ -90,6 +90,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
 
       const success = findPathToTargetNode(currentNode, targetNode, trackToTarget);
       if (!success) {
+        /* istanbul ignore next */
         throw new Error('No path to target node found in graph');
       }
 
@@ -103,6 +104,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
 
         if (up) {
           if (!thisNode.parent) {
+            /* istanbul ignore next */
             throw new Error('Going up from root? unreachable error ... i hope');
           }
           if (!isReversibleAction(thisNode.parent.action)) {
@@ -113,6 +115,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
           argumentsToDo.push(thisNode.parent.action.undoArguments);
         } else {
           if (!nextNode.parent) {
+            /* istanbul ignore next */
             throw new Error('Going down to the root? unreachable error ... i hope');
           }
           const doFunc = this.registry.getFunctionByName(nextNode.parent.action.do);
