@@ -82,7 +82,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
   toStateNode(id: NodeIdentifier): Promise<Node> {
     try {
       const currentNode = this.graph.current;
-      const targetNode = this.graph.getStateNode(id);
+      const targetNode = this.graph.getNode(id);
 
       if (currentNode === targetNode) {
         return Promise.resolve(currentNode);

@@ -41,10 +41,7 @@ export class ProvenanceTracker implements IProvenanceTracker {
       functionNameToExecute
     );
 
-    const promisedResult = funcWithThis.func.apply(
-      funcWithThis.thisArg,
-      action.doArguments
-    );
+    const promisedResult = funcWithThis.func.apply(funcWithThis.thisArg, action.doArguments);
 
     // When the function promise resolves, we need to update the graph.
     return promisedResult.then((actionResult: any) => {
@@ -60,7 +57,7 @@ export class ProvenanceTracker implements IProvenanceTracker {
 
       currentNode.children.push(newNode);
 
-      this.graph.addStateNode(newNode);
+      this.graph.addNode(newNode);
       this.graph.current = newNode;
 
       return newNode;

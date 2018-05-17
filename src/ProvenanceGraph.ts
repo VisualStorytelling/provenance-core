@@ -22,17 +22,17 @@ export class ProvenanceGraph implements IProvenanceGraph {
       children: [],
       artifacts: {}
     } as RootNode;
-    this.addStateNode(this._current);
+    this.addNode(this._current);
   }
 
-  addStateNode(node: Node): void {
+  addNode(node: Node): void {
     if (this.nodes[node.id]) {
       throw new Error('Node already added');
     }
     this.nodes[node.id] = node;
   }
 
-  getStateNode(id: NodeIdentifier): Node {
+  getNode(id: NodeIdentifier): Node {
     const result = this.nodes[id];
     if (!result) {
       throw new Error('Node id not found');

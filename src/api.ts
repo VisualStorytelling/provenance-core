@@ -56,8 +56,8 @@ export type Application = {
 export interface IProvenanceGraph {
   application: Application;
   current: Node;
-  addStateNode(node: Node): void;
-  getStateNode(id: NodeIdentifier): Node;
+  addNode(node: Node): void;
+  getNode(id: NodeIdentifier): Node;
 }
 
 export interface IActionFunctionRegistry {
