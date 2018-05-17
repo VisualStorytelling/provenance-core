@@ -37,13 +37,7 @@ result = await tracker.applyAction({
     do: 'add',
     doArguments: [13],
     undo: 'subtract',
-    undoArguments: [13],
-    metadata: {
-        createdBy: 'me',
-        createdOn: 'now',
-        tags: [],
-        userIntent: 'Because I want to'
-    }
+    undoArguments: [13]
 });
 
 // calculator.result == 13
@@ -57,7 +51,7 @@ traverser.toStateNode(result.parent.id);
 ## Install
 
 ```
-npm install provenance-core
+npm install @visualstorytelling/provenance-core
 ```
 
 ### Develop
