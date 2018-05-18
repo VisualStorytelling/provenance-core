@@ -138,25 +138,36 @@ describe('ProvenanceGraph', () => {
 
   describe('Event listener', () => {
     let listener: Mock<Handler>;
+    let node: RootNode;
     beforeEach(() => {
       listener = jest.fn();
-      const node = {
+      node = {
         id: '123',
         label: 'Some node',
         metadata: {
           createdBy: 'me',
           createdOn: 123456
         },
-        parent: null,
         children: [],
         artifacts: {}
       };
       graph.on('nodeAdded', listener);
-      graph.addNode(node);
     });
 
     it('should dispatch add node event', () => {
+      graph.addNode(node);
       expect(listener).toHaveBeenCalled();
+    });
+    it('can remove listener', () => {
+      graph.off('nodeAdded', listener);
+      graph.addNode(node);
+      expect(listener).not.toHaveBeenCalled();
+    });
+    it('can dispatch on node change', () => {
+      const changeListener = jest.fn();
+      graph.on('nodeChanged', changeListener);
+      graph.emitNodeChangedEvent(graph.root);
+      expect(changeListener).toHaveBeenCalled();
     });
   });
 });

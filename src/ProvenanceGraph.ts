@@ -70,6 +70,10 @@ export class ProvenanceGraph implements IProvenanceGraph {
   }
 
   emitNodeChangedEvent(node: ProvenanceNode) {
+    /* istanbul ignore if */
+    if (!this.nodes[node.id]) {
+      throw new Error('Node id not found');
+    }
     this._mitt.emit('nodeChanged', node);
   }
 
