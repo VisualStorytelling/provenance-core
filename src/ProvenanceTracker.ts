@@ -42,7 +42,7 @@ export class ProvenanceTracker implements IProvenanceTracker {
   async applyAction(action: Action, skipFirstDoFunctionCall: boolean = false): Promise<StateNode> {
     const createNewStateNode = (parentNode: ProvenanceNode, actionResult: any): StateNode => ({
       id: generateUUID(),
-      label: action.do + ' : ' + JSON.stringify(action.doArguments),
+      label: action.do,
       metadata: {
         createdBy: this.username,
         createdOn: generateTimestamp()
