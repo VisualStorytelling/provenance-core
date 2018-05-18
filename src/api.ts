@@ -151,7 +151,7 @@ export type ReversibleAction = {
 
   /**
    * Multiple arguments that are passed to the registered do function.
-   * The arguments should be immutable!
+   * The arguments should be immutable and serializable to json!
    */
   doArguments: any[];
 
@@ -162,7 +162,7 @@ export type ReversibleAction = {
 
   /**
    * Multiple arguments that are passed to the registered do function.
-   * The arguments should be immutable!
+   * The arguments should be immutable and serializable to json!
    */
   undoArguments: any[];
 };
