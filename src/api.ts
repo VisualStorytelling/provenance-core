@@ -62,7 +62,7 @@ export type Artifacts = {
 /**
  * Generic node
  */
-export type ProvenanceNode = {
+export type RootNode = {
   /**
    * Node identifier
    */
@@ -90,14 +90,9 @@ export type ProvenanceNode = {
 };
 
 /**
- * Root node
+ * State node extending the RootNode
  */
-export type RootNode = ProvenanceNode;
-
-/**
- * State node extending the ProvenanceNode
- */
-export type StateNode = ProvenanceNode & {
+export type StateNode = RootNode & {
   /**
    * Action
    */
@@ -113,6 +108,11 @@ export type StateNode = ProvenanceNode & {
    */
   parent: ProvenanceNode;
 };
+
+/**
+ * Provenance node generic type for both root and state nodes
+ */
+export type ProvenanceNode = RootNode | StateNode;
 
 /**
  * Irreversible action that can only be applied, but cannot be reverted
@@ -238,9 +238,9 @@ export interface IProvenanceGraph {
    * * nodeAdded, emitted when node is added via this.addNode()
    * * currentChanged, emitted when this.current is changed
    * * nodeChanged, emitted when this.emitNodeChangedEvent() is called
-   * 
-   * @param type 
-   * @param handler 
+   *
+   * @param type
+   * @param handler
    */
   on(type: string, handler: Handler): void;
   off(type: string, handler: Handler): void;
@@ -284,10 +284,7 @@ export interface IProvenanceTracker {
    * @param skipFirstDoFunctionCall If set to true, the do-function will not be called this time,
    *        it will only be called when traversing.
    */
-  applyAction(
-    action: Action,
-    skipFirstDoFunctionCall: boolean
-  ): Promise<StateNode>;
+  applyAction(action: Action, skipFirstDoFunctionCall: boolean): Promise<StateNode>;
 }
 
 /**
