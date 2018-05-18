@@ -13,7 +13,12 @@ Record the actions performed on a simple calculator.
 Traverse undo graph to any point will undo/redo all actions to get to that point.
 
 ```ts
-import { ActionFunctionRegistry, ProvenanceGraph, ProvenanceGraphTraverser, ProvenanceTracker } from '@visualstorytelling/provenance-core';
+import { 
+    ActionFunctionRegistry, 
+    ProvenanceGraph, 
+    ProvenanceGraphTraverser, 
+    ProvenanceTracker 
+} from '@visualstorytelling/provenance-core';
 
 class Calculator {
     result = 0;
