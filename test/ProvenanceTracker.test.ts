@@ -3,7 +3,8 @@ import {
   StateNode,
   IProvenanceGraph,
   IActionFunctionRegistry,
-  Action
+  Action,
+  ActionFunction
 } from '../src/api';
 import { ProvenanceGraph } from '../src/ProvenanceGraph';
 import { ActionFunctionRegistry } from '../src/ActionFunctionRegistry';
@@ -198,6 +199,38 @@ describe('ProvenanceTracker', () => {
           });
         });
       });
+    });
+  });
+
+  describe('skipFirstDoAction', () => {
+    let functionToCall: any;
+    let functionToSkip: any;
+    beforeEach(async () => {
+      functionToCall = jest.fn() as ActionFunction;
+      functionToSkip = jest.fn() as ActionFunction;
+      graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' }, username);
+      registry = new ActionFunctionRegistry();
+      registry.register('caller', functionToCall);
+      registry.register('skipper', functionToSkip);
+      tracker = new ProvenanceTracker(registry, graph, username);
+      let skipperAction = {
+        do: 'skipper',
+        doArguments: [],
+        undo: 'skipper',
+        undoArguments: []
+      };
+      let callerAction = {
+        do: 'caller',
+        doArguments: [],
+        undo: 'caller',
+        undoArguments: []
+      };
+      await tracker.applyAction(skipperAction, true);
+      await tracker.applyAction(callerAction, false);
+    });
+    test('callerAction', () => {
+      expect(functionToCall).toHaveBeenCalled();
+      expect(functionToSkip).not.toHaveBeenCalled();
     });
   });
 });

@@ -1,5 +1,6 @@
-import { IProvenanceGraph, RootNode, Application } from '../src/api';
+import { IProvenanceGraph, RootNode, Application, StateNode, Handler } from '../src/api';
 import { ProvenanceGraph } from '../src/ProvenanceGraph';
+import Mock = jest.Mock;
 
 const unknownUsername: string = 'Unknown';
 const expectedRootNode: RootNode = {
@@ -77,7 +78,7 @@ describe('ProvenanceGraph', () => {
 
     describe('node with non-existing id', () => {
       const someNodeId = '11111111-1111-4111-1111-111111111111';
-      let someNode;
+      let someNode: StateNode;
 
       beforeEach(() => {
         someNode = {
@@ -85,7 +86,16 @@ describe('ProvenanceGraph', () => {
           label: 'Some node',
           parent: graph.current,
           children: [],
-          artifacts: {}
+          artifacts: {},
+          action: {
+            do: 'doFunction',
+            doArguments: []
+          },
+          actionResult: {},
+          metadata: {
+            createdBy: '',
+            createdOn: 1
+          }
         };
         graph.addNode(someNode);
       });
@@ -123,6 +133,41 @@ describe('ProvenanceGraph', () => {
       expect(() => {
         graph.current = otherNode;
       }).toThrow('Node id not found');
+    });
+  });
+
+  describe('Event listener', () => {
+    let listener: Mock<Handler>;
+    let node: RootNode;
+    beforeEach(() => {
+      listener = jest.fn();
+      node = {
+        id: '123',
+        label: 'Some node',
+        metadata: {
+          createdBy: 'me',
+          createdOn: 123456
+        },
+        children: [],
+        artifacts: {}
+      };
+      graph.on('nodeAdded', listener);
+    });
+
+    it('should dispatch add node event', () => {
+      graph.addNode(node);
+      expect(listener).toHaveBeenCalled();
+    });
+    it('can remove listener', () => {
+      graph.off('nodeAdded', listener);
+      graph.addNode(node);
+      expect(listener).not.toHaveBeenCalled();
+    });
+    it('can dispatch on node change', () => {
+      const changeListener = jest.fn();
+      graph.on('nodeChanged', changeListener);
+      graph.emitNodeChangedEvent(graph.root);
+      expect(changeListener).toHaveBeenCalled();
     });
   });
 });

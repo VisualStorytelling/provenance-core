@@ -4,7 +4,8 @@ import {
   IProvenanceTracker,
   IActionFunctionRegistry,
   IProvenanceGraph,
-  ActionFunctionWithThis
+  ActionFunctionWithThis,
+  ProvenanceNode
 } from './api';
 import { generateUUID, generateTimestamp } from './utils';
 
@@ -35,42 +36,48 @@ export class ProvenanceTracker implements IProvenanceTracker {
    * Calls the action.do function with action.doArguments
    *
    * @param action
-   *
+   * @param skipFirstDoFunctionCall If set to true, the do-function will not be called this time,
+   *        it will only be called when traversing.
    */
-  applyAction(action: Action): Promise<StateNode> {
-    // Save the current node because this is is asynchronous
+  async applyAction(action: Action, skipFirstDoFunctionCall: boolean = false): Promise<StateNode> {
+    const createNewStateNode = (parentNode: ProvenanceNode, actionResult: any): StateNode => ({
+      id: generateUUID(),
+      label: action.do + ' : ' + JSON.stringify(action.doArguments),
+      metadata: {
+        createdBy: this.username,
+        createdOn: generateTimestamp()
+      },
+      action,
+      actionResult,
+      parent: parentNode,
+      children: [],
+      artifacts: {}
+    });
+
+    let newNode: StateNode;
+
+    // Save the current node because the next block could be asynchronous
     const currentNode = this.graph.current;
 
-    // Get the registered function from the action out of the registry
-    const functionNameToExecute: string = action.do;
-    const funcWithThis: ActionFunctionWithThis = this.registry.getFunctionByName(
-      functionNameToExecute
-    );
+    if (skipFirstDoFunctionCall) {
+      newNode = createNewStateNode(this.graph.current, null);
+    } else {
+      // Get the registered function from the action out of the registry
+      const functionNameToExecute: string = action.do;
+      const funcWithThis: ActionFunctionWithThis = this.registry.getFunctionByName(
+        functionNameToExecute
+      );
+      const actionResult = await funcWithThis.func.apply(funcWithThis.thisArg, action.doArguments);
 
-    const promisedResult = funcWithThis.func.apply(funcWithThis.thisArg, action.doArguments);
+      newNode = createNewStateNode(currentNode, actionResult);
+    }
 
-    // When the function promise resolves, we need to update the graph.
-    return promisedResult.then((actionResult: any) => {
-      const newNode: StateNode = {
-        id: generateUUID(),
-        label: action.do + ' : ' + JSON.stringify(action.doArguments),
-        metadata: {
-          createdBy: this.username,
-          createdOn: generateTimestamp()
-        },
-        action,
-        actionResult,
-        parent: currentNode,
-        children: [],
-        artifacts: {}
-      };
+    // When the node is created, we need to update the graph.
+    currentNode.children.push(newNode);
 
-      currentNode.children.push(newNode);
+    this.graph.addNode(newNode);
+    this.graph.current = newNode;
 
-      this.graph.addNode(newNode);
-      this.graph.current = newNode;
-
-      return newNode;
-    });
+    return newNode;
   }
 }

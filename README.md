@@ -13,7 +13,12 @@ Record the actions performed on a simple calculator.
 Traverse undo graph to any point will undo/redo all actions to get to that point.
 
 ```ts
-import { ActionFunctionRegistry, ProvenanceGraph, ProvenanceGraphTraverser, ProvenanceTracker } from 'provenance-core';
+import { 
+    ActionFunctionRegistry, 
+    ProvenanceGraph, 
+    ProvenanceGraphTraverser, 
+    ProvenanceTracker 
+} from '@visualstorytelling/provenance-core';
 
 class Calculator {
     result = 0;
@@ -25,28 +30,31 @@ class Calculator {
     }
 }
 
-const calculator = new Calculator();
-const registry = new ActionFunctionRegistry();
-registry.register('add', calculator.add, calculator);
-registry.register('substract', calculator.substract, calculator);
-const graph = new ProvenanceGraph({name: 'myapplication', version:'1.2.3'});
-const tracker = new ProvenanceTracker(registry, graph);
-const traverser = new ProvenanceGraphTraverser(registry, graph);
+async function runme() {
+    const calculator = new Calculator();
+    const registry = new ActionFunctionRegistry();
+    registry.register('add', calculator.add, calculator);
+    registry.register('substract', calculator.substract, calculator);
+    const graph = new ProvenanceGraph({name: 'myapplication', version:'1.2.3'});
+    const tracker = new ProvenanceTracker(registry, graph);
+    const traverser = new ProvenanceGraphTraverser(registry, graph);
 
-// Call the add function on the calculator via the provenance tracker
-result = await tracker.applyAction({
-    do: 'add',
-    doArguments: [13],
-    undo: 'subtract',
-    undoArguments: [13]
-});
+    // Call the add function on the calculator via the provenance tracker
+    result = await tracker.applyAction({
+        do: 'add',
+        doArguments: [13],
+        undo: 'subtract',
+        undoArguments: [13]
+    });
+    
+    // calculator.result == 13
 
-// calculator.result == 13
+    // Undo action by going back to parent
+    traverser.toStateNode(result.parent.id);
 
-// Undo action by going back to parent
-traverser.toStateNode(result.parent.id);
-
-// calculator.result == 0
+    // calculator.result == 0
+}
+runme();
 ```
 
 ## Install
