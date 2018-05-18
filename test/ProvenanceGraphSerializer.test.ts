@@ -1,6 +1,6 @@
 import { ActionFunctionRegistry } from '../src/ActionFunctionRegistry';
 import { ProvenanceTracker } from '../src/ProvenanceTracker';
-import { ProvenanceGraph } from '../src/ProvenanceGraph';
+import { ProvenanceGraph, serializeProvenanceGraph } from '../src/ProvenanceGraph';
 import { ProvenanceGraphTraverser } from '../src/ProvenanceGraphTraverser';
 import { IrreversibleAction, ReversibleAction, StateNode, ProvenanceNode } from '../src/api';
 import { isStateNode } from '../src/utils';
@@ -70,12 +70,13 @@ describe('ProvenanceGraphSerializer', () => {
         await tracker.applyAction(reversibleAdd13Action);
         await traverser.toStateNode(root.id);
         await tracker.applyAction(reversibleSub2Action);
+        await tracker.applyAction(reversibleSub2Action);
       });
 
       test('Is serializable', () => {
-        const simpleObject = graph.serialize();
-        expect(typeof simpleObject).toBe('object');
-        expect(typeof graph.serialize()).toBe('object');
+        const simpleObject = serializeProvenanceGraph(graph);
+        console.log(JSON.stringify(simpleObject));
+        expect(1).toBe(2);
       });
     });
   });

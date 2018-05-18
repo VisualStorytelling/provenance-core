@@ -174,6 +174,10 @@ describe('ProvenanceGraphTraverser', () => {
       test('Traverse to sibling', () => {
         expect(state).toEqual({ offset: 55 });
       });
+      test('Tree makes sense', () => {
+        expect(graph.root.children.length).toEqual(2);
+        expect(intermediateNode.children.length).toEqual(0);
+      });
     });
 
     describe('Sequential traverse to parent 2 high', () => {

@@ -32,7 +32,7 @@ function findPathToTargetNode(
     return true;
   } else if (currentNode) {
     // Map the StateNodes in the children StateEdges
-    const nodesToCheck: ProvenanceNode[] = currentNode.children;
+    const nodesToCheck: ProvenanceNode[] = [...currentNode.children];
 
     // Add the parent node to that same list
     /* istanbul ignore else */

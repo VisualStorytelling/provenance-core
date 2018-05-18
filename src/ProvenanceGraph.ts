@@ -7,7 +7,7 @@ import {
   RootNode,
   Handler
 } from './api';
-import { generateUUID, generateTimestamp } from './utils';
+import { generateUUID, generateTimestamp, isStateNode } from './utils';
 import mitt from './mitt';
 
 /**
@@ -21,7 +21,7 @@ export class ProvenanceGraph implements IProvenanceGraph {
   public readonly root: RootNode;
   private _current: ProvenanceNode;
   private _mitt: any;
-  private nodes: { [key: string]: ProvenanceNode } = {};
+  private _nodes: { [key: string]: ProvenanceNode } = {};
 
   constructor(application: Application, username: string = 'Unknown') {
     this._mitt = mitt();
@@ -41,22 +41,20 @@ export class ProvenanceGraph implements IProvenanceGraph {
     this._current = this.root;
   }
 
-  serialize(): any {}
-
   addNode(node: ProvenanceNode): void {
-    if (this.nodes[node.id]) {
+    if (this._nodes[node.id]) {
       throw new Error('Node already added');
     }
-    this.nodes[node.id] = node;
+    this._nodes[node.id] = node;
     this._mitt.emit('nodeAdded', node);
   }
 
   getNode(id: NodeIdentifier): ProvenanceNode {
-    const result = this.nodes[id];
+    const result = this._nodes[id];
     if (!result) {
       throw new Error('Node id not found');
     }
-    return this.nodes[id];
+    return this._nodes[id];
   }
 
   get current(): ProvenanceNode {
@@ -64,16 +62,20 @@ export class ProvenanceGraph implements IProvenanceGraph {
   }
 
   set current(node: ProvenanceNode) {
-    if (!this.nodes[node.id]) {
+    if (!this._nodes[node.id]) {
       throw new Error('Node id not found');
     }
     this._current = node;
     this._mitt.emit('currentChanged', node);
   }
 
+  get nodes() {
+    return this._nodes;
+  }
+
   emitNodeChangedEvent(node: ProvenanceNode) {
     /* istanbul ignore if */
-    if (!this.nodes[node.id]) {
+    if (!this._nodes[node.id]) {
       throw new Error('Node id not found');
     }
     this._mitt.emit('nodeChanged', node);
@@ -86,4 +88,29 @@ export class ProvenanceGraph implements IProvenanceGraph {
   off(type: string, handler: Handler) {
     this._mitt.off(type, handler);
   }
+}
+
+export type SerializedProvenanceGraph = {
+  nodes: any[];
+  root: NodeIdentifier;
+  application: Application;
+  current: NodeIdentifier;
+};
+
+export function serializeProvenanceGraph(graph: ProvenanceGraph): SerializedProvenanceGraph {
+  const nodes = Object.keys(graph.nodes).map(nodeId => {
+    const node = graph.getNode(nodeId);
+    return {
+      ...node,
+      parent: isStateNode(node) ? node.parent.id : null,
+      children: node.children.map(child => child.id)
+    };
+  });
+
+  return {
+    nodes,
+    root: graph.root.id,
+    application: graph.application,
+    current: graph.current.id
+  };
 }
