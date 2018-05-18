@@ -4,3 +4,7 @@ export * from './ProvenanceTracker';
 export * from './ProvenanceGraphTraverser';
 export * from './api';
 export * from './utils';
+export { SerializedProvenanceGraph } from './api';
+export { SerializedRootNode } from './api';
+export { SerializedStateNode } from './api';
+export { SerializedProvenanceNode } from './api';

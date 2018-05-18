@@ -1,13 +1,15 @@
 import {
-  IProvenanceGraph,
   Application,
-  StateNode,
+  Handler,
+  IProvenanceGraph,
   NodeIdentifier,
   ProvenanceNode,
   RootNode,
-  Handler
+  SerializedProvenanceGraph,
+  SerializedProvenanceNode,
+  SerializedStateNode
 } from './api';
-import { generateUUID, generateTimestamp, isStateNode } from './utils';
+import { generateTimestamp, generateUUID, isStateNode } from './utils';
 import mitt from './mitt';
 
 /**
@@ -23,20 +25,24 @@ export class ProvenanceGraph implements IProvenanceGraph {
   private _mitt: any;
   private _nodes: { [key: string]: ProvenanceNode } = {};
 
-  constructor(application: Application, username: string = 'Unknown') {
+  constructor(application: Application, userid: string = 'Unknown', rootNode?: RootNode) {
     this._mitt = mitt();
     this.application = application;
 
-    this.root = {
-      id: generateUUID(),
-      label: 'Root',
-      metadata: {
-        createdBy: username,
-        createdOn: generateTimestamp()
-      },
-      children: [],
-      artifacts: {}
-    } as RootNode;
+    if (rootNode) {
+      this.root = rootNode;
+    } else {
+      this.root = {
+        id: generateUUID(),
+        label: 'Root',
+        metadata: {
+          createdBy: userid,
+          createdOn: generateTimestamp()
+        },
+        children: [],
+        artifacts: {}
+      } as RootNode;
+    }
     this.addNode(this.root);
     this._current = this.root;
   }
@@ -90,21 +96,43 @@ export class ProvenanceGraph implements IProvenanceGraph {
   }
 }
 
-export type SerializedProvenanceGraph = {
-  nodes: any[];
-  root: NodeIdentifier;
-  application: Application;
-  current: NodeIdentifier;
-};
+/* Beware that serializedProvenanceGraph is mutated in the process */
+export function restoreProvenanceGraph(
+  serializedProvenanceGraph: SerializedProvenanceGraph
+): ProvenanceGraph {
+  const nodes: { [key: string]: any } = {};
+
+  // restore nodes as key value
+  for (let node of serializedProvenanceGraph.nodes) {
+    nodes[node.id] = node;
+  }
+
+  // restore parent/children relations
+  for (let nodeId of Object.keys(nodes)) {
+    const node = nodes[nodeId];
+    node.children = node.children.map((id: string) => nodes[id]);
+    if ('parent' in node) {
+      node.parent = nodes[node.parent];
+    }
+  }
+
+  const graph = new ProvenanceGraph(serializedProvenanceGraph.application);
+  (graph as any)._nodes = nodes;
+  (graph as any)._current = nodes[serializedProvenanceGraph.current];
+  (graph as any).root = nodes[serializedProvenanceGraph.root];
+
+  return graph;
+}
 
 export function serializeProvenanceGraph(graph: ProvenanceGraph): SerializedProvenanceGraph {
   const nodes = Object.keys(graph.nodes).map(nodeId => {
     const node = graph.getNode(nodeId);
-    return {
-      ...node,
-      parent: isStateNode(node) ? node.parent.id : null,
-      children: node.children.map(child => child.id)
-    };
+    const serializedNode: SerializedProvenanceNode = { ...node } as any;
+    if (isStateNode(node)) {
+      (serializedNode as SerializedStateNode).parent = node.parent.id;
+    }
+    serializedNode.children = node.children.map(child => child.id);
+    return serializedNode;
   });
 
   return {

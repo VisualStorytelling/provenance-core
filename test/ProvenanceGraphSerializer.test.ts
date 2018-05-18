@@ -1,6 +1,10 @@
 import { ActionFunctionRegistry } from '../src/ActionFunctionRegistry';
 import { ProvenanceTracker } from '../src/ProvenanceTracker';
-import { ProvenanceGraph, serializeProvenanceGraph } from '../src/ProvenanceGraph';
+import {
+  ProvenanceGraph,
+  restoreProvenanceGraph,
+  serializeProvenanceGraph
+} from '../src/ProvenanceGraph';
 import { ProvenanceGraphTraverser } from '../src/ProvenanceGraphTraverser';
 import { IrreversibleAction, ReversibleAction, StateNode, ProvenanceNode } from '../src/api';
 import { isStateNode } from '../src/utils';
@@ -34,50 +38,51 @@ describe('ProvenanceGraphSerializer', () => {
   let traverser: ProvenanceGraphTraverser;
   let root: ProvenanceNode;
 
-  describe('class-based', () => {
-    class Calculator {
-      offset = 42;
+  class Calculator {
+    offset = 42;
 
-      async add(y: number) {
-        this.offset = this.offset + y;
-      }
-
-      async subtract(y: number) {
-        this.offset = this.offset - y;
-      }
-
-      async divide(y: number) {
-        this.offset = this.offset / y;
-      }
+    async add(y: number) {
+      this.offset = this.offset + y;
     }
 
-    let calculator: Calculator;
+    async subtract(y: number) {
+      this.offset = this.offset - y;
+    }
 
-    beforeEach(() => {
-      calculator = new Calculator();
-      graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' });
-      registry = new ActionFunctionRegistry();
-      registry.register('add', calculator.add, calculator);
-      registry.register('subtract', calculator.subtract, calculator);
-      registry.register('divide', calculator.divide, calculator);
-      tracker = new ProvenanceTracker(registry, graph);
-      traverser = new ProvenanceGraphTraverser(registry, graph);
-      root = graph.current;
+    async divide(y: number) {
+      this.offset = this.offset / y;
+    }
+  }
+
+  let calculator: Calculator;
+
+  beforeEach(() => {
+    calculator = new Calculator();
+    graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' });
+    registry = new ActionFunctionRegistry();
+    registry.register('add', calculator.add, calculator);
+    registry.register('subtract', calculator.subtract, calculator);
+    registry.register('divide', calculator.divide, calculator);
+    tracker = new ProvenanceTracker(registry, graph);
+    traverser = new ProvenanceGraphTraverser(registry, graph);
+    root = graph.current;
+  });
+
+  describe('Provenancegraph with three actions', () => {
+    beforeEach(async () => {
+      await tracker.applyAction(reversibleAdd13Action);
+      await traverser.toStateNode(root.id);
+      await tracker.applyAction(reversibleSub2Action);
+      await tracker.applyAction(reversibleSub2Action);
     });
 
-    describe('Branches at root', () => {
-      beforeEach(async () => {
-        await tracker.applyAction(reversibleAdd13Action);
-        await traverser.toStateNode(root.id);
-        await tracker.applyAction(reversibleSub2Action);
-        await tracker.applyAction(reversibleSub2Action);
-      });
-
-      test('Is serializable', () => {
-        const simpleObject = serializeProvenanceGraph(graph);
-        console.log(JSON.stringify(simpleObject));
-        expect(1).toBe(2);
-      });
+    it('can be serializabled without throwing', () => {
+      const serializedGraph = serializeProvenanceGraph(graph);
+      expect(typeof JSON.stringify(serializedGraph)).toEqual('string');
+    });
+    test('Can be restored', () => {
+      const restoredGraph = restoreProvenanceGraph(serializeProvenanceGraph(graph));
+      expect(serializeProvenanceGraph(restoredGraph)).toEqual(serializeProvenanceGraph(graph));
     });
   });
 });
