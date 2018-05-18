@@ -1,6 +1,6 @@
 {
   "name": "@visualstorytelling/provenance-core",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "",
   "keywords": [],
   "main": "dist/provenance-core.umd.js",
