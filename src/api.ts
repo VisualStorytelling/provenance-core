@@ -263,8 +263,10 @@ export interface IProvenanceTracker {
    * 3. Makes the created StateNode the current state node
    *
    * @param action
+   * @param skipFirstDoFunctionCall If set to true, the do-function will not be called this time,
+   *        it will only be called when traversing.
    */
-  applyAction(action: Action): Promise<StateNode>;
+  applyAction(action: Action, skipFirstDoFunctionCall: boolean): Promise<StateNode>;
 }
 
 /**
