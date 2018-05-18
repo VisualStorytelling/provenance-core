@@ -41,6 +41,8 @@ export class ProvenanceGraph implements IProvenanceGraph {
     this._current = this.root;
   }
 
+  serialize(): any {}
+
   addNode(node: ProvenanceNode): void {
     if (this.nodes[node.id]) {
       throw new Error('Node already added');
