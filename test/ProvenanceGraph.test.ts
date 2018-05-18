@@ -1,5 +1,6 @@
-import { IProvenanceGraph, RootNode, Application } from '../src/api';
+import { IProvenanceGraph, RootNode, Application, StateNode, Handler } from '../src/api';
 import { ProvenanceGraph } from '../src/ProvenanceGraph';
+import Mock = jest.Mock;
 
 const unknownUsername: string = 'Unknown';
 const expectedRootNode: RootNode = {
@@ -77,7 +78,7 @@ describe('ProvenanceGraph', () => {
 
     describe('node with non-existing id', () => {
       const someNodeId = '11111111-1111-4111-1111-111111111111';
-      let someNode;
+      let someNode: StateNode;
 
       beforeEach(() => {
         someNode = {
@@ -85,7 +86,16 @@ describe('ProvenanceGraph', () => {
           label: 'Some node',
           parent: graph.current,
           children: [],
-          artifacts: {}
+          artifacts: {},
+          action: {
+            do: 'doFunction',
+            doArguments: []
+          },
+          actionResult: {},
+          metadata: {
+            createdBy: '',
+            createdOn: 1
+          }
         };
         graph.addNode(someNode);
       });
@@ -123,6 +133,30 @@ describe('ProvenanceGraph', () => {
       expect(() => {
         graph.current = otherNode;
       }).toThrow('Node id not found');
+    });
+  });
+
+  describe('Event listener', () => {
+    let listener: Mock<Handler>;
+    beforeEach(() => {
+      listener = jest.fn();
+      const node = {
+        id: '123',
+        label: 'Some node',
+        metadata: {
+          createdBy: 'me',
+          createdOn: 123456
+        },
+        parent: null,
+        children: [],
+        artifacts: {}
+      };
+      graph.on('nodeAdded', listener);
+      graph.addNode(node);
+    });
+
+    it('should dispatch add node event', () => {
+      expect(listener).toHaveBeenCalled();
     });
   });
 });

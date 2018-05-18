@@ -1,6 +1,7 @@
 /**
  * String identifier for nodes (e.g., a generated UUID)
  */
+
 export type NodeIdentifier = string;
 
 /**
@@ -201,6 +202,8 @@ export type Application = {
   version: string;
 };
 
+export type Handler = (event?: any) => void;
+
 /**
  * Provenance graph stores the nodes, the current pointer and is bound to a specific application
  */
@@ -215,6 +218,8 @@ export interface IProvenanceGraph {
    */
   current: ProvenanceNode;
 
+  root: RootNode;
+
   /**
    * Add a new node to the provenance graph
    * @param node ProvenanceNode to add
@@ -226,6 +231,10 @@ export interface IProvenanceGraph {
    * @param id ProvenanceNode identifier
    */
   getNode(id: NodeIdentifier): ProvenanceNode;
+
+  emitNodeChangedEvent(node: ProvenanceNode): void;
+  on(type: string, handler: Handler): void;
+  off(type: string, handler: Handler): void;
 }
 
 /**
@@ -274,6 +283,8 @@ export interface IProvenanceTracker {
  * and executes the undo/redo function while moving through the graph structure.
  */
 export interface IProvenanceGraphTraverser {
+  graph: IProvenanceGraph;
+
   /**
    * Finds shortest path between current node and node with request identifer.
    * Calls the do/undo functions of actions on the path.
