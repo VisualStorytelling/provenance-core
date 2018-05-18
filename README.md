@@ -7,6 +7,8 @@ The provenance graph can be usesd as a non-linear undo graph.
 [![Coverage Status](https://coveralls.io/repos/github/VisualStorytelling/provenance-core/badge.svg?branch=master)](https://coveralls.io/github/VisualStorytelling/provenance-core?branch=master)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1248827.svg)](https://doi.org/10.5281/zenodo.1248827)
 
+API documentation at https://visualstorytelling.github.io/provenance-core/
+
 ## Example
 
 Record the actions performed on a simple calculator.
