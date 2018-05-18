@@ -96,7 +96,7 @@ export class ProvenanceGraph implements IProvenanceGraph {
   }
 }
 
-/* Beware that serializedProvenanceGraph is mutated in the process */
+/* Beware that deeply nested properties in serializedProvenanceGraph is mutated in the process */
 export function restoreProvenanceGraph(
   serializedProvenanceGraph: SerializedProvenanceGraph
 ): ProvenanceGraph {
@@ -104,7 +104,7 @@ export function restoreProvenanceGraph(
 
   // restore nodes as key value
   for (let node of serializedProvenanceGraph.nodes) {
-    nodes[node.id] = node;
+    nodes[node.id] = { ...node };
   }
 
   // restore parent/children relations
