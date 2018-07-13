@@ -973,10 +973,19 @@ img { max-width: 100%; }
 			<a href="globals.html#rootnode" class="tsd-kind-icon">Root<wbr>Node</a>
 		</li>
 		<li class=" tsd-kind-type-alias">
-			<a href="globals.html#statenode" class="tsd-kind-icon">State<wbr>Node</a>
+			<a href="globals.html#serializedprovenancegraph" class="tsd-kind-icon">Serialized<wbr>Provenance<wbr>Graph</a>
 		</li>
-		<li class=" tsd-kind-function tsd-is-not-exported">
-			<a href="globals.html#executefunctions" class="tsd-kind-icon">execute<wbr>Functions</a>
+		<li class=" tsd-kind-type-alias">
+			<a href="globals.html#serializedprovenancenode" class="tsd-kind-icon">Serialized<wbr>Provenance<wbr>Node</a>
+		</li>
+		<li class=" tsd-kind-type-alias">
+			<a href="globals.html#serializedrootnode" class="tsd-kind-icon">Serialized<wbr>Root<wbr>Node</a>
+		</li>
+		<li class=" tsd-kind-type-alias">
+			<a href="globals.html#serializedstatenode" class="tsd-kind-icon">Serialized<wbr>State<wbr>Node</a>
+		</li>
+		<li class=" tsd-kind-type-alias">
+			<a href="globals.html#statenode" class="tsd-kind-icon">State<wbr>Node</a>
 		</li>
 		<li class=" tsd-kind-function tsd-is-not-exported">
 			<a href="globals.html#findpathtotargetnode" class="tsd-kind-icon">find<wbr>Path<wbr>ToTarget<wbr>Node</a>
@@ -998,6 +1007,12 @@ img { max-width: 100%; }
 		</li>
 		<li class=" tsd-kind-function">
 			<a href="globals.html#mitt" class="tsd-kind-icon">mitt</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="globals.html#restoreprovenancegraph" class="tsd-kind-icon">restore<wbr>Provenance<wbr>Graph</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="globals.html#serializeprovenancegraph" class="tsd-kind-icon">serialize<wbr>Provenance<wbr>Graph</a>
 		</li>
 	</ul>
 </nav>
@@ -1026,7 +1041,7 @@ img { max-width: 100%; }
     <span class="hljs-keyword">async</span> add(offset) {
         <span class="hljs-keyword">this</span>.result += offset;
     }
-    <span class="hljs-keyword">async</span> substract(offset) {
+    <span class="hljs-keyword">async</span> subtract(offset) {
         <span class="hljs-keyword">this</span>.result -= offset;
     }
 }
@@ -1035,7 +1050,7 @@ img { max-width: 100%; }
     <span class="hljs-keyword">const</span> calculator = <span class="hljs-keyword">new</span> Calculator();
     <span class="hljs-keyword">const</span> registry = <span class="hljs-keyword">new</span> ActionFunctionRegistry();
     registry.register(<span class="hljs-string">'add'</span>, calculator.add, calculator);
-    registry.register(<span class="hljs-string">'substract'</span>, calculator.substract, calculator);
+    registry.register(<span class="hljs-string">'subtract'</span>, calculator.subtract, calculator);
     <span class="hljs-keyword">const</span> graph = <span class="hljs-keyword">new</span> ProvenanceGraph({name: <span class="hljs-string">'myapplication'</span>, version:<span class="hljs-string">'1.2.3'</span>});
     <span class="hljs-keyword">const</span> tracker = <span class="hljs-keyword">new</span> ProvenanceTracker(registry, graph);
     <span class="hljs-keyword">const</span> traverser = <span class="hljs-keyword">new</span> ProvenanceGraphTraverser(registry, graph);
@@ -1157,13 +1172,16 @@ semantic-release-cli setup
 							<li class="tsd-kind-type-alias"><a href="globals.html#provenancenode" class="tsd-kind-icon">Provenance<wbr>Node</a></li>
 							<li class="tsd-kind-type-alias"><a href="globals.html#reversibleaction" class="tsd-kind-icon">Reversible<wbr>Action</a></li>
 							<li class="tsd-kind-type-alias"><a href="globals.html#rootnode" class="tsd-kind-icon">Root<wbr>Node</a></li>
+							<li class="tsd-kind-type-alias"><a href="globals.html#serializedprovenancegraph" class="tsd-kind-icon">Serialized<wbr>Provenance<wbr>Graph</a></li>
+							<li class="tsd-kind-type-alias"><a href="globals.html#serializedprovenancenode" class="tsd-kind-icon">Serialized<wbr>Provenance<wbr>Node</a></li>
+							<li class="tsd-kind-type-alias"><a href="globals.html#serializedrootnode" class="tsd-kind-icon">Serialized<wbr>Root<wbr>Node</a></li>
+							<li class="tsd-kind-type-alias"><a href="globals.html#serializedstatenode" class="tsd-kind-icon">Serialized<wbr>State<wbr>Node</a></li>
 							<li class="tsd-kind-type-alias"><a href="globals.html#statenode" class="tsd-kind-icon">State<wbr>Node</a></li>
 						</ul>
 					</section>
 					<section class="tsd-index-section ">
 						<h3>Functions</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#executefunctions" class="tsd-kind-icon">execute<wbr>Functions</a></li>
 							<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#findpathtotargetnode" class="tsd-kind-icon">find<wbr>Path<wbr>ToTarget<wbr>Node</a></li>
 							<li class="tsd-kind-function"><a href="globals.html#generatetimestamp" class="tsd-kind-icon">generate<wbr>Timestamp</a></li>
 							<li class="tsd-kind-function"><a href="globals.html#generateuuid" class="tsd-kind-icon">generateUUID</a></li>
@@ -1171,6 +1189,8 @@ semantic-release-cli setup
 							<li class="tsd-kind-function"><a href="globals.html#isreversibleaction" class="tsd-kind-icon">is<wbr>Reversible<wbr>Action</a></li>
 							<li class="tsd-kind-function"><a href="globals.html#isstatenode" class="tsd-kind-icon">is<wbr>State<wbr>Node</a></li>
 							<li class="tsd-kind-function"><a href="globals.html#mitt" class="tsd-kind-icon">mitt</a></li>
+							<li class="tsd-kind-function"><a href="globals.html#restoreprovenancegraph" class="tsd-kind-icon">restore<wbr>Provenance<wbr>Graph</a></li>
+							<li class="tsd-kind-function"><a href="globals.html#serializeprovenancegraph" class="tsd-kind-icon">serialize<wbr>Provenance<wbr>Graph</a></li>
 						</ul>
 					</section>
 				</div>
@@ -1184,7 +1204,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Action<span class="tsd-signature-symbol">:</span> <a href="globals.html#irreversibleaction" class="tsd-signature-type">IrreversibleAction</a><span class="tsd-signature-symbol"> | </span><a href="globals.html#reversibleaction" class="tsd-signature-type">ReversibleAction</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L10">api.ts:10</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L10">api.ts:10</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1199,7 +1219,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Action<wbr>Function<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L173">api.ts:173</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L173">api.ts:173</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1235,7 +1255,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Action<wbr>Function<wbr>With<wbr>This<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L178">api.ts:178</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L178">api.ts:178</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1271,7 +1291,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Action<wbr>Metadata<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L15">api.ts:15</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L15">api.ts:15</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1315,7 +1335,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Application<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L193">api.ts:193</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L193">api.ts:193</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1351,7 +1371,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Artifacts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L55">api.ts:55</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L55">api.ts:55</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1379,7 +1399,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Handler<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L205">api.ts:205</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L205">api.ts:205</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -1410,7 +1430,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Irreversible<wbr>Action<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L120">api.ts:120</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L120">api.ts:120</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1455,7 +1475,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Node<wbr>Identifier<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L5">api.ts:5</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L5">api.ts:5</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1470,7 +1490,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Node<wbr>Metadata<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L35">api.ts:35</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L35">api.ts:35</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1511,61 +1531,16 @@ semantic-release-cli setup
 			<section class="tsd-panel tsd-member tsd-kind-type-alias">
 				<a name="provenancenode" class="tsd-anchor"></a>
 				<h3>Provenance<wbr>Node</h3>
-				<div class="tsd-signature tsd-kind-icon">Provenance<wbr>Node<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+				<div class="tsd-signature tsd-kind-icon">Provenance<wbr>Node<span class="tsd-signature-symbol">:</span> <a href="globals.html#rootnode" class="tsd-signature-type">RootNode</a><span class="tsd-signature-symbol"> | </span><a href="globals.html#statenode" class="tsd-signature-type">StateNode</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L65">api.ts:65</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L115">api.ts:115</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Generic node</p>
+						<p>Provenance node generic type for both root and state nodes</p>
 					</div>
-				</div>
-				<div class="tsd-type-declaration">
-					<h4>Type declaration</h4>
-					<ul class="tsd-parameters">
-						<li class="tsd-parameter">
-							<h5>artifacts<span class="tsd-signature-symbol">: </span><a href="globals.html#artifacts" class="tsd-signature-type">Artifacts</a></h5>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Artifacts</p>
-								</div>
-							</div>
-						</li>
-						<li class="tsd-parameter">
-							<h5>children<span class="tsd-signature-symbol">: </span><a href="globals.html#statenode" class="tsd-signature-type">StateNode</a><span class="tsd-signature-symbol">[]</span></h5>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Children</p>
-								</div>
-							</div>
-						</li>
-						<li class="tsd-parameter">
-							<h5>id<span class="tsd-signature-symbol">: </span><a href="globals.html#nodeidentifier" class="tsd-signature-type">NodeIdentifier</a></h5>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Node identifier</p>
-								</div>
-							</div>
-						</li>
-						<li class="tsd-parameter">
-							<h5>label<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Label</p>
-								</div>
-							</div>
-						</li>
-						<li class="tsd-parameter">
-							<h5>metadata<span class="tsd-signature-symbol">: </span><a href="globals.html#nodemetadata" class="tsd-signature-type">NodeMetadata</a></h5>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Node metadata</p>
-								</div>
-							</div>
-						</li>
-					</ul>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-type-alias">
@@ -1574,7 +1549,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Reversible<wbr>Action<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L141">api.ts:141</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L141">api.ts:141</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1633,62 +1608,158 @@ semantic-release-cli setup
 			<section class="tsd-panel tsd-member tsd-kind-type-alias">
 				<a name="rootnode" class="tsd-anchor"></a>
 				<h3>Root<wbr>Node</h3>
-				<div class="tsd-signature tsd-kind-icon">Root<wbr>Node<span class="tsd-signature-symbol">:</span> <a href="globals.html#provenancenode" class="tsd-signature-type">ProvenanceNode</a></div>
+				<div class="tsd-signature tsd-kind-icon">Root<wbr>Node<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L95">api.ts:95</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L65">api.ts:65</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Root node</p>
+						<p>Generic node</p>
 					</div>
 				</div>
+				<div class="tsd-type-declaration">
+					<h4>Type declaration</h4>
+					<ul class="tsd-parameters">
+						<li class="tsd-parameter">
+							<h5>artifacts<span class="tsd-signature-symbol">: </span><a href="globals.html#artifacts" class="tsd-signature-type">Artifacts</a></h5>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Artifacts</p>
+								</div>
+							</div>
+						</li>
+						<li class="tsd-parameter">
+							<h5>children<span class="tsd-signature-symbol">: </span><a href="globals.html#statenode" class="tsd-signature-type">StateNode</a><span class="tsd-signature-symbol">[]</span></h5>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Children</p>
+								</div>
+							</div>
+						</li>
+						<li class="tsd-parameter">
+							<h5>id<span class="tsd-signature-symbol">: </span><a href="globals.html#nodeidentifier" class="tsd-signature-type">NodeIdentifier</a></h5>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Node identifier</p>
+								</div>
+							</div>
+						</li>
+						<li class="tsd-parameter">
+							<h5>label<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Label</p>
+								</div>
+							</div>
+						</li>
+						<li class="tsd-parameter">
+							<h5>metadata<span class="tsd-signature-symbol">: </span><a href="globals.html#nodemetadata" class="tsd-signature-type">NodeMetadata</a></h5>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Node metadata</p>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-type-alias">
+				<a name="serializedprovenancegraph" class="tsd-anchor"></a>
+				<h3>Serialized<wbr>Provenance<wbr>Graph</h3>
+				<div class="tsd-signature tsd-kind-icon">Serialized<wbr>Provenance<wbr>Graph<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L321">api.ts:321</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-type-declaration">
+					<h4>Type declaration</h4>
+					<ul class="tsd-parameters">
+						<li class="tsd-parameter">
+							<h5>application<span class="tsd-signature-symbol">: </span><a href="globals.html#application" class="tsd-signature-type">Application</a></h5>
+						</li>
+						<li class="tsd-parameter">
+							<h5>current<span class="tsd-signature-symbol">: </span><a href="globals.html#nodeidentifier" class="tsd-signature-type">NodeIdentifier</a></h5>
+						</li>
+						<li class="tsd-parameter">
+							<h5>nodes<span class="tsd-signature-symbol">: </span><a href="globals.html#serializedprovenancenode" class="tsd-signature-type">SerializedProvenanceNode</a><span class="tsd-signature-symbol">[]</span></h5>
+						</li>
+						<li class="tsd-parameter">
+							<h5>root<span class="tsd-signature-symbol">: </span><a href="globals.html#nodeidentifier" class="tsd-signature-type">NodeIdentifier</a></h5>
+						</li>
+					</ul>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-type-alias">
+				<a name="serializedprovenancenode" class="tsd-anchor"></a>
+				<h3>Serialized<wbr>Provenance<wbr>Node</h3>
+				<div class="tsd-signature tsd-kind-icon">Serialized<wbr>Provenance<wbr>Node<span class="tsd-signature-symbol">:</span> <a href="globals.html#serializedstatenode" class="tsd-signature-type">SerializedStateNode</a><span class="tsd-signature-symbol"> | </span><a href="globals.html#serializedrootnode" class="tsd-signature-type">SerializedRootNode</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L339">api.ts:339</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-type-alias">
+				<a name="serializedrootnode" class="tsd-anchor"></a>
+				<h3>Serialized<wbr>Root<wbr>Node</h3>
+				<div class="tsd-signature tsd-kind-icon">Serialized<wbr>Root<wbr>Node<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L327">api.ts:327</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-type-declaration">
+					<h4>Type declaration</h4>
+					<ul class="tsd-parameters">
+						<li class="tsd-parameter">
+							<h5>artifacts<span class="tsd-signature-symbol">: </span><a href="globals.html#artifacts" class="tsd-signature-type">Artifacts</a></h5>
+						</li>
+						<li class="tsd-parameter">
+							<h5>children<span class="tsd-signature-symbol">: </span><a href="globals.html#nodeidentifier" class="tsd-signature-type">NodeIdentifier</a><span class="tsd-signature-symbol">[]</span></h5>
+						</li>
+						<li class="tsd-parameter">
+							<h5>id<span class="tsd-signature-symbol">: </span><a href="globals.html#nodeidentifier" class="tsd-signature-type">NodeIdentifier</a></h5>
+						</li>
+						<li class="tsd-parameter">
+							<h5>label<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+						</li>
+						<li class="tsd-parameter">
+							<h5>metadata<span class="tsd-signature-symbol">: </span><a href="globals.html#nodemetadata" class="tsd-signature-type">NodeMetadata</a></h5>
+						</li>
+					</ul>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-type-alias">
+				<a name="serializedstatenode" class="tsd-anchor"></a>
+				<h3>Serialized<wbr>State<wbr>Node</h3>
+				<div class="tsd-signature tsd-kind-icon">Serialized<wbr>State<wbr>Node<span class="tsd-signature-symbol">:</span> <a href="globals.html#serializedrootnode" class="tsd-signature-type">SerializedRootNode</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L334">api.ts:334</a></li>
+					</ul>
+				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-type-alias">
 				<a name="statenode" class="tsd-anchor"></a>
 				<h3>State<wbr>Node</h3>
-				<div class="tsd-signature tsd-kind-icon">State<wbr>Node<span class="tsd-signature-symbol">:</span> <a href="globals.html#provenancenode" class="tsd-signature-type">ProvenanceNode</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span></div>
+				<div class="tsd-signature tsd-kind-icon">State<wbr>Node<span class="tsd-signature-symbol">:</span> <a href="globals.html#rootnode" class="tsd-signature-type">RootNode</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L100">api.ts:100</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L95">api.ts:95</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>State node extending the ProvenanceNode</p>
+						<p>State node extending the RootNode</p>
 					</div>
 				</div>
 			</section>
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Functions</h2>
-			<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
-				<a name="executefunctions" class="tsd-anchor"></a>
-				<h3>execute<wbr>Functions</h3>
-				<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
-					<li class="tsd-signature tsd-kind-icon">execute<wbr>Functions<span class="tsd-signature-symbol">(</span>functionsToDo<span class="tsd-signature-symbol">: </span><a href="globals.html#actionfunctionwiththis" class="tsd-signature-type">ActionFunctionWithThis</a><span class="tsd-signature-symbol">[]</span>, argumentsToDo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="globals.html#statenode" class="tsd-signature-type">StateNode</a><span class="tsd-signature-symbol">&gt;</span></li>
-				</ul>
-				<ul class="tsd-descriptions">
-					<li class="tsd-description">
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/ProvenanceGraphTraverser.ts#L57">ProvenanceGraphTraverser.ts:57</a></li>
-							</ul>
-						</aside>
-						<h4 class="tsd-parameters-title">Parameters</h4>
-						<ul class="tsd-parameters">
-							<li>
-								<h5>functionsToDo: <a href="globals.html#actionfunctionwiththis" class="tsd-signature-type">ActionFunctionWithThis</a><span class="tsd-signature-symbol">[]</span></h5>
-							</li>
-							<li>
-								<h5>argumentsToDo: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
-							</li>
-						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="globals.html#statenode" class="tsd-signature-type">StateNode</a><span class="tsd-signature-symbol">&gt;</span></h4>
-					</li>
-				</ul>
-			</section>
 			<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
 				<a name="findpathtotargetnode" class="tsd-anchor"></a>
 				<h3>find<wbr>Path<wbr>ToTarget<wbr>Node</h3>
@@ -1699,7 +1770,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/ProvenanceGraphTraverser.ts#L24">ProvenanceGraphTraverser.ts:24</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/ProvenanceGraphTraverser.ts#L25">ProvenanceGraphTraverser.ts:25</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1731,7 +1802,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/utils.ts#L24">utils.ts:24</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/utils.ts#L24">utils.ts:24</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1754,7 +1825,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/utils.ts#L3">utils.ts:3</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/utils.ts#L3">utils.ts:3</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -1771,7 +1842,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/ProvenanceGraphTraverser.ts#L12">ProvenanceGraphTraverser.ts:12</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/ProvenanceGraphTraverser.ts#L13">ProvenanceGraphTraverser.ts:13</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1797,7 +1868,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/utils.ts#L41">utils.ts:41</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/utils.ts#L41">utils.ts:41</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1820,7 +1891,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/utils.ts#L37">utils.ts:37</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/utils.ts#L37">utils.ts:37</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1843,7 +1914,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/mitt.ts#L8">mitt.ts:8</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/mitt.ts#L8">mitt.ts:8</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1870,7 +1941,7 @@ semantic-release-cli setup
 									<li class="tsd-description">
 										<aside class="tsd-sources">
 											<ul>
-												<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/mitt.ts#L43">mitt.ts:43</a></li>
+												<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/mitt.ts#L43">mitt.ts:43</a></li>
 											</ul>
 										</aside>
 										<div class="tsd-comment tsd-typography">
@@ -1907,7 +1978,7 @@ semantic-release-cli setup
 									<li class="tsd-description">
 										<aside class="tsd-sources">
 											<ul>
-												<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/mitt.ts#L30">mitt.ts:30</a></li>
+												<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/mitt.ts#L30">mitt.ts:30</a></li>
 											</ul>
 										</aside>
 										<div class="tsd-comment tsd-typography">
@@ -1947,7 +2018,7 @@ semantic-release-cli setup
 									<li class="tsd-description">
 										<aside class="tsd-sources">
 											<ul>
-												<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/mitt.ts#L19">mitt.ts:19</a></li>
+												<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/mitt.ts#L19">mitt.ts:19</a></li>
 											</ul>
 										</aside>
 										<div class="tsd-comment tsd-typography">
@@ -1979,6 +2050,52 @@ semantic-release-cli setup
 									</li>
 							</ul>        </li>
 						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function">
+				<a name="restoreprovenancegraph" class="tsd-anchor"></a>
+				<h3>restore<wbr>Provenance<wbr>Graph</h3>
+				<ul class="tsd-signatures tsd-kind-function">
+					<li class="tsd-signature tsd-kind-icon">restore<wbr>Provenance<wbr>Graph<span class="tsd-signature-symbol">(</span>serializedProvenanceGraph<span class="tsd-signature-symbol">: </span><a href="globals.html#serializedprovenancegraph" class="tsd-signature-type">SerializedProvenanceGraph</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="classes/provenancegraph.html" class="tsd-signature-type">ProvenanceGraph</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/ProvenanceGraph.ts#L100">ProvenanceGraph.ts:100</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>serializedProvenanceGraph: <a href="globals.html#serializedprovenancegraph" class="tsd-signature-type">SerializedProvenanceGraph</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <a href="classes/provenancegraph.html" class="tsd-signature-type">ProvenanceGraph</a></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function">
+				<a name="serializeprovenancegraph" class="tsd-anchor"></a>
+				<h3>serialize<wbr>Provenance<wbr>Graph</h3>
+				<ul class="tsd-signatures tsd-kind-function">
+					<li class="tsd-signature tsd-kind-icon">serialize<wbr>Provenance<wbr>Graph<span class="tsd-signature-symbol">(</span>graph<span class="tsd-signature-symbol">: </span><a href="classes/provenancegraph.html" class="tsd-signature-type">ProvenanceGraph</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="globals.html#serializedprovenancegraph" class="tsd-signature-type">SerializedProvenanceGraph</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/ProvenanceGraph.ts#L127">ProvenanceGraph.ts:127</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>graph: <a href="classes/provenancegraph.html" class="tsd-signature-type">ProvenanceGraph</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <a href="globals.html#serializedprovenancegraph" class="tsd-signature-type">SerializedProvenanceGraph</a></h4>
 					</li>
 				</ul>
 			</section>

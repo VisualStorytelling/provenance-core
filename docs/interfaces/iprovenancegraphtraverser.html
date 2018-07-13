@@ -933,6 +933,9 @@ img { max-width: 100%; }
 				<li class=" tsd-kind-property tsd-parent-kind-interface">
 					<a href="iprovenancegraphtraverser.html#graph" class="tsd-kind-icon">graph</a>
 				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface">
+					<a href="iprovenancegraphtraverser.html#trackingwhentraversing" class="tsd-kind-icon">tracking<wbr>When<wbr>Traversing</a>
+				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-interface">
 					<a href="iprovenancegraphtraverser.html#tostatenode" class="tsd-kind-icon">to<wbr>State<wbr>Node</a>
 				</li>
@@ -981,10 +984,19 @@ img { max-width: 100%; }
 			<a href="../globals.html#rootnode" class="tsd-kind-icon">Root<wbr>Node</a>
 		</li>
 		<li class=" tsd-kind-type-alias">
-			<a href="../globals.html#statenode" class="tsd-kind-icon">State<wbr>Node</a>
+			<a href="../globals.html#serializedprovenancegraph" class="tsd-kind-icon">Serialized<wbr>Provenance<wbr>Graph</a>
 		</li>
-		<li class=" tsd-kind-function tsd-is-not-exported">
-			<a href="../globals.html#executefunctions" class="tsd-kind-icon">execute<wbr>Functions</a>
+		<li class=" tsd-kind-type-alias">
+			<a href="../globals.html#serializedprovenancenode" class="tsd-kind-icon">Serialized<wbr>Provenance<wbr>Node</a>
+		</li>
+		<li class=" tsd-kind-type-alias">
+			<a href="../globals.html#serializedrootnode" class="tsd-kind-icon">Serialized<wbr>Root<wbr>Node</a>
+		</li>
+		<li class=" tsd-kind-type-alias">
+			<a href="../globals.html#serializedstatenode" class="tsd-kind-icon">Serialized<wbr>State<wbr>Node</a>
+		</li>
+		<li class=" tsd-kind-type-alias">
+			<a href="../globals.html#statenode" class="tsd-kind-icon">State<wbr>Node</a>
 		</li>
 		<li class=" tsd-kind-function tsd-is-not-exported">
 			<a href="../globals.html#findpathtotargetnode" class="tsd-kind-icon">find<wbr>Path<wbr>ToTarget<wbr>Node</a>
@@ -1006,6 +1018,12 @@ img { max-width: 100%; }
 		</li>
 		<li class=" tsd-kind-function">
 			<a href="../globals.html#mitt" class="tsd-kind-icon">mitt</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="../globals.html#restoreprovenancegraph" class="tsd-kind-icon">restore<wbr>Provenance<wbr>Graph</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="../globals.html#serializeprovenancegraph" class="tsd-kind-icon">serialize<wbr>Provenance<wbr>Graph</a>
 		</li>
 	</ul>
 </nav>
@@ -1041,6 +1059,7 @@ img { max-width: 100%; }
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iprovenancegraphtraverser.html#graph" class="tsd-kind-icon">graph</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iprovenancegraphtraverser.html#trackingwhentraversing" class="tsd-kind-icon">tracking<wbr>When<wbr>Traversing</a></li>
 						</ul>
 					</section>
 					<section class="tsd-index-section ">
@@ -1060,9 +1079,29 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">graph<span class="tsd-signature-symbol">:</span> <a href="iprovenancegraph.html" class="tsd-signature-type">IProvenanceGraph</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L298">api.ts:298</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L310">api.ts:310</a></li>
 					</ul>
 				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="trackingwhentraversing" class="tsd-anchor"></a>
+				<h3>tracking<wbr>When<wbr>Traversing</h3>
+				<div class="tsd-signature tsd-kind-icon">tracking<wbr>When<wbr>Traversing<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L308">api.ts:308</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>trackingWhenTraversing === false disables tracking when traversing to prevent feedback.
+							When applying an action, the object we&#39;re tracking might trigger its event listeners. This
+							means that more Nodes are added to the ProvenanceGraph when traversing, which is most likely
+						unwanted behaviour.</p>
+					</div>
+					<p>It will enable/disable immediately before/after calling the action. So if the event is emitted
+					asynchronously after the action, it will not work.</p>
+				</div>
 			</section>
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
@@ -1077,7 +1116,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L306">api.ts:306</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L318">api.ts:318</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">

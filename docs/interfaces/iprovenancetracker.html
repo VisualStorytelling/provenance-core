@@ -934,6 +934,9 @@ img { max-width: 100%; }
 			<a href="iprovenancetracker.html" class="tsd-kind-icon">IProvenance<wbr>Tracker</a>
 			<ul>
 				<li class=" tsd-kind-property tsd-parent-kind-interface">
+					<a href="iprovenancetracker.html#acceptactions" class="tsd-kind-icon">accept<wbr>Actions</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface">
 					<a href="iprovenancetracker.html#registry" class="tsd-kind-icon">registry</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-interface">
@@ -981,10 +984,19 @@ img { max-width: 100%; }
 			<a href="../globals.html#rootnode" class="tsd-kind-icon">Root<wbr>Node</a>
 		</li>
 		<li class=" tsd-kind-type-alias">
-			<a href="../globals.html#statenode" class="tsd-kind-icon">State<wbr>Node</a>
+			<a href="../globals.html#serializedprovenancegraph" class="tsd-kind-icon">Serialized<wbr>Provenance<wbr>Graph</a>
 		</li>
-		<li class=" tsd-kind-function tsd-is-not-exported">
-			<a href="../globals.html#executefunctions" class="tsd-kind-icon">execute<wbr>Functions</a>
+		<li class=" tsd-kind-type-alias">
+			<a href="../globals.html#serializedprovenancenode" class="tsd-kind-icon">Serialized<wbr>Provenance<wbr>Node</a>
+		</li>
+		<li class=" tsd-kind-type-alias">
+			<a href="../globals.html#serializedrootnode" class="tsd-kind-icon">Serialized<wbr>Root<wbr>Node</a>
+		</li>
+		<li class=" tsd-kind-type-alias">
+			<a href="../globals.html#serializedstatenode" class="tsd-kind-icon">Serialized<wbr>State<wbr>Node</a>
+		</li>
+		<li class=" tsd-kind-type-alias">
+			<a href="../globals.html#statenode" class="tsd-kind-icon">State<wbr>Node</a>
 		</li>
 		<li class=" tsd-kind-function tsd-is-not-exported">
 			<a href="../globals.html#findpathtotargetnode" class="tsd-kind-icon">find<wbr>Path<wbr>ToTarget<wbr>Node</a>
@@ -1006,6 +1018,12 @@ img { max-width: 100%; }
 		</li>
 		<li class=" tsd-kind-function">
 			<a href="../globals.html#mitt" class="tsd-kind-icon">mitt</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="../globals.html#restoreprovenancegraph" class="tsd-kind-icon">restore<wbr>Provenance<wbr>Graph</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="../globals.html#serializeprovenancegraph" class="tsd-kind-icon">serialize<wbr>Provenance<wbr>Graph</a>
 		</li>
 	</ul>
 </nav>
@@ -1040,6 +1058,7 @@ img { max-width: 100%; }
 					<section class="tsd-index-section ">
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iprovenancetracker.html#acceptactions" class="tsd-kind-icon">accept<wbr>Actions</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iprovenancetracker.html#registry" class="tsd-kind-icon">registry</a></li>
 						</ul>
 					</section>
@@ -1055,12 +1074,27 @@ img { max-width: 100%; }
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Properties</h2>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="acceptactions" class="tsd-anchor"></a>
+				<h3>accept<wbr>Actions</h3>
+				<div class="tsd-signature tsd-kind-icon">accept<wbr>Actions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L276">api.ts:276</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>When acceptActions is false, the Tracker will ignore calls to applyAction</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 				<a name="registry" class="tsd-anchor"></a>
 				<h3>registry</h3>
 				<div class="tsd-signature tsd-kind-icon">registry<span class="tsd-signature-symbol">:</span> <a href="iactionfunctionregistry.html" class="tsd-signature-type">IActionFunctionRegistry</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L276">api.ts:276</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L280">api.ts:280</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1082,7 +1116,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/b95e77d/src/api.ts#L287">api.ts:287</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/2af2891/src/api.ts#L291">api.ts:291</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
