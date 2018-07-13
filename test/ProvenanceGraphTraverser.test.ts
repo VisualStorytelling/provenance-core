@@ -221,3 +221,59 @@ describe('ProvenanceGraphTraverser', () => {
     });
   });
 });
+
+describe('noTrackingWhenTraversing', () => {
+  /**
+   * test prevention of feedback loops (triggering action trigger event listener) using
+   * noTrackingWhenTraversing setting
+   */
+  let graph: ProvenanceGraph;
+  let tracker: ProvenanceTracker;
+  let registry: ActionFunctionRegistry;
+  let traverser: ProvenanceGraphTraverser;
+  let root: ProvenanceNode;
+  let onDoAction: any;
+  let doAction: any;
+
+  beforeEach(() => {
+    graph = new ProvenanceGraph({ name: 'noTrackingWhenTraversingTest', version: '1.0.0' });
+    registry = new ActionFunctionRegistry();
+    tracker = new ProvenanceTracker(registry, graph);
+    traverser = new ProvenanceGraphTraverser(registry, graph, tracker);
+
+    onDoAction = (val: any) => {
+      tracker.applyAction(
+        {
+          do: 'doAction',
+          doArguments: ['someArgument'],
+          undo: 'doAction',
+          undoArguments: ['someUndoArgument']
+        },
+        true
+      );
+    };
+    doAction = (val: any) => {
+      onDoAction(val);
+    };
+
+    registry.register('doAction', () => Promise.resolve(doAction()));
+
+    root = graph.current;
+  });
+
+  test('creating action and traversing back with trackingWhenTraversing adds a node', async () => {
+    traverser.trackingWhenTraversing = true;
+    await doAction();
+    expect(Object.keys(graph.nodes).length).toBe(2);
+    await traverser.toStateNode(root.id);
+    expect(Object.keys(graph.nodes).length).toBe(3);
+  });
+
+  test('disabling trackingWhenTraversing should not add node when traversing', async () => {
+    traverser.trackingWhenTraversing = false;
+    await doAction();
+    expect(Object.keys(graph.nodes).length).toBe(2);
+    await traverser.toStateNode(root.id);
+    expect(Object.keys(graph.nodes).length).toBe(2);
+  });
+});

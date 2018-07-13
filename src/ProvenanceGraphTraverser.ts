@@ -5,7 +5,8 @@ import {
   IActionFunctionRegistry,
   IProvenanceGraph,
   NodeIdentifier,
-  ActionFunctionWithThis
+  ActionFunctionWithThis,
+  IProvenanceTracker
 } from './api';
 import { isReversibleAction, isStateNode } from './utils';
 
@@ -54,25 +55,49 @@ function findPathToTargetNode(
   return false;
 }
 
-async function executeFunctions(
-  functionsToDo: ActionFunctionWithThis[],
-  argumentsToDo: any[]
-): Promise<StateNode> {
-  let result;
-  for (let i = 0; i < functionsToDo.length; i++) {
-    let funcWithThis = functionsToDo[i];
-    result = await funcWithThis.func.apply(funcWithThis.thisArg, argumentsToDo[i]);
-  }
-  return result;
-}
-
 export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
   public graph: IProvenanceGraph;
+  public tracker: IProvenanceTracker | null;
+  /**
+   * trackingWhenTraversing === false disables tracking when traversing to prevent feedback.
+   * When applying an action, the object we're tracking might trigger its event listeners. This
+   * means that more Nodes are added to the ProvenanceGraph when traversing, which is most likely
+   * unwanted behaviour.
+   *
+   * It will enable/disable immediately before/after calling the action. So if the event is emitted
+   * asynchronously after the action, it will not work.
+   */
+  public trackingWhenTraversing: boolean = false;
   private registry: IActionFunctionRegistry;
 
-  constructor(registry: IActionFunctionRegistry, graph: IProvenanceGraph) {
+  constructor(
+    registry: IActionFunctionRegistry,
+    graph: IProvenanceGraph,
+    tracker: IProvenanceTracker | null = null
+  ) {
     this.registry = registry;
     this.graph = graph;
+    this.tracker = tracker;
+  }
+
+  async executeFunctions(
+    functionsToDo: ActionFunctionWithThis[],
+    argumentsToDo: any[]
+  ): Promise<StateNode> {
+    let result;
+    for (let i = 0; i < functionsToDo.length; i++) {
+      let funcWithThis = functionsToDo[i];
+      let promise: any;
+      if (this.tracker && this.tracker.acceptActions && !this.trackingWhenTraversing) {
+        this.tracker.acceptActions = false;
+        promise = funcWithThis.func.apply(funcWithThis.thisArg, argumentsToDo[i]);
+        this.tracker.acceptActions = true;
+      } else {
+        promise = funcWithThis.func.apply(funcWithThis.thisArg, argumentsToDo[i]);
+      }
+      result = await promise;
+    }
+    return result;
   }
 
   /**
@@ -99,8 +124,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
     }
 
     const { functionsToDo, argumentsToDo } = this.getFunctionsAndArgsFromTrack(trackToTarget);
-
-    const result = await executeFunctions(functionsToDo, argumentsToDo);
+    const result = await this.executeFunctions(functionsToDo, argumentsToDo);
     this.graph.current = targetNode;
     return result;
   }

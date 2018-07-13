@@ -5,7 +5,8 @@ import {
   IActionFunctionRegistry,
   IProvenanceGraph,
   ActionFunctionWithThis,
-  ProvenanceNode
+  ProvenanceNode,
+  RootNode
 } from './api';
 import { generateUUID, generateTimestamp } from './utils';
 
@@ -18,6 +19,11 @@ import { generateUUID, generateTimestamp } from './utils';
  */
 export class ProvenanceTracker implements IProvenanceTracker {
   registry: IActionFunctionRegistry;
+
+  /**
+   * When acceptActions is false, the Tracker will ignore calls to applyAction
+   */
+  public acceptActions: boolean = true;
 
   private graph: IProvenanceGraph;
   private username: string;
@@ -40,6 +46,10 @@ export class ProvenanceTracker implements IProvenanceTracker {
    *        it will only be called when traversing.
    */
   async applyAction(action: Action, skipFirstDoFunctionCall: boolean = false): Promise<StateNode> {
+    if (!this.acceptActions) {
+      return Promise.resolve(this.graph.current as StateNode);
+    }
+
     const createNewStateNode = (parentNode: ProvenanceNode, actionResult: any): StateNode => ({
       id: generateUUID(),
       label: action.do,

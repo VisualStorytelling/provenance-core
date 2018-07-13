@@ -271,6 +271,10 @@ export interface IActionFunctionRegistry {
  */
 export interface IProvenanceTracker {
   /**
+   * When acceptActions is false, the Tracker will ignore calls to applyAction
+   */
+  acceptActions: boolean;
+  /**
    * Action function registry
    */
   registry: IActionFunctionRegistry;
@@ -292,6 +296,17 @@ export interface IProvenanceTracker {
  * and executes the undo/redo function while moving through the graph structure.
  */
 export interface IProvenanceGraphTraverser {
+  /**
+   * trackingWhenTraversing === false disables tracking when traversing to prevent feedback.
+   * When applying an action, the object we're tracking might trigger its event listeners. This
+   * means that more Nodes are added to the ProvenanceGraph when traversing, which is most likely
+   * unwanted behaviour.
+   *
+   * It will enable/disable immediately before/after calling the action. So if the event is emitted
+   * asynchronously after the action, it will not work.
+   */
+  trackingWhenTraversing: boolean;
+
   graph: IProvenanceGraph;
 
   /**
