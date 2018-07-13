@@ -27,7 +27,7 @@ class Calculator {
     async add(offset) {
         this.result += offset;
     }
-    async substract(offset) {
+    async subtract(offset) {
         this.result -= offset;
     }
 }
@@ -36,7 +36,7 @@ async function runme() {
     const calculator = new Calculator();
     const registry = new ActionFunctionRegistry();
     registry.register('add', calculator.add, calculator);
-    registry.register('substract', calculator.substract, calculator);
+    registry.register('subtract', calculator.subtract, calculator);
     const graph = new ProvenanceGraph({name: 'myapplication', version:'1.2.3'});
     const tracker = new ProvenanceTracker(registry, graph);
     const traverser = new ProvenanceGraphTraverser(registry, graph);
