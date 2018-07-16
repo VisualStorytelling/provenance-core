@@ -10,7 +10,9 @@ The provenance graph can be used as a non-linear undo graph.
 API documentation at https://visualstorytelling.github.io/provenance-core/
 
 ## What does it do?
-`provenance-core` is designed to record and replay user interaction in web applications. Furthermore the aim is to provide tools around it to recombine this interaction history data into slides / stories (see e.g. [@visualstorytelling/provenance-tree-visualization](https://github.com/VisualStorytelling/provenance-tree-visualization) and [@visualstorytelling/slide-deck-visualization](https://github.com/VisualStorytelling/slide-deck-visualization). For a simple demo, see: [provenance-tree-calculator-demo](https://visualstorytelling.github.io/provenance-tree-calculator-demo/).
+`provenance-core` is designed to record and replay user interaction in web applications. Furthermore the aim is to provide tools around it to recombine this interaction history data into slides / stories (see e.g. [@visualstorytelling/provenance-tree-visualization](https://github.com/VisualStorytelling/provenance-tree-visualization) and [@visualstorytelling/slide-deck-visualization](https://github.com/VisualStorytelling/slide-deck-visualization).
+
+For a simple demo, see: [provenance-tree-calculator-demo](https://visualstorytelling.github.io/provenance-tree-calculator-demo/).
 
 ## How to use it?
 If `provenance-core` is to track the provenance in your application you will need to provide it with user actions. This probably means hooking up your event emitters to a [ProvenanceGraph](https://visualstorytelling.github.io/provenance-core/classes/provenancegraph.html) through a [ProvenanceTracker](https://visualstorytelling.github.io/provenance-core/classes/provenancetracker.html).
