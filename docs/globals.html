@@ -1048,12 +1048,22 @@ img { max-width: 100%; }
 		<div class="tsd-panel tsd-typography">
 			<h1 id="provenance-core">Provenance core</h1>
 			<p>Javascript library to create and manipulate a provenance graph.
-			The provenance graph can be usesd as a non-linear undo graph.</p>
+			The provenance graph can be used as a non-linear undo graph.</p>
 			<p><a href="https://travis-ci.org/VisualStorytelling/provenance-core"><img src="https://travis-ci.org/VisualStorytelling/provenance-core.svg?branch=master" alt="Build Status"></a>
 				<a href="https://coveralls.io/github/VisualStorytelling/provenance-core?branch=master"><img src="https://coveralls.io/repos/github/VisualStorytelling/provenance-core/badge.svg?branch=master" alt="Coverage Status"></a>
 			<a href="https://doi.org/10.5281/zenodo.1248827"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1248827.svg" alt="DOI"></a></p>
 			<p>API documentation at <a href="https://visualstorytelling.github.io/provenance-core/">https://visualstorytelling.github.io/provenance-core/</a></p>
-			<h2 id="example">Example</h2>
+			<h2 id="what-does-it-do-">What does it do?</h2>
+			<p><code>provenance-core</code> is designed to record and replay user interaction in web applications. Furthermore the aim is to provide tools around it to recombine this interaction history data into slides / stories (see e.g. <a href="https://github.com/VisualStorytelling/provenance-tree-visualization">@visualstorytelling/provenance-tree-visualization</a> and <a href="https://github.com/VisualStorytelling/slide-deck-visualization">@visualstorytelling/slide-deck-visualization</a>.</p>
+			<p>For a simple demo, see: <a href="https://visualstorytelling.github.io/provenance-tree-calculator-demo/">provenance-tree-calculator-demo</a>.</p>
+			<h2 id="how-to-use-it-">How to use it?</h2>
+			<p>If <code>provenance-core</code> is to track the provenance in your application you will need to provide it with user actions. This probably means hooking up your event emitters to a <a href="https://visualstorytelling.github.io/provenance-core/classes/provenancegraph.html">ProvenanceGraph</a> through a <a href="https://visualstorytelling.github.io/provenance-core/classes/provenancetracker.html">ProvenanceTracker</a>.
+				By applying <a href="https://visualstorytelling.github.io/provenance-core/globals.html#reversibleaction">Actions</a> that are mapped to <code>ActionFunctions</code> in an <a href="https://visualstorytelling.github.io/provenance-core/classes/actionfunctionregistry.html">ActionFunctionRegistry</a>, we can build a serializable graph that can undo and replay all actions.
+			<a href="https://visualstorytelling.github.io/provenance-core/classes/provenancegraphtraverser.html">ProvenanceTraverser</a> can then be used to go back and forward to any previous/future state: it will figure out the path through the graph and execute all the actions to get to the target <a href="https://visualstorytelling.github.io/provenance-core/globals.html#provenancenode">Node</a>.</p>
+			<p><code>ProvenanceGraph</code>s can be (de-)serialized using <a href="https://visualstorytelling.github.io/provenance-core/globals.html#serializeprovenancegraph">serializeProvenanceGraph()</a> and <a href="https://visualstorytelling.github.io/provenance-core/globals.html#restoreprovenancegraph">restoreProvenanceGraph()</a> so that they can be stored and retrieved.</p>
+			<h3 id="example-1">Example 1</h3>
+			<p>For a simple example on how to track provenance (in this case, of a basic button) see <a href="https://jsfiddle.net/5e67pxbL/43/">this JSFiddle</a></p>
+			<h3 id="example-2">Example 2</h3>
 			<p>Record the actions performed on a simple calculator.
 			Traverse undo graph to any point will undo/redo all actions to get to that point.</p>
 			<pre><code class="lang-ts"><span class="hljs-keyword">import</span> {
@@ -1099,6 +1109,17 @@ img { max-width: 100%; }
 }
 runme();
 </code></pre>
+			<h2 id="slides-presentations">Slides / presentations</h2>
+			<ul>
+				<li><a href="https://visualstorytelling.github.io/provenance-core/classes/provenanceslide.html">ProvenanceSlide</a></li>
+				<li><a href="https://visualstorytelling.github.io/provenance-core/classes/provenanceslidedeck.html">ProvenanceSlidedeck</a></li>
+				<li><a href="https://visualstorytelling.github.io/provenance-core/classes/provenanceslidedeck.html">ProvenanceSlidedeckPlayer</a></li>
+			</ul>
+			<h2 id="user-interface">User interface</h2>
+			<ul>
+				<li><a href="https://github.com/VisualStorytelling/provenance-tree-visualization">ProvenanceTreeVisualization</a>: A user interface based on <code>d3</code> for displaying / navigating through the graph.</li>
+				<li><a href="https://github.com/VisualStorytelling/slidedeck-visualization">SlidedeckVisualization</a>: A user interface based on <code>d3</code> for creating presentation slide decks / stories.</li>
+			</ul>
 			<h2 id="install">Install</h2>
 			<pre><code><span class="hljs-selector-tag">npm</span> <span class="hljs-selector-tag">install</span> @<span class="hljs-keyword">visualstorytelling</span>/<span class="hljs-keyword">provenance</span>-<span class="hljs-keyword">core</span>
 </code></pre><h3 id="develop">Develop</h3>
@@ -1245,7 +1266,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Action<span class="tsd-signature-symbol">:</span> <a href="globals.html#irreversibleaction" class="tsd-signature-type">IrreversibleAction</a><span class="tsd-signature-symbol"> | </span><a href="globals.html#reversibleaction" class="tsd-signature-type">ReversibleAction</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L10">api.ts:10</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L10">api.ts:10</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1260,7 +1281,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Action<wbr>Function<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L173">api.ts:173</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L173">api.ts:173</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1296,7 +1317,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Action<wbr>Function<wbr>With<wbr>This<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L178">api.ts:178</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L178">api.ts:178</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1332,7 +1353,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Action<wbr>Metadata<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L15">api.ts:15</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L15">api.ts:15</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1376,7 +1397,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Annotation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L341">api.ts:341</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L341">api.ts:341</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1386,7 +1407,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Application<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L193">api.ts:193</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L193">api.ts:193</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1422,7 +1443,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Artifacts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L55">api.ts:55</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L55">api.ts:55</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1450,7 +1471,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Handler<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L205">api.ts:205</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L205">api.ts:205</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -1481,7 +1502,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Irreversible<wbr>Action<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L120">api.ts:120</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L120">api.ts:120</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1526,7 +1547,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Node<wbr>Identifier<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L5">api.ts:5</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L5">api.ts:5</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1541,7 +1562,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Node<wbr>Metadata<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L35">api.ts:35</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L35">api.ts:35</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1585,7 +1606,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Provenance<wbr>Node<span class="tsd-signature-symbol">:</span> <a href="globals.html#rootnode" class="tsd-signature-type">RootNode</a><span class="tsd-signature-symbol"> | </span><a href="globals.html#statenode" class="tsd-signature-type">StateNode</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L115">api.ts:115</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L115">api.ts:115</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1600,7 +1621,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Reversible<wbr>Action<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L141">api.ts:141</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L141">api.ts:141</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1662,7 +1683,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Root<wbr>Node<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L65">api.ts:65</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L65">api.ts:65</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1722,7 +1743,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Serialized<wbr>Provenance<wbr>Graph<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L321">api.ts:321</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L321">api.ts:321</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -1749,7 +1770,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Serialized<wbr>Provenance<wbr>Node<span class="tsd-signature-symbol">:</span> <a href="globals.html#serializedstatenode" class="tsd-signature-type">SerializedStateNode</a><span class="tsd-signature-symbol"> | </span><a href="globals.html#serializedrootnode" class="tsd-signature-type">SerializedRootNode</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L339">api.ts:339</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L339">api.ts:339</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1759,7 +1780,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Serialized<wbr>Root<wbr>Node<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L327">api.ts:327</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L327">api.ts:327</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -1789,7 +1810,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">Serialized<wbr>State<wbr>Node<span class="tsd-signature-symbol">:</span> <a href="globals.html#serializedrootnode" class="tsd-signature-type">SerializedRootNode</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L334">api.ts:334</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L334">api.ts:334</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1799,7 +1820,7 @@ semantic-release-cli setup
 				<div class="tsd-signature tsd-kind-icon">State<wbr>Node<span class="tsd-signature-symbol">:</span> <a href="globals.html#rootnode" class="tsd-signature-type">RootNode</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/api.ts#L95">api.ts:95</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/api.ts#L95">api.ts:95</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1821,7 +1842,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/ProvenanceGraphTraverser.ts#L25">ProvenanceGraphTraverser.ts:25</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/ProvenanceGraphTraverser.ts#L25">ProvenanceGraphTraverser.ts:25</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1853,7 +1874,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/utils.ts#L24">utils.ts:24</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/utils.ts#L24">utils.ts:24</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1876,7 +1897,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/utils.ts#L3">utils.ts:3</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/utils.ts#L3">utils.ts:3</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -1893,7 +1914,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/ProvenanceGraphTraverser.ts#L13">ProvenanceGraphTraverser.ts:13</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/ProvenanceGraphTraverser.ts#L13">ProvenanceGraphTraverser.ts:13</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1919,7 +1940,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/utils.ts#L41">utils.ts:41</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/utils.ts#L41">utils.ts:41</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1942,7 +1963,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/utils.ts#L37">utils.ts:37</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/utils.ts#L37">utils.ts:37</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1965,7 +1986,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/mitt.ts#L8">mitt.ts:8</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/mitt.ts#L8">mitt.ts:8</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1992,7 +2013,7 @@ semantic-release-cli setup
 									<li class="tsd-description">
 										<aside class="tsd-sources">
 											<ul>
-												<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/mitt.ts#L43">mitt.ts:43</a></li>
+												<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/mitt.ts#L43">mitt.ts:43</a></li>
 											</ul>
 										</aside>
 										<div class="tsd-comment tsd-typography">
@@ -2029,7 +2050,7 @@ semantic-release-cli setup
 									<li class="tsd-description">
 										<aside class="tsd-sources">
 											<ul>
-												<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/mitt.ts#L30">mitt.ts:30</a></li>
+												<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/mitt.ts#L30">mitt.ts:30</a></li>
 											</ul>
 										</aside>
 										<div class="tsd-comment tsd-typography">
@@ -2069,7 +2090,7 @@ semantic-release-cli setup
 									<li class="tsd-description">
 										<aside class="tsd-sources">
 											<ul>
-												<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/mitt.ts#L19">mitt.ts:19</a></li>
+												<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/mitt.ts#L19">mitt.ts:19</a></li>
 											</ul>
 										</aside>
 										<div class="tsd-comment tsd-typography">
@@ -2114,7 +2135,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/ProvenanceGraph.ts#L100">ProvenanceGraph.ts:100</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/ProvenanceGraph.ts#L100">ProvenanceGraph.ts:100</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2137,7 +2158,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/ProvenanceGraph.ts#L127">ProvenanceGraph.ts:127</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/ProvenanceGraph.ts#L127">ProvenanceGraph.ts:127</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2160,7 +2181,7 @@ semantic-release-cli setup
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/cf91499/src/ProvenanceSlidedeckPlayer.ts#L11">ProvenanceSlidedeckPlayer.ts:11</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/LinzHackathon/blob/9fd4720/src/ProvenanceSlidedeckPlayer.ts#L11">ProvenanceSlidedeckPlayer.ts:11</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
