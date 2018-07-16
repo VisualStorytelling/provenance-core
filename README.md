@@ -1,7 +1,7 @@
 # Provenance core
 
 Javascript library to create and manipulate a provenance graph.
-The provenance graph can be usesd as a non-linear undo graph.
+The provenance graph can be used as a non-linear undo graph.
 
 [![Build Status](https://travis-ci.org/VisualStorytelling/provenance-core.svg?branch=master)](https://travis-ci.org/VisualStorytelling/provenance-core)
 [![Coverage Status](https://coveralls.io/repos/github/VisualStorytelling/provenance-core/badge.svg?branch=master)](https://coveralls.io/github/VisualStorytelling/provenance-core?branch=master)
@@ -9,8 +9,18 @@ The provenance graph can be usesd as a non-linear undo graph.
 
 API documentation at https://visualstorytelling.github.io/provenance-core/
 
-## Example
+## What does it do?
+`provenance-core` is designed to record and replay user interaction in web applications. Furthermore the aim is to provide tools around it to recombine this interaction history data into slides / stories (see e.g. [@visualstorytelling/provenance-tree-visualization](https://github.com/VisualStorytelling/provenance-tree-visualization) and [@visualstorytelling/slide-deck-visualization](https://github.com/VisualStorytelling/slide-deck-visualization). For a simple demo, see: [provenance-tree-calculator-demo](https://visualstorytelling.github.io/provenance-tree-calculator-demo/).
 
+## How to use it?
+If `provenance-core` is to track the provenance in your application you will need to provide it with user actions. This probably means hooking up your event emitters to a [ProvenanceGraph](https://visualstorytelling.github.io/provenance-core/classes/provenancegraph.html) through a [ProvenanceTracker](https://visualstorytelling.github.io/provenance-core/classes/provenancetracker.html). `ProvenanceTracker` needs to know how to replay (and optionally: undo) an action through serializable [Actions](https://visualstorytelling.github.io/provenance-core/globals.html#reversibleaction) registered in an [ActionFunctionRegistry](https://visualstorytelling.github.io/provenance-core/classes/actionfunctionregistry.html).
+[ProvenanceTraverser](https://visualstorytelling.github.io/provenance-core/classes/provenancegraphtraverser.html) can then be used to go back and forward to any previous/future state: it will figure out the path through the graph and execute all the actions to get to the target [Node](https://visualstorytelling.github.io/provenance-core/globals.html#provenancenode).
+`ProvenanceGraph`s can be (de-)serialized using [https://visualstorytelling.github.io/provenance-core/globals.html#serializeprovenancegraph](serializeProvenanceGraph()) and [https://visualstorytelling.github.io/provenance-core/globals.html#restoreprovenancegraph](restoreProvenanceGraph()) so that they can be stored and retrieved.
+
+## Example 1
+For a simple example on how to track provenance (in this case, of a basic button) see [this JSFiddle](https://jsfiddle.net/5e67pxbL/43/)
+
+## Example 2
 Record the actions performed on a simple calculator.
 Traverse undo graph to any point will undo/redo all actions to get to that point.
 
