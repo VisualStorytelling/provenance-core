@@ -64,6 +64,15 @@ describe('ProvenanceTreeSlidedeck', () => {
     expect(player).toBeTruthy();
   });
 
+  it('has slides', () => {
+    expect(player.slides).toHaveLength(3);
+  });
+
+  it('can set active slide', () => {
+    player.setSlideIndex(1);
+    expect(player.slides[player.currentSlideIndex]).toBe(slide2);
+  });
+
   it('can play', async () => {
     expect(player.status).toEqual(STATUS.IDLE);
     player.play();
@@ -75,5 +84,18 @@ describe('ProvenanceTreeSlidedeck', () => {
     expect(player.currentSlideIndex).toEqual(2);
     await wait(slide3.duration);
     expect(player.status).toEqual(STATUS.IDLE);
+  });
+
+  it('can be stopped', async () => {
+    player.play();
+    expect(player.currentSlideIndex).toEqual(0);
+    await wait(slide1.duration);
+    expect(player.currentSlideIndex).toEqual(1);
+    player.stop();
+    expect(player.status).toEqual(STATUS.IDLE);
+    await wait(slide2.duration);
+    expect(player.currentSlideIndex).toEqual(1);
+    await wait(slide3.duration);
+    expect(player.currentSlideIndex).toEqual(1);
   });
 });
