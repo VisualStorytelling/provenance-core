@@ -17,10 +17,10 @@ If `provenance-core` is to track the provenance in your application you will nee
 [ProvenanceTraverser](https://visualstorytelling.github.io/provenance-core/classes/provenancegraphtraverser.html) can then be used to go back and forward to any previous/future state: it will figure out the path through the graph and execute all the actions to get to the target [Node](https://visualstorytelling.github.io/provenance-core/globals.html#provenancenode).
 `ProvenanceGraph`s can be (de-)serialized using [serializeProvenanceGraph()](https://visualstorytelling.github.io/provenance-core/globals.html#serializeprovenancegraph) and [restoreProvenanceGraph()](https://visualstorytelling.github.io/provenance-core/globals.html#restoreprovenancegraph) so that they can be stored and retrieved.
 
-## Example 1
+### Example 1
 For a simple example on how to track provenance (in this case, of a basic button) see [this JSFiddle](https://jsfiddle.net/5e67pxbL/43/)
 
-## Example 2
+### Example 2
 Record the actions performed on a simple calculator.
 Traverse undo graph to any point will undo/redo all actions to get to that point.
 
@@ -68,6 +68,15 @@ async function runme() {
 }
 runme();
 ```
+
+## Slides / presentations
+- [ProvenanceSlide](https://visualstorytelling.github.io/provenance-core/classes/provenanceslide.html)
+- [ProvenanceSlidedeck](https://visualstorytelling.github.io/provenance-core/classes/provenanceslidedeck.html)
+- [ProvenanceSlidedeckPlayer](https://visualstorytelling.github.io/provenance-core/classes/provenanceslidedeck.html)
+
+## User interface
+- [ProvenanceTreeVisualization](https://github.com/VisualStorytelling/provenance-tree-visualization): A user interface based on `d3` for displaying / navigating through the graph.
+- [SlidedeckVisualization](https://github.com/VisualStorytelling/slidedeck-visualization): A user interface based on `d3` for creating presentation slide decks / stories.
 
 ## Install
 
