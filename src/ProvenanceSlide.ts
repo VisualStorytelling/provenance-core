@@ -1,5 +1,7 @@
-import { IProvenanceSlide, Annotation, ProvenanceNode } from './api';
+import { IProvenanceSlide, ProvenanceNode, Handler } from './api';
 import { generateUUID } from './utils';
+import { SlideAnnotation } from './SlideAnnotation';
+import mitt from './mitt';
 
 export class ProvenanceSlide implements IProvenanceSlide {
   private _id: string;
@@ -7,13 +9,14 @@ export class ProvenanceSlide implements IProvenanceSlide {
   private _name: string;
   private _duration: number;
   private _delay: number;
-  private _annotations: Annotation[];
+  private _annotations: SlideAnnotation[];
+  private _mitt: any;
 
   constructor(
     name: string,
     duration: number,
     delay: number,
-    annotations: Annotation[] = [],
+    annotations: SlideAnnotation[] = [],
     node: ProvenanceNode | null = null
   ) {
     this._id = generateUUID();
@@ -22,6 +25,7 @@ export class ProvenanceSlide implements IProvenanceSlide {
     this._delay = delay;
     this._annotations = annotations;
     this._node = node;
+    this._mitt = mitt();
   }
 
   public get id(): string {
@@ -60,16 +64,26 @@ export class ProvenanceSlide implements IProvenanceSlide {
     this._delay = value;
   }
 
-  public addAnnotation(annotation: Annotation) {
+  public addAnnotation(annotation: SlideAnnotation) {
     this._annotations.push(annotation);
+    this._mitt.emit('addAnnotation', annotation);
   }
 
-  public removeAnnotation(annotation: Annotation) {
+  public removeAnnotation(annotation: SlideAnnotation) {
     const index = this._annotations.indexOf(annotation);
     this._annotations.splice(index, 1);
+    this._mitt.emit('removeAnnotation', annotation);
   }
 
   public get annotations() {
     return this._annotations;
+  }
+
+  public on(type: string, handler: Handler) {
+    this._mitt.on(type, handler);
+  }
+
+  public off(type: string, handler: Handler) {
+    this._mitt.off(type, handler);
   }
 }

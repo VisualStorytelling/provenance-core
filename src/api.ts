@@ -338,7 +338,13 @@ export type SerializedStateNode = SerializedRootNode & {
 };
 export type SerializedProvenanceNode = SerializedStateNode | SerializedRootNode;
 
-export type Annotation = any;
+export interface ISlideAnnotation {
+  id: string;
+  data: any;
+
+  on(type: string, handler: Handler): any;
+  off(type: string, handler: Handler): any;
+}
 
 export interface IProvenanceSlide {
   id: string;
@@ -346,10 +352,10 @@ export interface IProvenanceSlide {
   name: string;
   duration: number;
   delay: number;
-  annotations: Annotation[];
+  annotations: ISlideAnnotation[];
 
-  addAnnotation(annotation: Annotation): void;
-  removeAnnotation(annotation: Annotation): void;
+  addAnnotation(annotation: ISlideAnnotation): void;
+  removeAnnotation(annotation: ISlideAnnotation): void;
 }
 
 export interface IProvenanceSlidedeck {
