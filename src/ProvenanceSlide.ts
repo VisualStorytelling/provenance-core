@@ -9,14 +9,14 @@ export class ProvenanceSlide implements IProvenanceSlide {
   private _name: string;
   private _duration: number;
   private _delay: number;
-  private _annotations: SlideAnnotation<any>[];
+  private _annotations: SlideAnnotation[];
   private _mitt: any;
 
   constructor(
     name: string,
     duration: number,
     delay: number,
-    annotations: SlideAnnotation<any>[] = [],
+    annotations: SlideAnnotation[] = [],
     node: ProvenanceNode | null = null
   ) {
     this._id = generateUUID();
@@ -64,12 +64,12 @@ export class ProvenanceSlide implements IProvenanceSlide {
     this._delay = value;
   }
 
-  public addAnnotation(annotation: SlideAnnotation<any>) {
+  public addAnnotation(annotation: SlideAnnotation) {
     this._annotations.push(annotation);
     this._mitt.emit('addAnnotation', annotation);
   }
 
-  public removeAnnotation(annotation: SlideAnnotation<any>) {
+  public removeAnnotation(annotation: SlideAnnotation) {
     const index = this._annotations.indexOf(annotation);
     this._annotations.splice(index, 1);
     this._mitt.emit('removeAnnotation', annotation);

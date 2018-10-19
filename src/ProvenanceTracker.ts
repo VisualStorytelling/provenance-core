@@ -23,7 +23,7 @@ export class ProvenanceTracker implements IProvenanceTracker {
   /**
    * When acceptActions is false, the Tracker will ignore calls to applyAction
    */
-  public acceptActions = true;
+  public acceptActions: boolean = true;
 
   private graph: IProvenanceGraph;
   private username: string;

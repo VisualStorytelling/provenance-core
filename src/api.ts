@@ -2,8 +2,6 @@
  * String identifier for nodes (e.g., a generated UUID)
  */
 
-import { ScreenCoordinates } from './Annotator';
-
 export type NodeIdentifier = string;
 
 /**
@@ -14,7 +12,7 @@ export type Action = IrreversibleAction | ReversibleAction;
 /**
  * ActionMetadata
  */
-export interface ActionMetadata {
+export type ActionMetadata = {
   /**
    * List of tags
    */
@@ -29,12 +27,12 @@ export interface ActionMetadata {
    * Enable custom properties
    */
   [key: string]: any;
-}
+};
 
 /**
  * NodeMetadata
  */
-export interface NodeMetadata {
+export type NodeMetadata = {
   /**
    * Username
    */
@@ -49,22 +47,22 @@ export interface NodeMetadata {
    * Enable custom properties
    */
   [key: string]: any;
-}
+};
 
 /**
  * Artifacts that are attached to a node
  */
-export interface Artifacts {
+export type Artifacts = {
   /**
    * Enable custom properties
    */
   [key: string]: any;
-}
+};
 
 /**
  * Generic node
  */
-export interface RootNode {
+export type RootNode = {
   /**
    * Node identifier
    */
@@ -89,7 +87,7 @@ export interface RootNode {
    * Artifacts
    */
   artifacts: Artifacts;
-}
+};
 
 /**
  * State node extending the RootNode
@@ -119,7 +117,7 @@ export type ProvenanceNode = RootNode | StateNode;
 /**
  * Irreversible action that can only be applied, but cannot be reverted
  */
-export interface IrreversibleAction {
+export type IrreversibleAction = {
   /**
    * Metadata (optional)
    */
@@ -135,12 +133,12 @@ export interface IrreversibleAction {
    * The arguments should be immutable!
    */
   doArguments: any[]; // should be immutable
-}
+};
 
 /**
  * Reversible action that can be applied and reverted
  */
-export interface ReversibleAction {
+export type ReversibleAction = {
   /**
    * Metadata (optional)
    */
@@ -167,7 +165,7 @@ export interface ReversibleAction {
    * The arguments should be immutable and serializable to json!
    */
   undoArguments: any[];
-}
+};
 
 /**
  * Action function that can be registered and will be executed when applying an Action
@@ -177,7 +175,7 @@ export type ActionFunction = (...args: any[]) => Promise<any>;
 /**
  * Bundle of an ActionFunction with a reference to the `this` context
  */
-export interface ActionFunctionWithThis {
+export type ActionFunctionWithThis = {
   /**
    * Action function
    */
@@ -187,12 +185,12 @@ export interface ActionFunctionWithThis {
    * Value to use as this (i.e the reference Object) when executing callback
    */
   thisArg: any;
-}
+};
 
 /**
  * Metadata about the application
  */
-export interface Application {
+export type Application = {
   /**
    * Application name
    */
@@ -202,7 +200,7 @@ export interface Application {
    * Application version
    */
   version: string;
-}
+};
 
 export type Handler = (event?: any) => void;
 
@@ -320,21 +318,19 @@ export interface IProvenanceGraphTraverser {
   toStateNode(id: NodeIdentifier): Promise<ProvenanceNode>;
 }
 
-export interface SerializedProvenanceGraph {
+export type SerializedProvenanceGraph = {
   nodes: SerializedProvenanceNode[];
   root: NodeIdentifier;
   application: Application;
   current: NodeIdentifier;
-}
-
-export interface SerializedRootNode {
+};
+export type SerializedRootNode = {
   id: NodeIdentifier;
   children: NodeIdentifier[];
   label: string;
   metadata: NodeMetadata;
   artifacts: Artifacts;
-}
-
+};
 export type SerializedStateNode = SerializedRootNode & {
   parent: NodeIdentifier;
   action: Action;
@@ -342,12 +338,10 @@ export type SerializedStateNode = SerializedRootNode & {
 };
 export type SerializedProvenanceNode = SerializedStateNode | SerializedRootNode;
 
-export interface ISlideAnnotation<T> {
+export interface ISlideAnnotation {
   id: string;
   data: any;
-  annotatorName: string;
 
-  tryMove(coords: ScreenCoordinates): boolean;
   on(type: string, handler: Handler): any;
   off(type: string, handler: Handler): any;
 }
@@ -358,10 +352,10 @@ export interface IProvenanceSlide {
   name: string;
   duration: number;
   delay: number;
-  annotations: ISlideAnnotation<any>[];
+  annotations: ISlideAnnotation[];
 
-  addAnnotation(annotation: ISlideAnnotation<any>): void;
-  removeAnnotation(annotation: ISlideAnnotation<any>): void;
+  addAnnotation(annotation: ISlideAnnotation): void;
+  removeAnnotation(annotation: ISlideAnnotation): void;
 }
 
 export interface IProvenanceSlidedeck {
