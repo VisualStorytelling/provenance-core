@@ -59,7 +59,7 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
   }
 
   public removeSlideAtIndex(index: number) {
-    let deletedSlides = this._slides.splice(index, 1);
+    const deletedSlides = this._slides.splice(index, 1);
 
     // This can only be 1 slide now, therefore this is ok.
     if (this._selectedSlide === deletedSlides[0]) {
@@ -108,7 +108,7 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
 
     while (time >= 0 && index < this.slides.length) {
       currentSlide = this.slides[index];
-      let nextSlideOffset = currentSlide.delay + currentSlide.duration;
+      const nextSlideOffset = currentSlide.delay + currentSlide.duration;
 
       if (time - nextSlideOffset < 0) {
         break;

@@ -1,7 +1,7 @@
 import { generateUUID } from './utils';
 import mitt from './mitt';
 import { Handler, ISlideAnnotation } from './api';
-import { getAnnotator, registry, ScreenCoordinates } from "./Annotator";
+import { getAnnotator, registry, ScreenCoordinates } from './Annotator';
 
 export type AnnotationData = any;
 

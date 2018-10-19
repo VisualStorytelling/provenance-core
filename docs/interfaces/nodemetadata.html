@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ScreenCoordinates | @visualstorytelling/provenance-core</title>
+	<title>NodeMetadata | @visualstorytelling/provenance-core</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">/*! normalize.css v1.1.3 | MIT License | git.io/normalize */
@@ -910,13 +910,13 @@ img { max-width: 100%; }
 <nav class="tsd-navigation secondary">
 	<ul>
 		<li class="current tsd-kind-interface">
-			<a href="screencoordinates.html" class="tsd-kind-icon">Screen<wbr>Coordinates</a>
+			<a href="nodemetadata.html" class="tsd-kind-icon">Node<wbr>Metadata</a>
 			<ul>
 				<li class=" tsd-kind-property tsd-parent-kind-interface">
-					<a href="screencoordinates.html#x" class="tsd-kind-icon">x</a>
+					<a href="nodemetadata.html#createdby" class="tsd-kind-icon">created<wbr>By</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-interface">
-					<a href="screencoordinates.html#y" class="tsd-kind-icon">y</a>
+					<a href="nodemetadata.html#createdon" class="tsd-kind-icon">created<wbr>On</a>
 				</li>
 			</ul>
 		</li>
@@ -924,13 +924,29 @@ img { max-width: 100%; }
 </nav>
 <div class="container container-main">
 	<div class="content-wrap">
+		<section class="tsd-panel tsd-comment">
+			<div class="tsd-comment tsd-typography">
+				<div class="lead">
+					<p>NodeMetadata</p>
+				</div>
+			</div>
+		</section>
 		<section class="tsd-panel tsd-hierarchy">
 			<h3>Hierarchy</h3>
 			<ul class="tsd-hierarchy">
 				<li>
-					<span class="target">ScreenCoordinates</span>
+					<span class="target">NodeMetadata</span>
 				</li>
 			</ul>
+		</section>
+		<section class="tsd-panel tsd-kind-interface">
+			<h3 class="tsd-before-signature">Indexable</h3>
+			<div class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">any</span></div>
+			<div class="tsd-comment tsd-typography">
+				<div class="lead">
+					<p>Enable custom properties</p>
+				</div>
+			</div>
 		</section>
 		<section class="tsd-panel-group tsd-index-group">
 			<h2>Index</h2>
@@ -939,8 +955,8 @@ img { max-width: 100%; }
 					<section class="tsd-index-section ">
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="screencoordinates.html#x" class="tsd-kind-icon">x</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="screencoordinates.html#y" class="tsd-kind-icon">y</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="nodemetadata.html#createdby" class="tsd-kind-icon">created<wbr>By</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="nodemetadata.html#createdon" class="tsd-kind-icon">created<wbr>On</a></li>
 						</ul>
 					</section>
 				</div>
@@ -949,24 +965,34 @@ img { max-width: 100%; }
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Properties</h2>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="x" class="tsd-anchor"></a>
-				<h3>x</h3>
-				<div class="tsd-signature tsd-kind-icon">x<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<a name="createdby" class="tsd-anchor"></a>
+				<h3>created<wbr>By</h3>
+				<div class="tsd-signature tsd-kind-icon">created<wbr>By<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/555a83e/src/Annotator.ts#L4">Annotator.ts:4</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/555a83e/src/api.ts#L41">api.ts:41</a></li>
 					</ul>
 				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Username</p>
+					</div>
+				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="y" class="tsd-anchor"></a>
-				<h3>y</h3>
-				<div class="tsd-signature tsd-kind-icon">y<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<a name="createdon" class="tsd-anchor"></a>
+				<h3>created<wbr>On</h3>
+				<div class="tsd-signature tsd-kind-icon">created<wbr>On<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/555a83e/src/Annotator.ts#L5">Annotator.ts:5</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/555a83e/src/api.ts#L46">api.ts:46</a></li>
 					</ul>
 				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>UNIX timestamp</p>
+					</div>
+				</div>
 			</section>
 		</section>
 		<footer class="with-border-bottom">

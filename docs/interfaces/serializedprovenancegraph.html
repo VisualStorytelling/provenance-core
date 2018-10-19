@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ScreenCoordinates | @visualstorytelling/provenance-core</title>
+	<title>SerializedProvenanceGraph | @visualstorytelling/provenance-core</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">/*! normalize.css v1.1.3 | MIT License | git.io/normalize */
@@ -910,13 +910,19 @@ img { max-width: 100%; }
 <nav class="tsd-navigation secondary">
 	<ul>
 		<li class="current tsd-kind-interface">
-			<a href="screencoordinates.html" class="tsd-kind-icon">Screen<wbr>Coordinates</a>
+			<a href="serializedprovenancegraph.html" class="tsd-kind-icon">Serialized<wbr>Provenance<wbr>Graph</a>
 			<ul>
 				<li class=" tsd-kind-property tsd-parent-kind-interface">
-					<a href="screencoordinates.html#x" class="tsd-kind-icon">x</a>
+					<a href="serializedprovenancegraph.html#application" class="tsd-kind-icon">application</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-interface">
-					<a href="screencoordinates.html#y" class="tsd-kind-icon">y</a>
+					<a href="serializedprovenancegraph.html#current" class="tsd-kind-icon">current</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface">
+					<a href="serializedprovenancegraph.html#nodes" class="tsd-kind-icon">nodes</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface">
+					<a href="serializedprovenancegraph.html#root" class="tsd-kind-icon">root</a>
 				</li>
 			</ul>
 		</li>
@@ -928,7 +934,7 @@ img { max-width: 100%; }
 			<h3>Hierarchy</h3>
 			<ul class="tsd-hierarchy">
 				<li>
-					<span class="target">ScreenCoordinates</span>
+					<span class="target">SerializedProvenanceGraph</span>
 				</li>
 			</ul>
 		</section>
@@ -939,8 +945,10 @@ img { max-width: 100%; }
 					<section class="tsd-index-section ">
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="screencoordinates.html#x" class="tsd-kind-icon">x</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="screencoordinates.html#y" class="tsd-kind-icon">y</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="serializedprovenancegraph.html#application" class="tsd-kind-icon">application</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="serializedprovenancegraph.html#current" class="tsd-kind-icon">current</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="serializedprovenancegraph.html#nodes" class="tsd-kind-icon">nodes</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="serializedprovenancegraph.html#root" class="tsd-kind-icon">root</a></li>
 						</ul>
 					</section>
 				</div>
@@ -949,22 +957,42 @@ img { max-width: 100%; }
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Properties</h2>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="x" class="tsd-anchor"></a>
-				<h3>x</h3>
-				<div class="tsd-signature tsd-kind-icon">x<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<a name="application" class="tsd-anchor"></a>
+				<h3>application</h3>
+				<div class="tsd-signature tsd-kind-icon">application<span class="tsd-signature-symbol">:</span> <a href="application.html" class="tsd-signature-type">Application</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/555a83e/src/Annotator.ts#L4">Annotator.ts:4</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/555a83e/src/api.ts#L326">api.ts:326</a></li>
 					</ul>
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="y" class="tsd-anchor"></a>
-				<h3>y</h3>
-				<div class="tsd-signature tsd-kind-icon">y<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<a name="current" class="tsd-anchor"></a>
+				<h3>current</h3>
+				<div class="tsd-signature tsd-kind-icon">current<span class="tsd-signature-symbol">:</span> <a href="../globals.html#nodeidentifier" class="tsd-signature-type">NodeIdentifier</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/555a83e/src/Annotator.ts#L5">Annotator.ts:5</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/555a83e/src/api.ts#L327">api.ts:327</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="nodes" class="tsd-anchor"></a>
+				<h3>nodes</h3>
+				<div class="tsd-signature tsd-kind-icon">nodes<span class="tsd-signature-symbol">:</span> <a href="../globals.html#serializedprovenancenode" class="tsd-signature-type">SerializedProvenanceNode</a><span class="tsd-signature-symbol">[]</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/555a83e/src/api.ts#L324">api.ts:324</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="root" class="tsd-anchor"></a>
+				<h3>root</h3>
+				<div class="tsd-signature tsd-kind-icon">root<span class="tsd-signature-symbol">:</span> <a href="../globals.html#nodeidentifier" class="tsd-signature-type">NodeIdentifier</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/555a83e/src/api.ts#L325">api.ts:325</a></li>
 					</ul>
 				</aside>
 			</section>
