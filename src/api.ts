@@ -2,6 +2,8 @@
  * String identifier for nodes (e.g., a generated UUID)
  */
 
+import { ScreenCoordinates } from "./Annotator";
+
 export type NodeIdentifier = string;
 
 /**
@@ -338,10 +340,12 @@ export type SerializedStateNode = SerializedRootNode & {
 };
 export type SerializedProvenanceNode = SerializedStateNode | SerializedRootNode;
 
-export interface ISlideAnnotation {
+export interface ISlideAnnotation<T> {
   id: string;
   data: any;
+  annotatorName: string;
 
+  tryMove(coords: ScreenCoordinates): boolean;
   on(type: string, handler: Handler): any;
   off(type: string, handler: Handler): any;
 }
@@ -352,10 +356,10 @@ export interface IProvenanceSlide {
   name: string;
   duration: number;
   delay: number;
-  annotations: ISlideAnnotation[];
+  annotations: ISlideAnnotation<any>[];
 
-  addAnnotation(annotation: ISlideAnnotation): void;
-  removeAnnotation(annotation: ISlideAnnotation): void;
+  addAnnotation(annotation: ISlideAnnotation<any>): void;
+  removeAnnotation(annotation: ISlideAnnotation<any>): void;
 }
 
 export interface IProvenanceSlidedeck {
