@@ -6,6 +6,7 @@ export * from './ProvenanceSlide';
 export * from './ProvenanceSlidedeck';
 export * from './ProvenanceSlidedeckPlayer';
 export * from './SlideAnnotation';
+export * from './Annotator';
 export * from './api';
 export * from './utils';
 // export { SerializedProvenanceGraph } from './api';
