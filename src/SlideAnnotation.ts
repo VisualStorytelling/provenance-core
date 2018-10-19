@@ -55,10 +55,19 @@ export class SlideAnnotation<T> implements ISlideAnnotation<T> {
     return this._annotatorName;
   }
 
+  /**
+   * Get internal coordinate representation
+   * @returns {T} Internal coordinates
+   */
   public get coords(): T {
     return this._coords;
   }
 
+  /**
+   * Try to move Annotation to new coordinates
+   * @param {ScreenCoordinates} coords  Target screen coordinates
+   * @returns {boolean} whether move was successful (accepted by Annotator)
+   */
   public tryMove(coords: ScreenCoordinates) {
     const annotator = getAnnotator(coords);
     if (annotator) {
