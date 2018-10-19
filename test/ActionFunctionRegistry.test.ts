@@ -11,7 +11,7 @@ describe('ActionFunctionRegistry', () => {
   describe('get unknown function', () => {
     test('should throw error', () => {
       expect(() => registry.getFunctionByName('nonexisting')).toThrow(
-        'Function not found in registry'
+        "Function 'nonexisting' not found in registry"
       );
     });
   });
