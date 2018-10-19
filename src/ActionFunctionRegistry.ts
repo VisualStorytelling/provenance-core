@@ -24,7 +24,7 @@ export class ActionFunctionRegistry implements IActionFunctionRegistry {
 
   getFunctionByName(name: string): ActionFunctionWithThis {
     if (!this.functionRegistry[name]) {
-      throw new Error('Function not found in registry');
+      throw new Error('Function \'' + name + '\' not found in registry');
     }
     return this.functionRegistry[name];
   }
