@@ -365,7 +365,8 @@ export interface IProvenanceSlidedeck {
   removeSlide(slide: IProvenanceSlide): void;
   removeSlideAtIndex(index: number): void;
   moveSlide(indexFrom: number, indexTo: number, count?: number): void;
-
+  next(): void;
+  previous(): void;
   startTime(slide: IProvenanceSlide): number;
   slideAtTime(time: number): IProvenanceSlide | null;
 
