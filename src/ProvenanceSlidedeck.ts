@@ -1,4 +1,4 @@
-import mitt from './mitt';
+import mitt from "./mitt";
 import {
   IProvenanceSlidedeck,
   IProvenanceGraphTraverser,
@@ -6,8 +6,8 @@ import {
   Application,
   Handler,
   IProvenanceSlide
-} from './api';
-import { ProvenanceSlide } from './ProvenanceSlide';
+} from "./api";
+import { ProvenanceSlide } from "./ProvenanceSlide";
 
 export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
   private _application: Application;
@@ -17,7 +17,7 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
   private _traverser: IProvenanceGraphTraverser;
   private _selectedSlide: IProvenanceSlide | null;
 
-  private _captainPlaceholder = new ProvenanceSlide('Captain Placeholder', 0, 0);
+  private _captainPlaceholder = new ProvenanceSlide("Captain Placeholder", 0, 0);
 
   constructor(application: Application, traverser: IProvenanceGraphTraverser) {
     this._mitt = mitt();
@@ -43,7 +43,7 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
       index = this._slides.length;
     }
     if (slide && this._slides.indexOf(slide) >= 0) {
-      throw new Error('Cannot add a slide that is already in the deck');
+      throw new Error("Cannot add a slide that is already in the deck");
     }
     if (!slide) {
       const node = this._graph.current;
@@ -53,7 +53,7 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
       this._selectedSlide = slide;
     }
     this._slides.splice(index, 0, slide);
-    this._mitt.emit('slideAdded', slide);
+    this._mitt.emit("slideAdded", slide);
 
     return slide;
   }
@@ -65,7 +65,7 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
     if (this._selectedSlide === deletedSlides[0]) {
       this.selectedSlide = null;
     }
-    this._mitt.emit('slideRemoved', deletedSlides[0]);
+    this._mitt.emit("slideRemoved", deletedSlides[0]);
   }
 
   public removeSlide(slide: IProvenanceSlide) {
@@ -78,7 +78,7 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
 
   public moveSlide(indexFrom: number, indexTo: number) {
     if (indexTo < 0 || indexTo > this.slides.length - 1) {
-      throw new Error('target index out of bounds');
+      throw new Error("target index out of bounds");
     }
 
     if (indexTo >= this._slides.length) {
@@ -89,7 +89,7 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
     }
     this._slides.splice(indexTo, 0, this._slides.splice(indexFrom, 1)[0]);
 
-    this._mitt.emit('slidesMoved', this._slides);
+    this._mitt.emit("slidesMoved", this._slides);
   }
 
   public startTime(slide: IProvenanceSlide) {
@@ -126,11 +126,32 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
       this._traverser.toStateNode(slide.node.id);
     }
     this._selectedSlide = slide;
-    this._mitt.emit('slideSelected', slide);
+    this._mitt.emit("slideSelected", slide);
   }
 
   public get slides() {
     return this._slides;
+  }
+
+  next() {
+    if (this._selectedSlide !== null) {
+      let currentIndex = this._slides.indexOf(this._selectedSlide);
+      if (currentIndex < this._slides.length - 1) {
+        currentIndex += 1;
+        this.selectedSlide = this._slides[currentIndex];
+      } else this.selectedSlide = this._slides[0];
+    }
+  }
+  previous() {
+    if (this._selectedSlide !== null) {
+      let currentIndex = this._slides.indexOf(this._selectedSlide);
+      if (currentIndex > 0) {
+        currentIndex -= 1;
+        this.selectedSlide = this._slides[currentIndex];
+      } else {
+        this.selectedSlide = this._slides[this._slides.length - 1];
+      }
+    }
   }
 
   public get graph() {

@@ -34,12 +34,16 @@ export class ProvenanceSlidedeckPlayer<T extends ISlide> {
   public get currentSlideIndex() {
     return this._currentSlideIndex;
   }
-
+  public set currentSlideIndex(index: number) {
+    this._currentSlideIndex = index;
+  }
   public async play() {
     const shouldPlayNext = () =>
       this._status === STATUS.PLAYING && this._currentSlideIndex < this._slides.length - 1;
+
     if (this._status === STATUS.IDLE) {
       this._status = STATUS.PLAYING;
+      this._selectCallback(this._slides[this._currentSlideIndex]);
       do {
         const slide = this._slides[this._currentSlideIndex];
         await wait(slide.duration);
@@ -51,7 +55,10 @@ export class ProvenanceSlidedeckPlayer<T extends ISlide> {
     }
     this._status = STATUS.IDLE;
   }
-
+  public next() {
+    this._currentSlideIndex += 1;
+    this._selectCallback(this._slides[this._currentSlideIndex]);
+  }
   public get status() {
     return this._status;
   }
