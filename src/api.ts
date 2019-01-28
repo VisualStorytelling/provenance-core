@@ -233,6 +233,7 @@ export interface IProvenanceGraph {
   getNode(id: NodeIdentifier): ProvenanceNode;
 
   emitNodeChangedEvent(node: ProvenanceNode): void;
+
   /**
    * Available events:
    * * nodeAdded, emitted when node is added via this.addNode()
@@ -316,6 +317,16 @@ export interface IProvenanceGraphTraverser {
    * @param id
    */
   toStateNode(id: NodeIdentifier): Promise<ProvenanceNode>;
+
+  /**
+   * Available events:
+   * * invalidTraversal, emitted when node is invalid to traverse to, because of a irreversible node or disconnected graph.
+   *
+   * @param type
+   * @param handler
+   */
+  on(type: string, handler: Handler): void;
+  off(type: string, handler: Handler): void;
 }
 
 export type SerializedProvenanceGraph = {

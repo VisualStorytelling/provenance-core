@@ -6,9 +6,11 @@ import {
   IProvenanceGraph,
   NodeIdentifier,
   ActionFunctionWithThis,
-  IProvenanceTracker
+  IProvenanceTracker,
+  Handler
 } from './api';
 import { isReversibleAction, isStateNode } from './utils';
+import mitt from './mitt';
 
 function isNextNodeInTrackUp(currentNode: ProvenanceNode, nextNode: ProvenanceNode): boolean {
   if (isStateNode(currentNode) && currentNode.parent === nextNode) {
@@ -69,6 +71,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
    */
   public trackingWhenTraversing: boolean = false;
   private registry: IActionFunctionRegistry;
+  private _mitt: any;
 
   constructor(
     registry: IActionFunctionRegistry,
@@ -78,6 +81,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
     this.registry = registry;
     this.graph = graph;
     this.tracker = tracker;
+    this._mitt = mitt();
   }
 
   async executeFunctions(
@@ -123,10 +127,15 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
       throw new Error('No path to target node found in graph');
     }
 
-    const { functionsToDo, argumentsToDo } = this.getFunctionsAndArgsFromTrack(trackToTarget);
-    const result = await this.executeFunctions(functionsToDo, argumentsToDo);
-    this.graph.current = targetNode;
-    return result;
+    try {
+      const { functionsToDo, argumentsToDo } = this.getFunctionsAndArgsFromTrack(trackToTarget);
+      const result = await this.executeFunctions(functionsToDo, argumentsToDo);
+      this.graph.current = targetNode;
+      return result;
+    } catch (error) {
+      this._mitt.emit('invalidTraversal', targetNode);
+      throw error;
+    }
   }
 
   private getFunctionsAndArgsFromTrack(
@@ -170,5 +179,13 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
     }
 
     return { functionsToDo, argumentsToDo };
+  }
+
+  on(type: string, handler: Handler) {
+    this._mitt.on(type, handler);
+  }
+
+  off(type: string, handler: Handler) {
+    this._mitt.off(type, handler);
   }
 }
