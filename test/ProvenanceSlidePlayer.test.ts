@@ -13,7 +13,7 @@ let registry: ActionFunctionRegistry;
 let slideDeck: ProvenanceSlidedeck;
 let traverser: ProvenanceGraphTraverser;
 
-const username: string = 'me';
+const username = 'me';
 
 class Calculator {
   offset = 42;
@@ -97,5 +97,11 @@ describe('ProvenanceTreeSlidedeck', () => {
     expect(player.currentSlideIndex).toEqual(1);
     await wait(slide3.duration);
     expect(player.currentSlideIndex).toEqual(1);
+  });
+
+  it('can set currentSlideIndex', () => {
+    player.currentSlideIndex = 2;
+
+    expect(player.currentSlideIndex).toEqual(2);
   });
 });

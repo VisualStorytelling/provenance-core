@@ -14,7 +14,7 @@ describe('ProvenanceTracker', () => {
   let graph: ProvenanceGraph;
   let tracker: ProvenanceTracker;
   let registry: ActionFunctionRegistry;
-  const username: string = 'me';
+  const username = 'me';
 
   describe('class-based', () => {
     class Calculator {
@@ -35,10 +35,7 @@ describe('ProvenanceTracker', () => {
 
     beforeEach(() => {
       calculator = new Calculator();
-      graph = new ProvenanceGraph(
-        { name: 'calculator', version: '1.0.0' },
-        username
-      );
+      graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' }, username);
       registry = new ActionFunctionRegistry();
       registry.register('add', calculator.add, calculator);
       registry.register('subtract', calculator.subtract, calculator);
@@ -130,10 +127,7 @@ describe('ProvenanceTracker', () => {
 
     beforeEach(() => {
       state.offset = 42;
-      graph = new ProvenanceGraph(
-        { name: 'calculator', version: '1.0.0' },
-        username
-      );
+      graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' }, username);
       registry = new ActionFunctionRegistry();
       registry.register('add', add);
       registry.register('subtract', subtract);
@@ -214,21 +208,18 @@ describe('ProvenanceTracker', () => {
     beforeEach(async () => {
       functionToCall = jest.fn() as ActionFunction;
       functionToSkip = jest.fn() as ActionFunction;
-      graph = new ProvenanceGraph(
-        { name: 'calculator', version: '1.0.0' },
-        username
-      );
+      graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' }, username);
       registry = new ActionFunctionRegistry();
       registry.register('caller', functionToCall);
       registry.register('skipper', functionToSkip);
       tracker = new ProvenanceTracker(registry, graph, username);
-      let skipperAction = {
+      const skipperAction = {
         do: 'skipper',
         doArguments: [],
         undo: 'skipper',
         undoArguments: []
       };
-      let callerAction = {
+      const callerAction = {
         do: 'caller',
         doArguments: [],
         undo: 'caller',

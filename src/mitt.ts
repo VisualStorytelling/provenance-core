@@ -29,6 +29,7 @@ export default function mitt(all?: any) {
      */
     off(type: string, handler: Handler) {
       if (all[type]) {
+        // tslint:disable-next-line:no-bitwise
         all[type].splice(all[type].indexOf(handler) >>> 0, 1);
       }
     },

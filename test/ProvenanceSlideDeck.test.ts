@@ -15,7 +15,7 @@ let registry: ActionFunctionRegistry;
 let slideDeck: ProvenanceSlidedeck;
 let traverser: ProvenanceGraphTraverser;
 
-const username: string = 'me';
+const username = 'me';
 
 class Calculator {
   offset = 42;
@@ -60,6 +60,10 @@ describe('ProvenanceTreeSlidedeck', () => {
     tracker = new ProvenanceTracker(registry, graph, username);
     traverser = new ProvenanceGraphTraverser(registry, graph);
     slideDeck = new ProvenanceSlidedeck({ name: 'calculator', version: '1.0.0' }, traverser);
+  });
+
+  it('should have a graph', () => {
+    expect(slideDeck.graph).toBe(graph);
   });
 
   it('makes a Slidedeck', () => {
@@ -112,6 +116,46 @@ describe('ProvenanceTreeSlidedeck', () => {
         expect(() => {
           slideDeck.addSlide(slide1);
         }).toThrow('Cannot add a slide that is already in the deck');
+      });
+
+      describe('goto next slide', () => {
+        beforeEach(() => {
+          slideDeck.next();
+        });
+
+        it('should be on slide 3', () => {
+          expect(slideDeck.selectedSlide).toBe(slide3);
+        });
+
+        describe('goto next slide', () => {
+          beforeEach(() => {
+            slideDeck.next();
+          });
+
+          it('should be on slide 1', () => {
+            expect(slideDeck.selectedSlide).toBe(slide1);
+          });
+        });
+
+        describe('goto prev slide', () => {
+          beforeEach(() => {
+            slideDeck.previous();
+          });
+
+          it('should be back on slide 1', () => {
+            expect(slideDeck.selectedSlide).toBe(slide1);
+          });
+        });
+      });
+
+      describe('goto prev slide', () => {
+        beforeEach(() => {
+          slideDeck.previous();
+        });
+
+        it('should be on slide 3', () => {
+          expect(slideDeck.selectedSlide).toBe(slide3);
+        });
       });
     });
   });
@@ -173,7 +217,8 @@ describe('ProvenanceTreeSlidedeck', () => {
         slideDeck.selectedSlide = slide1;
         const spiedfunc = jest.spyOn(traverser, 'toStateNode');
         slideDeck.selectedSlide = slideWithNode;
-        expect(spiedfunc).toHaveBeenCalledWith(slideWithNode.node!.id);
+        expect(slideWithNode.node).toBeDefined();
+        expect(spiedfunc).toHaveBeenCalledWith(slideWithNode.node.id);
       });
 
       it('will dispatch on slide selection', () => {
@@ -237,7 +282,7 @@ describe('ProvenanceTreeSlidedeck', () => {
   });
 
   describe('Event listener', () => {
-    let listener: Mock<Handler> = jest.fn();
+    const listener: Mock<Handler> = jest.fn();
 
     it('can remove listener', () => {
       slideDeck.off('slideAdded', listener);

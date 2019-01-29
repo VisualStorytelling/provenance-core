@@ -214,9 +214,16 @@ describe('ProvenanceGraphTraverser', () => {
         await tracker.applyAction(irreversibleDivideAction);
       });
 
-      test('Traverse to sibling', () => {
-        const result = traverser.toStateNode(root.id);
-        return expect(result).rejects.toThrow('trying to undo an Irreversible action');
+      test('Traverse to sibling', done => {
+        const cb = node => {
+          expect(node).toEqual(root);
+          done();
+        };
+        traverser.on('invalidTraversal', cb);
+
+        traverser.toStateNode(root.id);
+
+        traverser.off('invalidTraversal', cb);
       });
     });
   });

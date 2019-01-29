@@ -103,12 +103,12 @@ export function restoreProvenanceGraph(
   const nodes: { [key: string]: any } = {};
 
   // restore nodes as key value
-  for (let node of serializedProvenanceGraph.nodes) {
+  for (const node of serializedProvenanceGraph.nodes) {
     nodes[node.id] = { ...node };
   }
 
   // restore parent/children relations
-  for (let nodeId of Object.keys(nodes)) {
+  for (const nodeId of Object.keys(nodes)) {
     const node = nodes[nodeId];
     node.children = node.children.map((id: string) => nodes[id]);
     if ('parent' in node) {

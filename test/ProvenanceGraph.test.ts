@@ -2,7 +2,7 @@ import { IProvenanceGraph, RootNode, Application, StateNode, Handler } from '../
 import { ProvenanceGraph } from '../src/ProvenanceGraph';
 import Mock = jest.Mock;
 
-const unknownUsername: string = 'Unknown';
+const unknownUsername = 'Unknown';
 const expectedRootNode: RootNode = {
   id: expect.any(String),
   label: 'Root',
@@ -13,13 +13,13 @@ const expectedRootNode: RootNode = {
   children: [],
   artifacts: {}
 };
+const application: Application = {
+  name: 'testapp',
+  version: '2.2.3'
+};
 
 describe('ProvenanceGraph', () => {
   let graph: IProvenanceGraph;
-  const application: Application = {
-    name: 'testapp',
-    version: '2.2.3'
-  };
 
   beforeEach(() => {
     graph = new ProvenanceGraph(application); // without username
@@ -170,4 +170,20 @@ describe('ProvenanceGraph', () => {
       expect(changeListener).toHaveBeenCalled();
     });
   });
+});
+
+test('ProvenanceGraph with root node', () => {
+  const root = {
+    id: 'some id',
+    label: 'Root',
+    metadata: {
+      createdBy: 'me',
+      createdOn: 1548764758653
+    },
+    children: [],
+    artifacts: {}
+  };
+  const graph = new ProvenanceGraph(application, 'me', root);
+  expect(graph.root).toBe(root);
+  expect(graph.current).toBe(root);
 });

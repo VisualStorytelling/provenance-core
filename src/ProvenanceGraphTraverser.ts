@@ -43,9 +43,11 @@ function findPathToTargetNode(
       nodesToCheck.push(currentNode.parent);
     }
 
-    for (let node of nodesToCheck) {
+    for (const node of nodesToCheck) {
       // If the node to check is in the track already, skip it.
-      if (node === comingFromNode) continue;
+      if (node === comingFromNode) {
+        continue;
+      }
       /* istanbul ignore else */
       if (findPathToTargetNode(node, targetNode, track, currentNode)) {
         track.unshift(currentNode);
@@ -73,7 +75,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
    * It will enable/disable immediately before/after calling the action. So if the event is emitted
    * asynchronously after the action, it will not work.
    */
-  public trackingWhenTraversing: boolean = false;
+  public trackingWhenTraversing = false;
   private registry: IActionFunctionRegistry;
   private _mitt: any;
 
@@ -94,7 +96,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
   ): Promise<StateNode> {
     let result;
     for (let i = 0; i < functionsToDo.length; i++) {
-      let funcWithThis = functionsToDo[i];
+      const funcWithThis = functionsToDo[i];
       let promise: any;
       if (this.tracker && this.tracker.acceptActions && !this.trackingWhenTraversing) {
         this.tracker.acceptActions = false;
