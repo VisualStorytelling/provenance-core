@@ -928,6 +928,9 @@ img { max-width: 100%; }
 					<a href="provenanceslide.html#_id" class="tsd-kind-icon">_id</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a href="provenanceslide.html#_mitt" class="tsd-kind-icon">_mitt</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a href="provenanceslide.html#_name" class="tsd-kind-icon">_name</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
@@ -953,6 +956,12 @@ img { max-width: 100%; }
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="provenanceslide.html#addannotation" class="tsd-kind-icon">add<wbr>Annotation</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="provenanceslide.html#off" class="tsd-kind-icon">off</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="provenanceslide.html#on" class="tsd-kind-icon">on</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="provenanceslide.html#removeannotation" class="tsd-kind-icon">remove<wbr>Annotation</a>
@@ -994,6 +1003,7 @@ img { max-width: 100%; }
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="provenanceslide.html#_delay" class="tsd-kind-icon">_delay</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="provenanceslide.html#_duration" class="tsd-kind-icon">_duration</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="provenanceslide.html#_id" class="tsd-kind-icon">_id</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="provenanceslide.html#_mitt" class="tsd-kind-icon">_mitt</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="provenanceslide.html#_name" class="tsd-kind-icon">_name</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="provenanceslide.html#_node" class="tsd-kind-icon">_node</a></li>
 						</ul>
@@ -1013,6 +1023,8 @@ img { max-width: 100%; }
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="provenanceslide.html#addannotation" class="tsd-kind-icon">add<wbr>Annotation</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="provenanceslide.html#off" class="tsd-kind-icon">off</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="provenanceslide.html#on" class="tsd-kind-icon">on</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="provenanceslide.html#removeannotation" class="tsd-kind-icon">remove<wbr>Annotation</a></li>
 						</ul>
 					</section>
@@ -1025,13 +1037,13 @@ img { max-width: 100%; }
 				<a name="constructor" class="tsd-anchor"></a>
 				<h3>constructor</h3>
 				<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">new <wbr>Provenance<wbr>Slide<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, duration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, delay<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, annotations<span class="tsd-signature-symbol">?: </span><a href="../globals.html#annotation" class="tsd-signature-type">Annotation</a><span class="tsd-signature-symbol">[]</span>, node<span class="tsd-signature-symbol">?: </span><a href="../globals.html#provenancenode" class="tsd-signature-type">ProvenanceNode</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="provenanceslide.html" class="tsd-signature-type">ProvenanceSlide</a></li>
+					<li class="tsd-signature tsd-kind-icon">new <wbr>Provenance<wbr>Slide<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, duration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, delay<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, annotations<span class="tsd-signature-symbol">?: </span><a href="slideannotation.html" class="tsd-signature-type">SlideAnnotation</a><span class="tsd-signature-symbol">[]</span>, node<span class="tsd-signature-symbol">?: </span><a href="../globals.html#provenancenode" class="tsd-signature-type">ProvenanceNode</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="provenanceslide.html" class="tsd-signature-type">ProvenanceSlide</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L10">ProvenanceSlide.ts:10</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L13">ProvenanceSlide.ts:13</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1046,7 +1058,7 @@ img { max-width: 100%; }
 								<h5>delay: <span class="tsd-signature-type">number</span></h5>
 							</li>
 							<li>
-								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> annotations: <a href="../globals.html#annotation" class="tsd-signature-type">Annotation</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></h5>
+								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> annotations: <a href="slideannotation.html" class="tsd-signature-type">SlideAnnotation</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></h5>
 							</li>
 							<li>
 								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> node: <a href="../globals.html#provenancenode" class="tsd-signature-type">ProvenanceNode</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></h5>
@@ -1062,10 +1074,10 @@ img { max-width: 100%; }
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 				<a name="_annotations" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagPrivate">Private</span> _annotations</h3>
-				<div class="tsd-signature tsd-kind-icon">_annotations<span class="tsd-signature-symbol">:</span> <a href="../globals.html#annotation" class="tsd-signature-type">Annotation</a><span class="tsd-signature-symbol">[]</span></div>
+				<div class="tsd-signature tsd-kind-icon">_annotations<span class="tsd-signature-symbol">:</span> <a href="slideannotation.html" class="tsd-signature-type">SlideAnnotation</a><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L10">ProvenanceSlide.ts:10</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L12">ProvenanceSlide.ts:12</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1075,7 +1087,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">_delay<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L9">ProvenanceSlide.ts:9</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L11">ProvenanceSlide.ts:11</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1085,7 +1097,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">_duration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L8">ProvenanceSlide.ts:8</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L10">ProvenanceSlide.ts:10</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1095,7 +1107,17 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">_id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L5">ProvenanceSlide.ts:5</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L7">ProvenanceSlide.ts:7</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<a name="_mitt" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagPrivate">Private</span> _mitt</h3>
+				<div class="tsd-signature tsd-kind-icon">_mitt<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L13">ProvenanceSlide.ts:13</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1105,7 +1127,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">_name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L7">ProvenanceSlide.ts:7</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L9">ProvenanceSlide.ts:9</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1115,7 +1137,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">_node<span class="tsd-signature-symbol">:</span> <a href="../globals.html#provenancenode" class="tsd-signature-type">ProvenanceNode</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L6">ProvenanceSlide.ts:6</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L8">ProvenanceSlide.ts:8</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1129,7 +1151,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Implementation of <a href="../interfaces/iprovenanceslide.html">IProvenanceSlide</a>.<a href="../interfaces/iprovenanceslide.html#annotations">annotations</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L72">ProvenanceSlide.ts:72</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L78">ProvenanceSlide.ts:78</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1140,8 +1162,8 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Implementation of <a href="../interfaces/iprovenanceslide.html">IProvenanceSlide</a>.<a href="../interfaces/iprovenanceslide.html#delay">delay</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L55">ProvenanceSlide.ts:55</a></li>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L59">ProvenanceSlide.ts:59</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L59">ProvenanceSlide.ts:59</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L63">ProvenanceSlide.ts:63</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1152,8 +1174,8 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Implementation of <a href="../interfaces/iprovenanceslide.html">IProvenanceSlide</a>.<a href="../interfaces/iprovenanceslide.html#duration">duration</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L47">ProvenanceSlide.ts:47</a></li>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L51">ProvenanceSlide.ts:51</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L51">ProvenanceSlide.ts:51</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L55">ProvenanceSlide.ts:55</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1164,7 +1186,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Implementation of <a href="../interfaces/iprovenanceslide.html">IProvenanceSlide</a>.<a href="../interfaces/iprovenanceslide.html#id">id</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L27">ProvenanceSlide.ts:27</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L31">ProvenanceSlide.ts:31</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1175,8 +1197,8 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Implementation of <a href="../interfaces/iprovenanceslide.html">IProvenanceSlide</a>.<a href="../interfaces/iprovenanceslide.html#name">name</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L39">ProvenanceSlide.ts:39</a></li>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L43">ProvenanceSlide.ts:43</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L43">ProvenanceSlide.ts:43</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L47">ProvenanceSlide.ts:47</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1187,8 +1209,8 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Implementation of <a href="../interfaces/iprovenanceslide.html">IProvenanceSlide</a>.<a href="../interfaces/iprovenanceslide.html#node">node</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L31">ProvenanceSlide.ts:31</a></li>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L35">ProvenanceSlide.ts:35</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L35">ProvenanceSlide.ts:35</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L39">ProvenanceSlide.ts:39</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1199,20 +1221,71 @@ img { max-width: 100%; }
 				<a name="addannotation" class="tsd-anchor"></a>
 				<h3>add<wbr>Annotation</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">add<wbr>Annotation<span class="tsd-signature-symbol">(</span>annotation<span class="tsd-signature-symbol">: </span><a href="../globals.html#annotation" class="tsd-signature-type">Annotation</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Annotation<span class="tsd-signature-symbol">(</span>annotation<span class="tsd-signature-symbol">: </span><a href="slideannotation.html" class="tsd-signature-type">SlideAnnotation</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
-							<p>Implementation of <a href="../interfaces/iprovenanceslide.html">IProvenanceSlide</a>.<a href="../interfaces/iprovenanceslide.html#addannotation">addAnnotation</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L63">ProvenanceSlide.ts:63</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L67">ProvenanceSlide.ts:67</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>annotation: <a href="../globals.html#annotation" class="tsd-signature-type">Annotation</a></h5>
+								<h5>annotation: <a href="slideannotation.html" class="tsd-signature-type">SlideAnnotation</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="off" class="tsd-anchor"></a>
+				<h3>off</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">off<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, handler<span class="tsd-signature-symbol">: </span><a href="../globals.html#handler" class="tsd-signature-type">Handler</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L86">ProvenanceSlide.ts:86</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>type: <span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li>
+								<h5>handler: <a href="../globals.html#handler" class="tsd-signature-type">Handler</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="on" class="tsd-anchor"></a>
+				<h3>on</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, handler<span class="tsd-signature-symbol">: </span><a href="../globals.html#handler" class="tsd-signature-type">Handler</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L82">ProvenanceSlide.ts:82</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>type: <span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li>
+								<h5>handler: <a href="../globals.html#handler" class="tsd-signature-type">Handler</a></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1223,20 +1296,19 @@ img { max-width: 100%; }
 				<a name="removeannotation" class="tsd-anchor"></a>
 				<h3>remove<wbr>Annotation</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">remove<wbr>Annotation<span class="tsd-signature-symbol">(</span>annotation<span class="tsd-signature-symbol">: </span><a href="../globals.html#annotation" class="tsd-signature-type">Annotation</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<li class="tsd-signature tsd-kind-icon">remove<wbr>Annotation<span class="tsd-signature-symbol">(</span>annotation<span class="tsd-signature-symbol">: </span><a href="slideannotation.html" class="tsd-signature-type">SlideAnnotation</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
-							<p>Implementation of <a href="../interfaces/iprovenanceslide.html">IProvenanceSlide</a>.<a href="../interfaces/iprovenanceslide.html#removeannotation">removeAnnotation</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/1b333e0/src/ProvenanceSlide.ts#L67">ProvenanceSlide.ts:67</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceSlide.ts#L72">ProvenanceSlide.ts:72</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>annotation: <a href="../globals.html#annotation" class="tsd-signature-type">Annotation</a></h5>
+								<h5>annotation: <a href="slideannotation.html" class="tsd-signature-type">SlideAnnotation</a></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
