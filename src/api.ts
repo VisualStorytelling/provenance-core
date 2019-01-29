@@ -316,7 +316,7 @@ export interface IProvenanceGraphTraverser {
    *
    * @param id
    */
-  toStateNode(id: NodeIdentifier): Promise<ProvenanceNode>;
+  toStateNode(id: NodeIdentifier): Promise<ProvenanceNode | undefined>;
 
   /**
    * Available events:

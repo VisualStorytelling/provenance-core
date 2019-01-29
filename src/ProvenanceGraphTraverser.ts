@@ -57,6 +57,10 @@ function findPathToTargetNode(
   return false;
 }
 
+class IrreversibleError extends Error {
+  invalidTraversal = true;
+}
+
 export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
   public graph: IProvenanceGraph;
   public tracker: IProvenanceTracker | null;
@@ -110,7 +114,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
    *
    * @param id Node identifier
    */
-  async toStateNode(id: NodeIdentifier): Promise<ProvenanceNode> {
+  async toStateNode(id: NodeIdentifier): Promise<ProvenanceNode | undefined> {
     const currentNode = this.graph.current;
     const targetNode = this.graph.getNode(id);
 
@@ -127,15 +131,22 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
       throw new Error('No path to target node found in graph');
     }
 
+    let functionsToDo: ActionFunctionWithThis[], argumentsToDo: any[];
     try {
-      const { functionsToDo, argumentsToDo } = this.getFunctionsAndArgsFromTrack(trackToTarget);
-      const result = await this.executeFunctions(functionsToDo, argumentsToDo);
-      this.graph.current = targetNode;
-      return result;
+      const arg = this.getFunctionsAndArgsFromTrack(trackToTarget);
+      functionsToDo = arg.functionsToDo;
+      argumentsToDo = arg.argumentsToDo;
     } catch (error) {
-      this._mitt.emit('invalidTraversal', targetNode);
-      throw error;
+      if (error.invalidTraversal) {
+        this._mitt.emit('invalidTraversal', targetNode);
+        return undefined;
+      } else {
+        throw error;
+      }
     }
+    const result = await this.executeFunctions(functionsToDo, argumentsToDo);
+    this.graph.current = targetNode;
+    return result;
   }
 
   private getFunctionsAndArgsFromTrack(
@@ -156,7 +167,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
         /* istanbul ignore else */
         if (isStateNode(thisNode)) {
           if (!isReversibleAction(thisNode.action)) {
-            throw new Error('trying to undo an Irreversible action');
+            throw new IrreversibleError('trying to undo an Irreversible action');
           }
           const undoFunc = this.registry.getFunctionByName(thisNode.action.undo);
           functionsToDo.push(undoFunc);
