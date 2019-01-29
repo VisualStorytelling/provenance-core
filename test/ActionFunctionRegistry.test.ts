@@ -11,6 +11,7 @@ describe('ActionFunctionRegistry', () => {
   describe('get unknown function', () => {
     test('should throw error', () => {
       expect(() => registry.getFunctionByName('nonexisting')).toThrow(
+        // tslint:disable-next-line:quotemark as prettier changes it back to double quotes
         "Function 'nonexisting' not found in registry"
       );
     });
