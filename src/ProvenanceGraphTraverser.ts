@@ -115,8 +115,9 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
    * Calls the do/undo functions of actions on the path.
    *
    * @param id Node identifier
+   * @param delay Transition animation delay of the canvas
    */
-  async toStateNode(id: NodeIdentifier): Promise<ProvenanceNode | undefined> {
+  async toStateNode(id: NodeIdentifier, delay: number): Promise<ProvenanceNode | undefined> {
     const currentNode = this.graph.current;
     const targetNode = this.graph.getNode(id);
 
@@ -135,7 +136,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
 
     let functionsToDo: ActionFunctionWithThis[], argumentsToDo: any[];
     try {
-      const arg = this.getFunctionsAndArgsFromTrack(trackToTarget);
+      const arg = this.getFunctionsAndArgsFromTrack(trackToTarget, delay);
       functionsToDo = arg.functionsToDo;
       argumentsToDo = arg.argumentsToDo;
     } catch (error) {
@@ -152,7 +153,8 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
   }
 
   private getFunctionsAndArgsFromTrack(
-    track: ProvenanceNode[]
+    track: ProvenanceNode[],
+    delay: number
   ): {
     functionsToDo: ActionFunctionWithThis[];
     argumentsToDo: any[];
@@ -173,7 +175,14 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
           }
           const undoFunc = this.registry.getFunctionByName(thisNode.action.undo);
           functionsToDo.push(undoFunc);
-          argumentsToDo.push(thisNode.action.undoArguments);
+          if (thisNode.action.undo === "setControlZoom" ||
+            thisNode.action.undo === "setControlOrientation" ||
+            thisNode.action.undo === "setSlicePlaneOrientation" ||
+            thisNode.action.undo === "setSlicePlaneZoom"){
+            argumentsToDo.push(thisNode.action.undoArguments.concat([delay]));
+          } else {
+            argumentsToDo.push(thisNode.action.undoArguments)
+          }
         } else {
           /* istanbul ignore next */
           throw new Error('Going up from root? unreachable error ... i hope');
@@ -183,7 +192,14 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
         if (isStateNode(nextNode)) {
           const doFunc = this.registry.getFunctionByName(nextNode.action.do);
           functionsToDo.push(doFunc);
-          argumentsToDo.push(nextNode.action.doArguments);
+          if (nextNode.action.do === "setControlZoom" ||
+            nextNode.action.do === "setControlOrientation" ||
+            nextNode.action.do === "setSlicePlaneOrientation" ||
+            nextNode.action.do === "setSlicePlaneZoom"){
+            argumentsToDo.push(nextNode.action.doArguments.concat([delay]));
+          } else {
+            argumentsToDo.push(nextNode.action.doArguments)
+          }
         } else {
           /* istanbul ignore next */
           throw new Error('Going down to the root? unreachable error ... i hope');

@@ -123,7 +123,7 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
 
   public set selectedSlide(slide: IProvenanceSlide | null) {
     if (slide && slide.node) {
-      this._traverser.toStateNode(slide.node.id);
+      this._traverser.toStateNode(slide.node.id, slide.delay);
     }
     this._selectedSlide = slide;
     this._mitt.emit('slideSelected', slide);

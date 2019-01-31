@@ -47,6 +47,7 @@ export class ProvenanceTracker implements IProvenanceTracker {
    */
   async applyAction(action: Action, skipFirstDoFunctionCall: boolean = false): Promise<StateNode> {
     if (!this.acceptActions) {
+      //alert("Applying an action!!!!");
       return Promise.resolve(this.graph.current as StateNode);
     }
 
