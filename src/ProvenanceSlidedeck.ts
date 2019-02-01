@@ -96,7 +96,7 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
     const index = this._slides.indexOf(slide);
     let previousTime = 0;
     for (let i = 0; i < index; i++) {
-      previousTime += this._slides[i].delay;
+      previousTime += this._slides[i].transitionTime;
       previousTime += this._slides[i].duration;
     }
     return previousTime;
@@ -108,7 +108,7 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
 
     while (time >= 0 && index < this.slides.length) {
       currentSlide = this.slides[index];
-      const nextSlideOffset = currentSlide.delay + currentSlide.duration;
+      const nextSlideOffset = currentSlide.transitionTime + currentSlide.duration;
 
       if (time - nextSlideOffset < 0) {
         break;
@@ -123,7 +123,7 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
 
   public set selectedSlide(slide: IProvenanceSlide | null) {
     if (slide && slide.node) {
-      this._traverser.toStateNode(slide.node.id);
+      this._traverser.toStateNode(slide.node.id, slide.transitionTime);
     }
     this._selectedSlide = slide;
     this._mitt.emit('slideSelected', slide);

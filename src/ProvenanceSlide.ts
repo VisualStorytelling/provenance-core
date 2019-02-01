@@ -8,24 +8,26 @@ export class ProvenanceSlide implements IProvenanceSlide {
   private _node: ProvenanceNode | null;
   private _name: string;
   private _duration: number;
-  private _delay: number;
+  private _transitionTime: number;
   private _annotations: SlideAnnotation[];
   private _mitt: any;
+  private _xPosition: number;
 
   constructor(
     name: string,
     duration: number,
-    delay: number,
+    transitionTime: number,
     annotations: SlideAnnotation[] = [],
     node: ProvenanceNode | null = null
   ) {
     this._id = generateUUID();
     this._name = name;
     this._duration = duration;
-    this._delay = delay;
+    this._transitionTime = transitionTime;
     this._annotations = annotations;
     this._node = node;
     this._mitt = mitt();
+    this._xPosition = 0;
   }
 
   public get id(): string {
@@ -56,12 +58,12 @@ export class ProvenanceSlide implements IProvenanceSlide {
     this._duration = value;
   }
 
-  public get delay(): number {
-    return this._delay;
+  public get transitionTime(): number {
+    return this._transitionTime;
   }
 
-  public set delay(value: number) {
-    this._delay = value;
+  public set transitionTime(value: number) {
+    this._transitionTime = value;
   }
 
   public addAnnotation(annotation: SlideAnnotation) {
@@ -85,5 +87,13 @@ export class ProvenanceSlide implements IProvenanceSlide {
 
   public off(type: string, handler: Handler) {
     this._mitt.off(type, handler);
+  }
+
+  public get xPosition(): number {
+    return this._xPosition;
+  }
+
+  public set xPosition(value: number) {
+    this._xPosition = value;
   }
 }

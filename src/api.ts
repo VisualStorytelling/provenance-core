@@ -316,7 +316,7 @@ export interface IProvenanceGraphTraverser {
    *
    * @param id
    */
-  toStateNode(id: NodeIdentifier): Promise<ProvenanceNode | undefined>;
+  toStateNode(id: NodeIdentifier, transitionTime: number): Promise<ProvenanceNode | undefined>;
 
   /**
    * Available events:
@@ -365,8 +365,9 @@ export interface IProvenanceSlide {
   node: ProvenanceNode | null;
   name: string;
   duration: number;
-  delay: number;
+  transitionTime: number;
   annotations: ISlideAnnotation[];
+  xPosition: number;
 
   addAnnotation(annotation: ISlideAnnotation): void;
   removeAnnotation(annotation: ISlideAnnotation): void;

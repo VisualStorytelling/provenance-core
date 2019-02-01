@@ -92,7 +92,8 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
 
   async executeFunctions(
     functionsToDo: ActionFunctionWithThis[],
-    argumentsToDo: any[]
+    argumentsToDo: any[],
+    transitionTimes: number[]
   ): Promise<StateNode> {
     let result;
     for (let i = 0; i < functionsToDo.length; i++) {
@@ -116,7 +117,10 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
    *
    * @param id Node identifier
    */
-  async toStateNode(id: NodeIdentifier): Promise<ProvenanceNode | undefined> {
+  async toStateNode(
+    id: NodeIdentifier,
+    transtionTime: number
+  ): Promise<ProvenanceNode | undefined> {
     const currentNode = this.graph.current;
     const targetNode = this.graph.getNode(id);
 
@@ -133,11 +137,17 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
       throw new Error('No path to target node found in graph');
     }
 
-    let functionsToDo: ActionFunctionWithThis[], argumentsToDo: any[];
+    let functionsToDo: ActionFunctionWithThis[],
+      argumentsToDo: any[],
+      transitionTimes: number[] = [];
     try {
       const arg = this.getFunctionsAndArgsFromTrack(trackToTarget);
       functionsToDo = arg.functionsToDo;
       argumentsToDo = arg.argumentsToDo;
+      const transitionTimePerAction = transtionTime / functionsToDo.length;
+      functionsToDo.forEach((func: any) => {
+        transitionTimes.push(transitionTimePerAction);
+      });
     } catch (error) {
       if (error.invalidTraversal) {
         this._mitt.emit('invalidTraversal', targetNode);
@@ -146,7 +156,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
         throw error;
       }
     }
-    const result = await this.executeFunctions(functionsToDo, argumentsToDo);
+    const result = await this.executeFunctions(functionsToDo, argumentsToDo, transitionTimes);
     this.graph.current = targetNode;
     return result;
   }
