@@ -119,7 +119,7 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
    */
   async toStateNode(
     id: NodeIdentifier,
-    transtionTime: number
+    transtionTime?: number
   ): Promise<ProvenanceNode | undefined> {
     const currentNode = this.graph.current;
     const targetNode = this.graph.getNode(id);
@@ -144,9 +144,8 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
       const arg = this.getFunctionsAndArgsFromTrack(trackToTarget);
       functionsToDo = arg.functionsToDo;
       argumentsToDo = arg.argumentsToDo;
-      const transitionTimePerAction = transtionTime / functionsToDo.length;
       functionsToDo.forEach((func: any) => {
-        transitionTimes.push(transitionTimePerAction);
+        transitionTimes.push(transtionTime || 0);
       });
     } catch (error) {
       if (error.invalidTraversal) {
