@@ -1,4 +1,5 @@
 import { ProvenanceSlide } from '../src/ProvenanceSlide';
+import { SlideAnnotation } from '../src/SlideAnnotation';
 
 const testNode1 = {
   id: 'sdkljbgfoasdbfdsbvckjurebvlauwyb',
@@ -31,26 +32,26 @@ describe('single slide', () => {
 
     expect(slide.name).toBe('test1');
     expect(slide.duration).toBe(1);
-    expect(slide.delay).toBe(0);
+    expect(slide.transitionTime).toBe(0);
     expect(slide.annotations).toEqual([]);
     expect(slide.node).toEqual(null);
   });
 
   it('should make a slide with annotations and node set', () => {
-    const slide = new ProvenanceSlide('test2', 1, 0, ['haha'], testNode1);
+    const slide = new ProvenanceSlide('test2', 1, 0, [new SlideAnnotation('haha')], testNode1);
     expect(slide).toBeInstanceOf(ProvenanceSlide);
 
     expect(slide.name).toBe('test2');
     expect(slide.duration).toBe(1);
-    expect(slide.delay).toBe(0);
-    expect(slide.annotations).toEqual(['haha']);
+    expect(slide.transitionTime).toBe(0);
+    expect(slide.annotations[0].data).toEqual('haha');
     expect(slide.node).toEqual(testNode1);
   });
 
   describe('setters for private fields', () => {
     let slide: ProvenanceSlide;
     beforeEach(() => {
-      slide = new ProvenanceSlide('test1', 1, 0, ['haha'], testNode1);
+      slide = new ProvenanceSlide('test1', 1, 0, [new SlideAnnotation('haha')], testNode1);
     });
 
     it('has a name setter', () => {
@@ -66,9 +67,9 @@ describe('single slide', () => {
     });
 
     it('has a delay setter', () => {
-      expect(slide.delay).toBe(0);
-      slide.delay = 12;
-      expect(slide.delay).toBe(12);
+      expect(slide.transitionTime).toBe(0);
+      slide.transitionTime = 12;
+      expect(slide.transitionTime).toBe(12);
     });
 
     it('has a node setter', () => {
@@ -81,29 +82,30 @@ describe('single slide', () => {
   describe('adding and removing annotations', () => {
     let slide: ProvenanceSlide;
     beforeEach(() => {
-      slide = new ProvenanceSlide('test1', 1, 0, ['haha'], testNode1);
+      slide = new ProvenanceSlide('test1', 1, 0, [new SlideAnnotation('haha')], testNode1);
     });
 
     describe('add annotations', () => {
       it('can add an annotation', () => {
-        expect(slide.annotations[0]).toEqual('haha');
-        slide.addAnnotation('shiny!');
-        expect(slide.annotations[0]).toEqual('haha');
-        expect(slide.annotations[1]).toEqual('shiny!');
+        expect(slide.annotations[0].data).toEqual('haha');
+        slide.addAnnotation(new SlideAnnotation('shiny!'));
+        expect(slide.annotations[0].data).toEqual('haha');
+        expect(slide.annotations[1].data).toEqual('shiny!');
       });
     });
 
     describe('can remove an annotation', () => {
       beforeEach(() => {
-        slide.addAnnotation('shiny!');
-        slide.addAnnotation('awesome!');
-        slide.addAnnotation('insight!');
+        slide.addAnnotation(new SlideAnnotation('shiny!'));
+        slide.addAnnotation(new SlideAnnotation('awesome!'));
+        slide.addAnnotation(new SlideAnnotation('insight!'));
       });
 
       it('should remove the slide', () => {
-        expect(slide.annotations).toEqual(['haha', 'shiny!', 'awesome!', 'insight!']);
-        slide.removeAnnotation('awesome!');
-        expect(slide.annotations).toEqual(['haha', 'shiny!', 'insight!']);
+        expect(slide.annotations[0].data).toEqual('haha');
+        expect(slide.annotations[3].data).toEqual('insight!');
+        slide.removeAnnotation(slide.annotations[1]);
+        expect(slide.annotations[2].data).toEqual('insight!');
       });
     });
   });

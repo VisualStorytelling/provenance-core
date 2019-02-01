@@ -60,6 +60,7 @@ describe('ProvenanceTreeSlidedeck', () => {
     tracker = new ProvenanceTracker(registry, graph, username);
     traverser = new ProvenanceGraphTraverser(registry, graph);
     slideDeck = new ProvenanceSlidedeck({ name: 'calculator', version: '1.0.0' }, traverser);
+    graph.addNode(testNode1);
   });
 
   it('should have a graph', () => {
@@ -218,7 +219,7 @@ describe('ProvenanceTreeSlidedeck', () => {
         const spiedfunc = jest.spyOn(traverser, 'toStateNode');
         slideDeck.selectedSlide = slideWithNode;
         expect(slideWithNode.node).toBeDefined();
-        expect(spiedfunc).toHaveBeenCalledWith(slideWithNode.node.id);
+        expect(spiedfunc).toHaveBeenCalledWith(slideWithNode.node.id, 0);
       });
 
       it('will dispatch on slide selection', () => {
@@ -293,11 +294,11 @@ describe('ProvenanceTreeSlidedeck', () => {
 
   describe('Time based indexing', () => {
     beforeEach(() => {
-      slide1.delay = 0;
+      slide1.transitionTime = 0;
       slide1.duration = 2;
-      slide2.delay = 10;
+      slide2.transitionTime = 10;
       slide2.duration = 4;
-      slide3.delay = 20;
+      slide3.transitionTime = 20;
       slide3.duration = 6;
 
       slideDeck.addSlide(slide1);
