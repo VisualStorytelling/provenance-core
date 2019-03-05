@@ -137,9 +137,8 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
       throw new Error('No path to target node found in graph');
     }
 
-    let functionsToDo: ActionFunctionWithThis[],
-      argumentsToDo: any[],
-      transitionTimes: number[] = [];
+    let functionsToDo: ActionFunctionWithThis[], argumentsToDo: any[];
+    const transitionTimes: number[] = [];
     try {
       const arg = this.getFunctionsAndArgsFromTrack(trackToTarget);
       functionsToDo = arg.functionsToDo;
