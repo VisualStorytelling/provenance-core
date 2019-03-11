@@ -62,7 +62,9 @@ export class ProvenanceSlidedeckPlayer<T extends ISlide> {
   public get status() {
     return this._status;
   }
-
+  public set status(status: STATUS) {
+    this._status = status;
+  }
   public stop() {
     this._status = STATUS.IDLE;
   }
