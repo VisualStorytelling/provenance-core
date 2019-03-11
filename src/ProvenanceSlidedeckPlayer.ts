@@ -1,6 +1,5 @@
 export interface ISlide {
   duration: number;
-  delay: number;
 }
 
 export enum STATUS {
