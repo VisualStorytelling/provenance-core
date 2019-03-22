@@ -49,6 +49,8 @@
     }
   },
   "jest": {
+    "testEnvironment": "node",
+    "testURL": "http://localhost/",
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
@@ -73,7 +75,7 @@
     "collectCoverage": true
   },
   "devDependencies": {
-    "@types/jest": "^22.0.0",
+    "@types/jest": "^24.0.11",
     "@types/node": "^9.3.0",
     "colors": "^1.1.2",
     "commitizen": "^2.9.6",
@@ -81,7 +83,7 @@
     "cross-env": "^5.0.1",
     "cz-conventional-changelog": "^2.0.0",
     "husky": "^0.14.0",
-    "jest": "^22.0.2",
+    "jest": "^24.5.0",
     "jest-cli": "^22.4.3",
     "lint-staged": "^7.0.0",
     "lodash.camelcase": "^4.3.0",

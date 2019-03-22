@@ -39,7 +39,9 @@ export class ProvenanceTracker implements IProvenanceTracker {
   }
 
   /**
-   * Calls the action.do function with action.doArguments
+   * Calls the action.do function with action.doArguments. This will also create a new StateNode
+   * in the graph corresponding to the action taken. Optionally, the label set in action.metadata.label
+   * will be taken as the label for this node.
    *
    * @param action
    * @param skipFirstDoFunctionCall If set to true, the do-function will not be called this time,
@@ -50,9 +52,16 @@ export class ProvenanceTracker implements IProvenanceTracker {
       return Promise.resolve(this.graph.current as StateNode);
     }
 
+    let label = '';
+    if (action.metadata && action.metadata.label) {
+      label = action.metadata.label;
+    } else {
+      label = action.do;
+    }
+
     const createNewStateNode = (parentNode: ProvenanceNode, actionResult: any): StateNode => ({
       id: generateUUID(),
-      label: action.do,
+      label: label,
       metadata: {
         createdBy: this.username,
         createdOn: generateTimestamp()
