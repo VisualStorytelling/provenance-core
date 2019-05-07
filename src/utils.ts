@@ -3,6 +3,8 @@ import { ProvenanceNode, StateNode, Action, ReversibleAction } from './api';
 export function generateUUID(): string {
   // Public Domain/MIT
   let d = new Date().getTime();
+
+  /* istanbul ignore if */
   if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
     d += performance.now(); // use high-precision timer if available
   }

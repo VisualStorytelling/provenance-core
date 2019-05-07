@@ -81,12 +81,6 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
       throw new Error('target index out of bounds');
     }
 
-    if (indexTo >= this._slides.length) {
-      let k = indexTo - this._slides.length + 1;
-      while (k--) {
-        this._slides.push(this._captainPlaceholder);
-      }
-    }
     this._slides.splice(indexTo, 0, this._slides.splice(indexFrom, 1)[0]);
 
     this._mitt.emit('slidesMoved', this._slides);

@@ -75,14 +75,14 @@ describe('ProvenanceTreeSlidedeck', () => {
 
   it('can play', async () => {
     expect(player.status).toEqual(STATUS.IDLE);
-    player.play();
+    const play = player.play();
     expect(player.status).toEqual(STATUS.PLAYING);
     expect(player.currentSlideIndex).toEqual(0);
     await wait(slide1.duration);
     expect(player.currentSlideIndex).toEqual(1);
     await wait(slide2.duration);
     expect(player.currentSlideIndex).toEqual(2);
-    await wait(slide3.duration);
+    await play;
     expect(player.status).toEqual(STATUS.IDLE);
   });
 
@@ -103,5 +103,11 @@ describe('ProvenanceTreeSlidedeck', () => {
     player.currentSlideIndex = 2;
 
     expect(player.currentSlideIndex).toEqual(2);
+  });
+
+  it('can go to next', () => {
+    player.currentSlideIndex = 2;
+    player.next();
+    expect(player.currentSlideIndex).toEqual(3);
   });
 });

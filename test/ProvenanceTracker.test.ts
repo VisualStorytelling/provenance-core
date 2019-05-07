@@ -53,7 +53,8 @@ describe('ProvenanceTracker', () => {
           undo: 'subtract',
           undoArguments: [13],
           metadata: {
-            userIntent: 'Because I want to'
+            userIntent: 'Because I want to',
+            label: 'metadataLabel'
           }
         };
         prom1 = tracker.applyAction(action1);
@@ -70,7 +71,7 @@ describe('ProvenanceTracker', () => {
         return prom1.then(node => {
           const expected: StateNode = {
             id: expect.any(String),
-            label: 'add',
+            label: 'metadataLabel',
             metadata: {
               createdBy: username,
               createdOn: expect.any(Number)

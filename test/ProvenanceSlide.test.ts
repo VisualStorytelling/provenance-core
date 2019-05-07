@@ -78,6 +78,18 @@ describe('single slide', () => {
       slide.node = testNode2;
       expect(slide.node).toBe(testNode2);
     });
+
+    it('has a node setter', () => {
+      expect(slide.node).toBe(testNode1);
+      slide.node = testNode2;
+      expect(slide.node).toBe(testNode2);
+    });
+
+    it('has x-position getter/setter', () => {
+      expect(slide.xPosition).toBe(0);
+      slide.xPosition = 3;
+      expect(slide.xPosition).toBe(3);
+    });
   });
 
   describe('adding and removing annotations', () => {
@@ -121,6 +133,20 @@ describe('single slide', () => {
       expect(addCB).toHaveBeenCalledWith(annotation);
       slide.removeAnnotation(annotation);
       expect(removeCB).toHaveBeenCalledWith(annotation);
+    });
+    it('can have listeners removed', () => {
+      const addCB = jest.fn();
+      const removeCB = jest.fn();
+      const annotation = new SlideAnnotation('shiny!');
+
+      slide.on('addAnnotation', addCB);
+      slide.off('addAnnotation', addCB);
+      slide.on('removeAnnotation', removeCB);
+      slide.off('removeAnnotation', removeCB);
+      slide.addAnnotation(annotation);
+      expect(addCB).not.toHaveBeenCalled();
+      slide.removeAnnotation(annotation);
+      expect(removeCB).not.toHaveBeenCalled();
     });
   });
 });

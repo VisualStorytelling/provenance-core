@@ -151,7 +151,8 @@ export class ProvenanceGraphTraverser implements IProvenanceGraphTraverser {
         this._mitt.emit('invalidTraversal', targetNode);
         return undefined;
       } else {
-        throw error;
+        /* istanbul ignore next */
+        throw error; // should never happen
       }
     }
     const result = await this.executeFunctions(functionsToDo, argumentsToDo, transitionTimes);
