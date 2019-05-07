@@ -219,7 +219,9 @@ describe('ProvenanceTreeSlidedeck', () => {
         const spiedfunc = jest.spyOn(traverser, 'toStateNode');
         slideDeck.selectedSlide = slideWithNode;
         expect(slideWithNode.node).toBeDefined();
-        expect(spiedfunc).toHaveBeenCalledWith(slideWithNode.node.id, 0);
+        if (slideWithNode.node) {
+          expect(spiedfunc).toHaveBeenCalledWith(slideWithNode.node.id, 0);
+        }
       });
 
       it('will dispatch on slide selection', () => {

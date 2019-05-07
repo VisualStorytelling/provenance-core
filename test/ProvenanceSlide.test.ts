@@ -28,6 +28,7 @@ const testNode2 = {
 describe('single slide', () => {
   it('should make a slide', () => {
     const slide = new ProvenanceSlide('test1', 1, 0);
+    expect(slide.id).toHaveLength(36); // serialized UUID4
     expect(slide).toBeInstanceOf(ProvenanceSlide);
 
     expect(slide.name).toBe('test1');
@@ -107,6 +108,19 @@ describe('single slide', () => {
         slide.removeAnnotation(slide.annotations[1]);
         expect(slide.annotations[2].data).toEqual('insight!');
       });
+    });
+
+    it('can listen to add/remove annotation', () => {
+      const addCB = jest.fn();
+      const removeCB = jest.fn();
+      const annotation = new SlideAnnotation('shiny!');
+
+      slide.on('addAnnotation', addCB);
+      slide.on('removeAnnotation', removeCB);
+      slide.addAnnotation(annotation);
+      expect(addCB).toHaveBeenCalledWith(annotation);
+      slide.removeAnnotation(annotation);
+      expect(removeCB).toHaveBeenCalledWith(annotation);
     });
   });
 });

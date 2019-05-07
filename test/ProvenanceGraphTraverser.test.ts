@@ -215,7 +215,7 @@ describe('ProvenanceGraphTraverser', () => {
       });
 
       test('Traverse to sibling', done => {
-        const cb = node => {
+        const cb = (node: ProvenanceNode) => {
           expect(node).toEqual(root);
           done();
         };
