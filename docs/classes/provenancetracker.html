@@ -1005,7 +1005,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceTracker.ts#L29">ProvenanceTracker.ts:29</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/d61cb7a/src/ProvenanceTracker.ts#L29">ProvenanceTracker.ts:29</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1034,7 +1034,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Implementation of <a href="../interfaces/iprovenancetracker.html">IProvenanceTracker</a>.<a href="../interfaces/iprovenancetracker.html#acceptactions">acceptActions</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceTracker.ts#L26">ProvenanceTracker.ts:26</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/d61cb7a/src/ProvenanceTracker.ts#L26">ProvenanceTracker.ts:26</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1049,7 +1049,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">graph<span class="tsd-signature-symbol">:</span> <a href="../interfaces/iprovenancegraph.html" class="tsd-signature-type">IProvenanceGraph</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceTracker.ts#L28">ProvenanceTracker.ts:28</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/d61cb7a/src/ProvenanceTracker.ts#L28">ProvenanceTracker.ts:28</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1060,7 +1060,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Implementation of <a href="../interfaces/iprovenancetracker.html">IProvenanceTracker</a>.<a href="../interfaces/iprovenancetracker.html#registry">registry</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceTracker.ts#L21">ProvenanceTracker.ts:21</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/d61cb7a/src/ProvenanceTracker.ts#L21">ProvenanceTracker.ts:21</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1070,7 +1070,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">username<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceTracker.ts#L29">ProvenanceTracker.ts:29</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/d61cb7a/src/ProvenanceTracker.ts#L29">ProvenanceTracker.ts:29</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1088,12 +1088,14 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/iprovenancetracker.html">IProvenanceTracker</a>.<a href="../interfaces/iprovenancetracker.html#applyaction">applyAction</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/f7b3a5c/src/ProvenanceTracker.ts#L48">ProvenanceTracker.ts:48</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/d61cb7a/src/ProvenanceTracker.ts#L50">ProvenanceTracker.ts:50</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Calls the action.do function with action.doArguments</p>
+								<p>Calls the action.do function with action.doArguments. This will also create a new StateNode
+									in the graph corresponding to the action taken. Optionally, the label set in action.metadata.label
+								will be taken as the label for this node.</p>
 							</div>
 						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
