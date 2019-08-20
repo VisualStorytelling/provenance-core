@@ -2,12 +2,10 @@ import { generateUUID } from './utils';
 import mitt from './mitt';
 import { Handler, ISlideAnnotation } from './api';
 
-export type AnnotationData = any;
-
-export class SlideAnnotation implements ISlideAnnotation {
+export class SlideAnnotation<T> implements ISlideAnnotation<T> {
   // todo: interface
   private readonly _id: string;
-  private _data: AnnotationData;
+  private _data: T | null;
   private _mitt: any;
 
   constructor(data: any) {
@@ -20,12 +18,12 @@ export class SlideAnnotation implements ISlideAnnotation {
     return this._id;
   }
 
-  public set data(value: AnnotationData | null) {
+  public set data(value: T | null) {
     this._data = value;
     this._mitt.emit('change', value);
   }
 
-  public get data(): AnnotationData {
+  public get data(): T | null {
     return this._data;
   }
 
