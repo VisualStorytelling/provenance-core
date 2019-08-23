@@ -42,7 +42,3 @@ export function isStateNode(node: ProvenanceNode): node is StateNode {
 export function isReversibleAction(action: Action): action is ReversibleAction {
   return 'undo' in action;
 }
-
-(window as any).console.logImage = (href: string) => {
-  console.log('%c ', `font-size:400px; background:url(${href}) no-repeat;`);
-};
