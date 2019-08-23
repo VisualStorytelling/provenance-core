@@ -4,11 +4,27 @@ import {
   IProvenanceGraph,
   IActionFunctionRegistry,
   Action,
-  ActionFunction
+  ActionFunction,
+  IScreenShotProvider
 } from '../src/api';
 import { ProvenanceGraph } from '../src/ProvenanceGraph';
 import { ActionFunctionRegistry } from '../src/ActionFunctionRegistry';
 import { ProvenanceTracker } from '../src/ProvenanceTracker';
+import { dataURLSample } from './helpers';
+
+class Calculator {
+  offset = 42;
+
+  add(y: number) {
+    this.offset = this.offset + y;
+    return Promise.resolve();
+  }
+
+  subtract(y: number) {
+    this.offset = this.offset - y;
+    return Promise.resolve();
+  }
+}
 
 describe('ProvenanceTracker', () => {
   let graph: ProvenanceGraph;
@@ -17,20 +33,6 @@ describe('ProvenanceTracker', () => {
   const username = 'me';
 
   describe('class-based', () => {
-    class Calculator {
-      offset = 42;
-
-      add(y: number) {
-        this.offset = this.offset + y;
-        return Promise.resolve();
-      }
-
-      subtract(y: number) {
-        this.offset = this.offset - y;
-        return Promise.resolve();
-      }
-    }
-
     let calculator: Calculator;
 
     beforeEach(() => {
@@ -232,6 +234,60 @@ describe('ProvenanceTracker', () => {
     test('callerAction', () => {
       expect(functionToCall).toHaveBeenCalled();
       expect(functionToSkip).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('screenshots', () => {
+    let calculator: Calculator;
+    const action = {
+      do: 'add',
+      doArguments: [13],
+      undo: 'subtract',
+      undoArguments: [13],
+      metadata: {
+        userIntent: 'Because I want to',
+        label: 'metadataLabel'
+      }
+    };
+    const originalWarn = console.warn;
+    beforeEach(() => {
+      console.warn = jest.fn();
+      calculator = new Calculator();
+      graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' }, username);
+      registry = new ActionFunctionRegistry();
+      registry.register('add', calculator.add, calculator);
+      registry.register('subtract', calculator.subtract, calculator);
+      tracker = new ProvenanceTracker(registry, graph, username);
+    });
+    afterEach(() => {
+      console.warn = originalWarn;
+    });
+    test('auto screenshot works', async () => {
+      tracker.screenShotProvider = () => dataURLSample;
+      tracker.autoScreenShot = true;
+      const node = await tracker.applyAction(action);
+      expect(node.metadata.screenShot).toBe(dataURLSample);
+    });
+    test('auto screenshot false gives undefined screenshot', async () => {
+      tracker.screenShotProvider = () => dataURLSample;
+      tracker.autoScreenShot = false;
+      const node = await tracker.applyAction(action);
+      expect(node.metadata.screenShot).toBeUndefined();
+    });
+    test('auto screenshot without provider warns', async () => {
+      tracker.autoScreenShot = true;
+      expect(console.warn).toHaveBeenCalled();
+      const node = await tracker.applyAction(action);
+      expect(node.metadata.screenShot).toBeUndefined();
+    });
+    test('broken screenShotProvider warns', async () => {
+      tracker.screenShotProvider = () => {
+        throw new Error('some error');
+      };
+      tracker.autoScreenShot = true;
+      const node = await tracker.applyAction(action);
+      expect(node.metadata.screenShot).toBeUndefined();
+      expect(console.warn).toHaveBeenCalled();
     });
   });
 });

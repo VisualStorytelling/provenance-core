@@ -8,6 +8,7 @@ import { ActionFunctionRegistry } from '../src/ActionFunctionRegistry';
 import { ProvenanceSlidedeck } from '../src/ProvenanceSlidedeck';
 import { ProvenanceSlide } from '../src/ProvenanceSlide';
 import Mock = jest.Mock;
+import { dataURLSample } from './helpers';
 
 let graph: ProvenanceGraph;
 let tracker: ProvenanceTracker;
@@ -341,5 +342,43 @@ describe('ProvenanceTreeSlidedeck', () => {
     //     expect(slideDeck.startTime(testSlide)).toBe(2);
     //     expect(slideDeck.startTime(slide3)).toBe(16);
     // });
+  });
+  describe('screenshots', () => {
+    const originalWarn = console.warn;
+    let slide: ProvenanceSlide;
+    beforeEach(() => {
+      console.warn = jest.fn();
+      slide = new ProvenanceSlide('slide1', 10, 10);
+    });
+    afterEach(() => {
+      console.warn = originalWarn;
+    });
+    test('auto screenshot works', async () => {
+      slideDeck.screenShotProvider = () => dataURLSample;
+      slideDeck.autoScreenShot = true;
+      slideDeck.addSlide(slide);
+      expect(slide.metadata.screenShot).toBe(dataURLSample);
+    });
+    test('auto screenshot false gives undefined screenshot', async () => {
+      tracker.screenShotProvider = () => dataURLSample;
+      tracker.autoScreenShot = false;
+      slideDeck.addSlide(slide);
+      expect(slide.metadata.screenShot).toBeUndefined();
+    });
+    test('auto screenshot without provider warns', async () => {
+      slideDeck.autoScreenShot = true;
+      expect(console.warn).toHaveBeenCalled();
+      slideDeck.addSlide(slide);
+      expect(slide.metadata.screenShot).toBeUndefined();
+    });
+    test('broken screenShotProvider warns', async () => {
+      slideDeck.screenShotProvider = () => {
+        throw new Error('some error');
+      };
+      slideDeck.autoScreenShot = true;
+      slideDeck.addSlide(slide);
+      expect(slide.metadata.screenShot).toBeUndefined();
+      expect(console.warn).toHaveBeenCalled();
+    });
   });
 });
