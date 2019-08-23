@@ -6,7 +6,8 @@ import {
   IProvenanceGraph,
   ActionFunctionWithThis,
   ProvenanceNode,
-  RootNode
+  RootNode,
+  IScreenShotProvider
 } from './api';
 import { generateUUID, generateTimestamp } from './utils';
 
@@ -27,6 +28,9 @@ export class ProvenanceTracker implements IProvenanceTracker {
 
   private graph: IProvenanceGraph;
   private username: string;
+
+  private _screenShotProvider: IScreenShotProvider | null = null;
+  private _autoScreenShot = false;
 
   constructor(
     registry: IActionFunctionRegistry,
@@ -91,6 +95,14 @@ export class ProvenanceTracker implements IProvenanceTracker {
       newNode = createNewStateNode(currentNode, actionResult);
     }
 
+    if (this.autoScreenShot && this.screenShotProvider) {
+      try {
+        newNode.metadata.screenShot = this.screenShotProvider();
+      } catch (e) {
+        console.warn('Error while getting screenshot', e);
+      }
+    }
+
     // When the node is created, we need to update the graph.
     currentNode.children.push(newNode);
 
@@ -98,5 +110,24 @@ export class ProvenanceTracker implements IProvenanceTracker {
     this.graph.current = newNode;
 
     return newNode;
+  }
+
+  get screenShotProvider() {
+    return this._screenShotProvider;
+  }
+
+  set screenShotProvider(provider: IScreenShotProvider | null) {
+    this._screenShotProvider = provider;
+  }
+
+  get autoScreenShot(): boolean {
+    return this._autoScreenShot;
+  }
+
+  set autoScreenShot(value: boolean) {
+    this._autoScreenShot = value;
+    if (value && !this._screenShotProvider) {
+      console.warn('Setting autoScreenShot to true, but no screenShotProvider is set');
+    }
   }
 }

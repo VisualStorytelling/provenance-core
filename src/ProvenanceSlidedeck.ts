@@ -5,7 +5,8 @@ import {
   IProvenanceGraph,
   Application,
   Handler,
-  IProvenanceSlide
+  IProvenanceSlide,
+  IScreenShotProvider
 } from './api';
 import { ProvenanceSlide } from './ProvenanceSlide';
 
@@ -17,7 +18,8 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
   private _traverser: IProvenanceGraphTraverser;
   private _selectedSlide: IProvenanceSlide | null;
 
-  private _captainPlaceholder = new ProvenanceSlide('Captain Placeholder', 0, 0);
+  private _screenShotProvider: IScreenShotProvider | null = null;
+  private _autoScreenShot = false;
 
   constructor(application: Application, traverser: IProvenanceGraphTraverser) {
     this._mitt = mitt();
@@ -48,6 +50,13 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
     if (!slide) {
       const node = this._graph.current;
       slide = new ProvenanceSlide(node.label, 1, 0, [], node);
+    }
+    if (this.autoScreenShot && this.screenShotProvider) {
+      try {
+        slide.metadata.screenShot = this.screenShotProvider();
+      } catch (e) {
+        console.warn('Error while getting screenshot', e);
+      }
     }
     if (this._slides.length === 0) {
       this._selectedSlide = slide;
@@ -152,6 +161,25 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
 
   public get graph() {
     return this._graph;
+  }
+
+  get screenShotProvider() {
+    return this._screenShotProvider;
+  }
+
+  set screenShotProvider(provider: IScreenShotProvider | null) {
+    this._screenShotProvider = provider;
+  }
+
+  get autoScreenShot(): boolean {
+    return this._autoScreenShot;
+  }
+
+  set autoScreenShot(value: boolean) {
+    this._autoScreenShot = value;
+    if (value && !this._screenShotProvider) {
+      console.warn('Setting autoScreenShot to true, but no screenShotProvider is set');
+    }
   }
 
   on(type: string, handler: Handler) {

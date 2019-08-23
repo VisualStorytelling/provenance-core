@@ -1,3 +1,8 @@
+/**
+ * This is what is exported as 'provenance-core',
+ * so this makes sure you can do e.g.
+ * `import { ProvenanceTracker } from 'provenance-core'`
+ */
 export * from './ActionFunctionRegistry';
 export * from './ProvenanceGraph';
 export * from './ProvenanceTracker';
@@ -8,7 +13,3 @@ export * from './ProvenanceSlidedeckPlayer';
 export * from './SlideAnnotation';
 export * from './api';
 export * from './utils';
-// export { SerializedProvenanceGraph } from './api';
-// export { SerializedRootNode } from './api';
-// export { SerializedStateNode } from './api';
-// export { SerializedProvenanceNode } from './api';

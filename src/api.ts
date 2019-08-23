@@ -280,6 +280,14 @@ export interface IProvenanceTracker {
    */
   registry: IActionFunctionRegistry;
 
+  screenShotProvider: IScreenShotProvider | null;
+
+  /**
+   * If true, adds a screenshot to all provenance nodes metadata
+   * (if screenShotProvider is set)
+   */
+  autoScreenShot: boolean;
+
   /**
    * 1. Calls the action.do function with action.doArguments
    * 2. Append action to graph via a StateEdge and StateNode
@@ -368,6 +376,7 @@ export interface IProvenanceSlide {
   transitionTime: number;
   annotations: ISlideAnnotation<any>[];
   xPosition: number;
+  metadata: any;
 
   addAnnotation(annotation: ISlideAnnotation<any>): void;
   removeAnnotation(annotation: ISlideAnnotation<any>): void;
@@ -381,6 +390,14 @@ export interface IProvenanceSlidedeck {
   slides: IProvenanceSlide[];
   selectedSlide: IProvenanceSlide | null;
   graph: IProvenanceGraph;
+
+  screenShotProvider: IScreenShotProvider | null;
+
+  /**
+   * If true, adds a screenshot to all slides
+   * (if screenShotProvider is set)
+   */
+  autoScreenShot: boolean;
 
   addSlide(slide?: IProvenanceSlide, index?: number): IProvenanceSlide;
   removeSlide(slide: IProvenanceSlide): void;
@@ -404,3 +421,10 @@ export interface IProvenanceSlidedeck {
   on(type: string, handler: Handler): void;
   off(type: string, handler: Handler): void;
 }
+
+export type IScreenShot = any;
+
+/* A ScreenShotProvider provides screenshots from the application
+   that can be attached to provenance nodes or to SlideDeck slides.
+ */
+export type IScreenShotProvider = () => IScreenShot;

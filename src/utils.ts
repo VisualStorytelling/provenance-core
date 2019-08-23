@@ -10,7 +10,7 @@ export function generateUUID(): string {
   }
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     // tslint:disable-next-line:no-bitwise
-    const r = ((d + Math.random() * 16) % 16) | 0;
+    const r = (d + Math.random() * 16) % 16 | 0;
     d = Math.floor(d / 16);
     // tslint:disable-next-line:no-bitwise
     return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
@@ -42,3 +42,7 @@ export function isStateNode(node: ProvenanceNode): node is StateNode {
 export function isReversibleAction(action: Action): action is ReversibleAction {
   return 'undo' in action;
 }
+
+(window as any).console.logImage = (href: string) => {
+  console.log('%c ', `font-size:400px; background:url(${href}) no-repeat;`);
+};

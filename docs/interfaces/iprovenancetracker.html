@@ -916,7 +916,13 @@ img { max-width: 100%; }
 					<a href="iprovenancetracker.html#acceptactions" class="tsd-kind-icon">accept<wbr>Actions</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-interface">
+					<a href="iprovenancetracker.html#autoscreenshot" class="tsd-kind-icon">auto<wbr>Screen<wbr>Shot</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface">
 					<a href="iprovenancetracker.html#registry" class="tsd-kind-icon">registry</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface">
+					<a href="iprovenancetracker.html#screenshotprovider" class="tsd-kind-icon">screen<wbr>Shot<wbr>Provider</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-interface">
 					<a href="iprovenancetracker.html#applyaction" class="tsd-kind-icon">apply<wbr>Action</a>
@@ -957,7 +963,9 @@ img { max-width: 100%; }
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iprovenancetracker.html#acceptactions" class="tsd-kind-icon">accept<wbr>Actions</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iprovenancetracker.html#autoscreenshot" class="tsd-kind-icon">auto<wbr>Screen<wbr>Shot</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iprovenancetracker.html#registry" class="tsd-kind-icon">registry</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iprovenancetracker.html#screenshotprovider" class="tsd-kind-icon">screen<wbr>Shot<wbr>Provider</a></li>
 						</ul>
 					</section>
 					<section class="tsd-index-section ">
@@ -977,7 +985,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">accept<wbr>Actions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/dee560f/src/api.ts#L277">api.ts:277</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/aaa3c58/src/api.ts#L277">api.ts:277</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -987,12 +995,28 @@ img { max-width: 100%; }
 				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="autoscreenshot" class="tsd-anchor"></a>
+				<h3>auto<wbr>Screen<wbr>Shot</h3>
+				<div class="tsd-signature tsd-kind-icon">auto<wbr>Screen<wbr>Shot<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/aaa3c58/src/api.ts#L289">api.ts:289</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>If true, adds a screenshot to all provenance nodes metadata
+						(if screenShotProvider is set)</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 				<a name="registry" class="tsd-anchor"></a>
 				<h3>registry</h3>
 				<div class="tsd-signature tsd-kind-icon">registry<span class="tsd-signature-symbol">:</span> <a href="iactionfunctionregistry.html" class="tsd-signature-type">IActionFunctionRegistry</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/dee560f/src/api.ts#L281">api.ts:281</a></li>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/aaa3c58/src/api.ts#L281">api.ts:281</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1000,6 +1024,16 @@ img { max-width: 100%; }
 						<p>Action function registry</p>
 					</div>
 				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="screenshotprovider" class="tsd-anchor"></a>
+				<h3>screen<wbr>Shot<wbr>Provider</h3>
+				<div class="tsd-signature tsd-kind-icon">screen<wbr>Shot<wbr>Provider<span class="tsd-signature-symbol">:</span> <a href="../globals.html#iscreenshotprovider" class="tsd-signature-type">IScreenShotProvider</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/aaa3c58/src/api.ts#L283">api.ts:283</a></li>
+					</ul>
+				</aside>
 			</section>
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
@@ -1014,7 +1048,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/dee560f/src/api.ts#L292">api.ts:292</a></li>
+								<li>Defined in <a href="https://github.com/VisualStorytelling/provenance-core/blob/aaa3c58/src/api.ts#L301">api.ts:301</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">

@@ -12,6 +12,7 @@ export class ProvenanceSlide implements IProvenanceSlide {
   private _annotations: SlideAnnotation<any>[];
   private _mitt: any;
   private _xPosition: number;
+  private _metadata: any = {};
 
   constructor(
     name: string,
@@ -95,5 +96,8 @@ export class ProvenanceSlide implements IProvenanceSlide {
 
   public set xPosition(value: number) {
     this._xPosition = value;
+  }
+  public get metadata() {
+    return this._metadata;
   }
 }

@@ -7,7 +7,9 @@ import {
   RootNode,
   SerializedProvenanceGraph,
   SerializedProvenanceNode,
-  SerializedStateNode
+  SerializedStateNode,
+  IScreenShotProvider,
+  IScreenShot
 } from './api';
 import { generateTimestamp, generateUUID, isStateNode } from './utils';
 import mitt from './mitt';
