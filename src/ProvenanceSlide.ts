@@ -2,7 +2,6 @@ import { IProvenanceSlide, ProvenanceNode, Handler } from './api';
 import { generateUUID } from './utils';
 import { SlideAnnotation } from './SlideAnnotation';
 import mitt from './mitt';
-
 export class ProvenanceSlide implements IProvenanceSlide {
   private _id: string;
   private _node: ProvenanceNode | null;
@@ -18,14 +17,14 @@ export class ProvenanceSlide implements IProvenanceSlide {
     name: string,
     duration: number,
     transitionTime: number,
-    annotations: SlideAnnotation<any>[] = [],
-    node: ProvenanceNode | null = null
+    annotations: SlideAnnotation<any>[],
+    node: ProvenanceNode | null = null,
   ) {
     this._id = generateUUID();
     this._name = name;
     this._duration = duration;
-    this._transitionTime = transitionTime;
     this._annotations = annotations;
+    this._transitionTime = transitionTime;
     this._node = node;
     this._mitt = mitt();
     this._xPosition = 0;
@@ -58,7 +57,6 @@ export class ProvenanceSlide implements IProvenanceSlide {
   public set duration(value: number) {
     this._duration = value;
   }
-
   public get transitionTime(): number {
     return this._transitionTime;
   }
@@ -81,7 +79,6 @@ export class ProvenanceSlide implements IProvenanceSlide {
   public get annotations() {
     return this._annotations;
   }
-
   public on(type: string, handler: Handler) {
     this._mitt.on(type, handler);
   }

@@ -18,8 +18,11 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
   private _traverser: IProvenanceGraphTraverser;
   private _selectedSlide: IProvenanceSlide | null;
 
+  // Screenshot
   private _screenShotProvider: IScreenShotProvider | null = null;
   private _autoScreenShot = false;
+
+  // private _captainPlaceholder = new ProvenanceSlide("Captain Placeholder", 0, 0);
 
   constructor(application: Application, traverser: IProvenanceGraphTraverser) {
     this._mitt = mitt();
@@ -51,13 +54,18 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
       const node = this._graph.current;
       slide = new ProvenanceSlide(node.label, 1, 0, [], node);
     }
-    if (this.autoScreenShot && this.screenShotProvider) {
+    // Screenshot
+    if (this._autoScreenShot && this._screenShotProvider) {
       try {
-        slide.metadata.screenShot = this.screenShotProvider();
+        if (this.screenShotProvider !== null) {
+          slide.metadata.screenShot = this.screenShotProvider();
+        }
+
       } catch (e) {
         console.warn('Error while getting screenshot', e);
       }
     }
+
     if (this._slides.length === 0) {
       this._selectedSlide = slide;
     }
@@ -90,6 +98,12 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
       throw new Error('target index out of bounds');
     }
 
+    // if (indexTo >= this._slides.length) {
+    //   let k = indexTo - this._slides.length + 1;
+    //   while (k--) {
+    //     this._slides.push(this._captainPlaceholder);
+    //   }
+    // }
     this._slides.splice(indexTo, 0, this._slides.splice(indexFrom, 1)[0]);
 
     this._mitt.emit('slidesMoved', this._slides);
@@ -162,7 +176,7 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
   public get graph() {
     return this._graph;
   }
-
+  // Screenshot
   get screenShotProvider() {
     return this._screenShotProvider;
   }
@@ -181,7 +195,6 @@ export class ProvenanceSlidedeck implements IProvenanceSlidedeck {
       console.warn('Setting autoScreenShot to true, but no screenShotProvider is set');
     }
   }
-
   on(type: string, handler: Handler) {
     this._mitt.on(type, handler);
   }

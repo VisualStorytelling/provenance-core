@@ -12,7 +12,7 @@ export type Action = IrreversibleAction | ReversibleAction;
 /**
  * ActionMetadata
  */
-export interface ActionMetadata {
+export type ActionMetadata = {
   /**
    * List of tags
    */
@@ -27,12 +27,12 @@ export interface ActionMetadata {
    * Enable custom properties
    */
   [key: string]: any;
-}
+};
 
 /**
  * NodeMetadata
  */
-export interface NodeMetadata {
+export type NodeMetadata = {
   /**
    * Username
    */
@@ -47,22 +47,22 @@ export interface NodeMetadata {
    * Enable custom properties
    */
   [key: string]: any;
-}
+};
 
 /**
  * Artifacts that are attached to a node
  */
-export interface Artifacts {
+export type Artifacts = {
   /**
    * Enable custom properties
    */
   [key: string]: any;
-}
+};
 
 /**
  * Generic node
  */
-export interface RootNode {
+export type RootNode = {
   /**
    * Node identifier
    */
@@ -87,7 +87,7 @@ export interface RootNode {
    * Artifacts
    */
   artifacts: Artifacts;
-}
+};
 
 /**
  * State node extending the RootNode
@@ -117,7 +117,7 @@ export type ProvenanceNode = RootNode | StateNode;
 /**
  * Irreversible action that can only be applied, but cannot be reverted
  */
-export interface IrreversibleAction {
+export type IrreversibleAction = {
   /**
    * Metadata (optional)
    */
@@ -133,12 +133,12 @@ export interface IrreversibleAction {
    * The arguments should be immutable!
    */
   doArguments: any[]; // should be immutable
-}
+};
 
 /**
  * Reversible action that can be applied and reverted
  */
-export interface ReversibleAction {
+export type ReversibleAction = {
   /**
    * Metadata (optional)
    */
@@ -165,7 +165,7 @@ export interface ReversibleAction {
    * The arguments should be immutable and serializable to json!
    */
   undoArguments: any[];
-}
+};
 
 /**
  * Action function that can be registered and will be executed when applying an Action
@@ -175,7 +175,7 @@ export type ActionFunction = (...args: any[]) => Promise<any>;
 /**
  * Bundle of an ActionFunction with a reference to the `this` context
  */
-export interface ActionFunctionWithThis {
+export type ActionFunctionWithThis = {
   /**
    * Action function
    */
@@ -185,12 +185,12 @@ export interface ActionFunctionWithThis {
    * Value to use as this (i.e the reference Object) when executing callback
    */
   thisArg: any;
-}
+};
 
 /**
  * Metadata about the application
  */
-export interface Application {
+export type Application = {
   /**
    * Application name
    */
@@ -200,7 +200,7 @@ export interface Application {
    * Application version
    */
   version: string;
-}
+};
 
 export type Handler = (event?: any) => void;
 
@@ -233,7 +233,6 @@ export interface IProvenanceGraph {
   getNode(id: NodeIdentifier): ProvenanceNode;
 
   emitNodeChangedEvent(node: ProvenanceNode): void;
-
   /**
    * Available events:
    * * nodeAdded, emitted when node is added via this.addNode()
@@ -279,7 +278,6 @@ export interface IProvenanceTracker {
    * Action function registry
    */
   registry: IActionFunctionRegistry;
-
   screenShotProvider: IScreenShotProvider | null;
 
   /**
@@ -287,7 +285,6 @@ export interface IProvenanceTracker {
    * (if screenShotProvider is set)
    */
   autoScreenShot: boolean;
-
   /**
    * 1. Calls the action.do function with action.doArguments
    * 2. Append action to graph via a StateEdge and StateNode
@@ -337,27 +334,24 @@ export interface IProvenanceGraphTraverser {
   off(type: string, handler: Handler): void;
 }
 
-export interface SerializedProvenanceGraph {
+export type SerializedProvenanceGraph = {
   nodes: SerializedProvenanceNode[];
   root: NodeIdentifier;
   application: Application;
   current: NodeIdentifier;
-}
-
-export interface SerializedRootNode {
+};
+export type SerializedRootNode = {
   id: NodeIdentifier;
   children: NodeIdentifier[];
   label: string;
   metadata: NodeMetadata;
   artifacts: Artifacts;
-}
-
+};
 export type SerializedStateNode = SerializedRootNode & {
   parent: NodeIdentifier;
   action: Action;
   actionResult: any;
 };
-
 export type SerializedProvenanceNode = SerializedStateNode | SerializedRootNode;
 
 export interface ISlideAnnotation<T> {
@@ -390,7 +384,6 @@ export interface IProvenanceSlidedeck {
   slides: IProvenanceSlide[];
   selectedSlide: IProvenanceSlide | null;
   graph: IProvenanceGraph;
-
   screenShotProvider: IScreenShotProvider | null;
 
   /**
@@ -398,7 +391,6 @@ export interface IProvenanceSlidedeck {
    * (if screenShotProvider is set)
    */
   autoScreenShot: boolean;
-
   addSlide(slide?: IProvenanceSlide, index?: number): IProvenanceSlide;
   removeSlide(slide: IProvenanceSlide): void;
   removeSlideAtIndex(index: number): void;
@@ -421,7 +413,6 @@ export interface IProvenanceSlidedeck {
   on(type: string, handler: Handler): void;
   off(type: string, handler: Handler): void;
 }
-
 export type IScreenShot = any;
 
 /* A ScreenShotProvider provides screenshots from the application
